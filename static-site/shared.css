@@ -6,22 +6,105 @@
    to be edited in one place.
    ============================================================ */
 
+/* ---------- THEME TOKENS ----------
+   Dark is the default/brand palette. Light overrides apply either when
+   a page's inline anti-flash script has set html[data-theme="light"]
+   (explicit user choice, persisted in localStorage), or — before any
+   choice has ever been made — when the OS is set to light and no
+   data-theme attribute is present yet.
+
+   Palette v2: the accent moved from a bright "safety orange" (#FF5A36)
+   to a deeper, richer terracotta (#E8562F dark / #B23D1A light) —
+   same warm hue family (keeps the flame/rocket motif and the
+   hot/warm/cold lead-temperature metaphor intact) but less neon, more
+   premium. --warm/--cold are similarly muted rather than pure
+   primary-color. --hot-rgb holds the accent as an "r,g,b" triplet so
+   low-opacity tint overlays (rgba(var(--hot-rgb), 0.1) etc.) stay in
+   sync with the accent automatically instead of hardcoding stale hex.
+   The accent is also now used more sparingly — eyebrow labels use a
+   neutral tone instead, reserving color for things that are actually
+   interactive (buttons, links, active/hover states). */
 :root{
   --bg: #0A0D10;
   --panel: #12161B;
   --panel-2: #171C22;
+  --panel-3: #1B2129;
   --line: #232931;
   --text: #EDEFF2;
+  --body-text: #D7DBE0;
   --muted: #8D96A3;
   --muted-2: #5E6673;
-  --hot: #FF5A36;
-  --warm: #FFB800;
-  --cold: #4FA8FF;
+  --hot: #E8562F;
+  --hot-rgb: 232,86,47;
+  --warm: #E0A93D;
+  --cold: #5B9BD9;
+  /* Button/CTA color is deliberately separate from --hot: --hot is
+     tuned so it stays readable as TEXT directly on the page background
+     (needs AA contrast, so it gets deepened in light mode). A button
+     has no such constraint — it's a solid block with fixed dark text
+     on top of it — so it can and should stay vivid in both themes.
+     Reusing the deepened --hot for button backgrounds made light-mode
+     buttons look muddy/brick instead of like a confident CTA. */
+  --accent-btn: #E8562F;
+  --accent-btn-rgb: 232,86,47;
+  --shadow-1: rgba(0,0,0,0.35);
+  --cursor-hover-bg: rgba(237,239,242,0.12);
+  --nav-bg: rgba(10,13,16,0.72);
+  /* Intensity for blurred ambient glows (hero/CTA illustrations). Needs
+     to be much lower on a white background — the same alpha that reads
+     as a rich warm glow on near-black looks like a chalky pastel stain
+     on white, so light mode gets its own, weaker value. */
+  --glow-alpha: 0.28;
+}
+
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg: #FBFBFC;
+    --panel: #F3F4F6;
+    --panel-2: #ECEDF0;
+    --panel-3: #E4E6EA;
+    --line: #DEE1E6;
+    --text: #14181D;
+    --body-text: #333A42;
+    --muted: #5B6470;
+    --muted-2: #838C97;
+    --hot: #B23D1A;
+    --hot-rgb: 178,61,26;
+    --warm: #8F6A1A;
+    --cold: #2E6CA8;
+    --shadow-1: rgba(20,24,29,0.10);
+    --cursor-hover-bg: rgba(20,24,29,0.08);
+    --nav-bg: rgba(251,251,252,0.72);
+    --glow-alpha: 0.16;
+  }
+}
+
+html[data-theme="light"]{
+  --bg: #FBFBFC;
+  --panel: #F3F4F6;
+  --panel-2: #ECEDF0;
+  --panel-3: #E4E6EA;
+  --line: #DEE1E6;
+  --text: #14181D;
+  --body-text: #333A42;
+  --muted: #5B6470;
+  --muted-2: #838C97;
+  --hot: #B23D1A;
+  --hot-rgb: 178,61,26;
+  --warm: #8F6A1A;
+  --cold: #2E6CA8;
+  --shadow-1: rgba(20,24,29,0.10);
+  --cursor-hover-bg: rgba(20,24,29,0.08);
+  --nav-bg: rgba(251,251,252,0.72);
+  --glow-alpha: 0.16;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
 
-html{ scroll-behavior:smooth; }
+/* scroll-padding-top keeps in-page anchor targets (nav "See what I
+   build" link, blog table-of-contents links) from landing underneath
+   the sticky nav bar (~70px tall). */
+html{ scroll-behavior:smooth; scroll-padding-top:88px; }
 
 body{
   background:var(--bg);
@@ -30,6 +113,30 @@ body{
   font-size:16px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  transition:background .2s ease, color .2s ease;
+}
+
+img, svg{ max-width:100%; height:auto; }
+
+/* ---------- SKIP LINK ----------
+   First focusable element on every page (added right after <body>).
+   Hidden off-screen until it receives keyboard focus, then jumps
+   above the nav so keyboard/screen-reader users can bypass it. */
+.skip-link{
+  position:absolute;
+  top:-100px;
+  left:12px;
+  z-index:1000;
+  background:var(--accent-btn);
+  color:#0A0D10;
+  font-weight:600;
+  font-size:14px;
+  padding:10px 18px;
+  border-radius:8px;
+  transition:top .15s ease;
+}
+.skip-link:focus{
+  top:12px;
 }
 
 h1,h2,h3,h4{
@@ -68,7 +175,7 @@ a:focus-visible, button:focus-visible{
   font-weight:600;
   letter-spacing:0.08em;
   text-transform:uppercase;
-  color:var(--hot);
+  color:var(--muted-2);
 }
 
 /* custom elements are inline by default; force block so the sticky
@@ -82,11 +189,12 @@ nav{
   z-index:50;
   padding:18px 0;
   border-bottom:1px solid var(--line);
-  background:rgba(10,13,16,0.72);
+  background:var(--nav-bg);
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
 }
 nav .wrap{
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -127,6 +235,33 @@ nav .wrap{
   background:var(--panel);
   outline:none;
 }
+
+/* ---------- THEME TOGGLE ---------- */
+.theme-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:transparent;
+  color:var(--text);
+  cursor:pointer;
+  flex-shrink:0;
+  transition:border-color .15s ease, background .15s ease;
+}
+.theme-toggle:hover, .theme-toggle:focus-visible{
+  border-color:var(--hot);
+  background:var(--panel);
+  outline:none;
+}
+.theme-toggle svg{ width:17px; height:17px; }
+/* Default (dark, or no theme chosen yet): show the sun (click for light).
+   html[data-theme="light"]: show the moon (click for dark). */
+.theme-toggle .icon-moon{ display:none; }
+html[data-theme="light"] .theme-toggle .icon-sun{ display:none; }
+html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
 
 /* ---------- NAV DROPDOWN ---------- */
 .dropdown{ position:relative; }
@@ -170,24 +305,105 @@ nav .wrap{
   transition:background .15s ease, color .15s ease;
 }
 .dropdown-menu a:hover, .dropdown-menu a:focus-visible{
-  background:rgba(255,90,54,0.1);
+  background:rgba(var(--hot-rgb),0.1);
   color:var(--hot);
+}
+
+/* ---------- MOBILE NAV ----------
+   Above the breakpoint, .nav-toggle is hidden and .nav-links renders
+   as the normal horizontal row (unaffected by anything below). Below
+   it, .nav-links becomes a hidden dropdown panel toggled by the
+   hamburger button, and the Services dropdown-menu switches from a
+   floating box to an inline accordion so it reads naturally inside
+   the stacked panel. */
+.nav-toggle{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:4px;
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:transparent;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:border-color .15s ease, background .15s ease;
+}
+.nav-toggle:hover, .nav-toggle:focus-visible{
+  border-color:var(--hot);
+  background:var(--panel);
+  outline:none;
+}
+.nav-toggle span{
+  display:block;
+  width:16px;
+  height:1.5px;
+  border-radius:1px;
+  background:var(--text);
+  transition:transform .2s ease, opacity .2s ease;
+}
+.nav-toggle.open span:nth-child(1){ transform:translateY(5.5px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2){ opacity:0; }
+.nav-toggle.open span:nth-child(3){ transform:translateY(-5.5px) rotate(-45deg); }
+
+@media (max-width:720px){
+  .nav-toggle{ display:inline-flex; }
+  .nav-links{
+    position:absolute;
+    top:calc(100% + 1px);
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:stretch;
+    gap:4px;
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+    padding:14px 20px 20px;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-8px);
+    transition:opacity .2s ease, transform .2s ease, visibility .2s ease;
+  }
+  .nav-links.open{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+  }
+  .nav-links .pill,
+  .nav-links .nav-cta{ width:100%; text-align:left; }
+  .nav-links .dropdown-trigger{ justify-content:space-between; width:100%; }
+  .nav-links .theme-toggle{ align-self:flex-start; margin-top:4px; }
+  /* Services becomes an inline accordion instead of a floating box */
+  .dropdown-menu{
+    position:static;
+    min-width:0;
+    opacity:1;
+    visibility:visible;
+    transform:none;
+    background:none;
+    border:none;
+    padding:2px 0 2px 12px;
+    display:none;
+  }
+  .dropdown.open .dropdown-menu{ display:block; }
 }
 
 /* ---------- BUTTONS ---------- */
 .btn-primary{
-  background:var(--hot);
+  background:var(--accent-btn);
   color:#0A0D10;
   font-weight:600;
   font-size:15px;
   padding:14px 24px;
   border-radius:6px;
   display:inline-block;
-  transition:transform .15s ease, box-shadow .15s ease;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
 }
 .btn-primary:hover{
   transform:translateY(-1px);
-  box-shadow:0 8px 24px rgba(255,90,54,0.22);
+  box-shadow:0 8px 24px rgba(var(--accent-btn-rgb),0.3);
 }
 .link-quiet{
   font-size:14px;
@@ -257,8 +473,8 @@ footer p{
 }
 #cursor-ring.is-hover{
   width:50px; height:50px;
-  border-color:#EDEFF2;
-  background:rgba(237,239,242,0.12);
+  border-color:var(--text);
+  background:var(--cursor-hover-bg);
 }
 #cursor-dot.is-hover{ opacity:0; }
 @media (pointer: coarse), (hover: none){

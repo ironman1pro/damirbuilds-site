@@ -1,10 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="bolt" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#FF5A36"/>
       <stop offset="100%" stop-color="#FFB800"/>
     </linearGradient>
   </defs>
-  <rect width="32" height="32" rx="7" fill="#0A0D10"/>
-  <path d="M13.2 5.5 L10.6 17.5 H15.6 L13.4 26.5 L23 12.8 H17.4 L19.6 5.5 Z" fill="url(#bolt)"/>
+
+  <!-- background: rounded square, matches site's near-black panel -->
+  <rect x="0" y="0" width="512" height="512" rx="108" fill="#0A0D10"/>
+  <rect x="1" y="1" width="510" height="510" rx="107" fill="none" stroke="#232931" stroke-width="2"/>
+
+  <!-- mark: same bolt path as logo.png, kept in sync so favicon/apple-touch-icon/
+       Organization schema logo are all one consistent design -->
+  <g transform="translate(256,256)">
+    <path d="M 18 -142
+             L -96 18
+             L -18 18
+             L -30 142
+             L 96 -30
+             L 14 -30
+             Z"
+          fill="url(#bolt)"/>
+  </g>
 </svg>

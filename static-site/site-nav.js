@@ -10,7 +10,10 @@
   var NAV_HTML =
     '<div class="wrap">' +
       '<a class="logo" href="/">damir<span>builds</span></a>' +
-      '<div class="nav-links">' +
+      '<button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">' +
+        '<span></span><span></span><span></span>' +
+      '</button>' +
+      '<div class="nav-links" id="navLinks">' +
         '<div class="dropdown">' +
           '<button class="pill dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">' +
             'Services' +
@@ -22,6 +25,10 @@
         '</div>' +
         '<a class="pill" href="/blog">Blog</a>' +
         '<a class="nav-cta" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM on X</a>' +
+        '<button class="theme-toggle" type="button" aria-label="Switch to light mode">' +
+          '<svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>' +
+          '<svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>' +
+        '</button>' +
       '</div>' +
     '</div>';
 
@@ -36,12 +43,29 @@
      <site-footer> wrapper) so the existing nav{}/footer{} CSS selectors
      in shared.css keep matching. */
   customElements.define('site-nav', class extends HTMLElement{
-    connectedCallback(){ this.innerHTML = '<nav>' + NAV_HTML + '</nav>'; }
+    connectedCallback(){
+      this.innerHTML = '<nav>' + NAV_HTML + '</nav>';
+      syncThemeToggle();
+    }
   });
 
   customElements.define('site-footer', class extends HTMLElement{
     connectedCallback(){ this.innerHTML = '<footer>' + FOOTER_HTML + '</footer>'; }
   });
+
+  /* ---------- Light/dark theme toggle ----------
+     The actual theme is set as early as possible by a small inline
+     script in each page's <head> (before shared.css loads) to avoid
+     a flash of the wrong theme. This just keeps the toggle button's
+     icon/label in sync with the current html[data-theme], and flips
+     it (+ persists the choice) on click. */
+  function syncThemeToggle(){
+    var btn = document.querySelector('.theme-toggle');
+    if(!btn) return;
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    btn.setAttribute('title', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+  }
 
   /* ---------- Dropdown open/close (delegated to document) ---------- */
   function closeAllDropdowns(){
@@ -52,7 +76,47 @@
     });
   }
 
+  /* ---------- Mobile nav menu ----------
+     Below the CSS breakpoint, .nav-links becomes a hidden dropdown
+     panel toggled by the hamburger button (.nav-toggle). Above the
+     breakpoint both stay visually inert (nav-toggle is display:none,
+     nav-links is always visible), so this logic is safe to run at
+     any width. */
+  function closeMobileMenu(){
+    var links = document.querySelector('.nav-links');
+    var toggle = document.querySelector('.nav-toggle');
+    if(links) links.classList.remove('open');
+    if(toggle){
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
   document.addEventListener('click', function(e){
+    var navToggle = e.target.closest && e.target.closest('.nav-toggle');
+    if(navToggle){
+      var links = document.querySelector('.nav-links');
+      var isOpen = navToggle.classList.contains('open');
+      if(isOpen){
+        closeMobileMenu();
+      }else{
+        if(links) links.classList.add('open');
+        navToggle.classList.add('open');
+        navToggle.setAttribute('aria-expanded', 'true');
+      }
+      return;
+    }
+
+    var themeBtn = e.target.closest && e.target.closest('.theme-toggle');
+    if(themeBtn){
+      var html = document.documentElement;
+      var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      try{ localStorage.setItem('theme', next); }catch(err){}
+      syncThemeToggle();
+      return;
+    }
+
     var trigger = e.target.closest && e.target.closest('.dropdown-trigger');
     if(trigger){
       e.stopPropagation();
@@ -65,11 +129,27 @@
       }
       return;
     }
+
+    // Close the mobile menu when: a real navigation link inside it was
+    // clicked (Blog, DM on X, Speed-to-Lead — don't leave the panel
+    // open behind the new page/tab), or the click landed outside the
+    // panel entirely. A click on non-link whitespace inside the open
+    // panel (or on the dropdown trigger, handled above already) should
+    // NOT close it.
+    var clickedNavLink = e.target.closest && e.target.closest('.nav-links a');
+    var clickedInsideNavLinks = e.target.closest && e.target.closest('.nav-links');
+    if(clickedNavLink || !clickedInsideNavLinks){
+      closeMobileMenu();
+    }
+
     closeAllDropdowns();
   });
 
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') closeAllDropdowns();
+    if(e.key === 'Escape'){
+      closeAllDropdowns();
+      closeMobileMenu();
+    }
   });
 
   /* ---------- Custom cursor (site-wide) ---------- */

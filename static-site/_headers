@@ -1,0 +1,29 @@
+# Cloudflare Pages custom headers.
+# copy-static.js carries this file from static-site/ into _site/ on every
+# build, and Cloudflare Pages reads it from the published output root.
+#
+# Images/fonts/icons are content-addressed by nothing but their filename,
+# but they change rarely — cache them hard and long. shared.css/site-nav.js
+# are actively iterated on, so they get a short cache instead so a deploy
+# is visible to returning visitors within the hour rather than a year.
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+/shared.css
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/site-nav.js
+  Cache-Control: public, max-age=3600, must-revalidate

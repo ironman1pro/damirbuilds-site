@@ -28,6 +28,22 @@ module.exports = async function () {
   `);
 
   return posts.map(post => {
+    // Table-of-contents: collect h2/h3 headings as they're rendered so
+    // base.njk can build an "On this page" list without re-parsing HTML.
+    const headings = [];
+    const usedSlugs = {};
+    const makeHeadingId = (value) => {
+      const text = extractText(value);
+      let slug = slugify(text) || "section";
+      if (usedSlugs[slug] != null) {
+        usedSlugs[slug] += 1;
+        slug = `${slug}-${usedSlugs[slug]}`;
+      } else {
+        usedSlugs[slug] = 0;
+      }
+      return { text, slug };
+    };
+
     const bodyHTML = post.body
       ? toHTML(post.body, {
           components: {
@@ -38,6 +54,18 @@ module.exports = async function () {
             marks: {
               link: ({ children, value }) =>
                 `<a href="${value.href}" target="_blank" rel="noopener">${children}</a>`
+            },
+            block: {
+              h2: ({ value, children }) => {
+                const { text, slug } = makeHeadingId(value);
+                headings.push({ text, slug, level: 2 });
+                return `<h2 id="${slug}">${children}</h2>`;
+              },
+              h3: ({ value, children }) => {
+                const { text, slug } = makeHeadingId(value);
+                headings.push({ text, slug, level: 3 });
+                return `<h3 id="${slug}">${children}</h3>`;
+              }
             }
           }
         })
@@ -72,7 +100,8 @@ module.exports = async function () {
       seoTitle,
       seoDescription,
       socialImageUrl,
-      noindex
+      noindex,
+      headings
     };
   });
 };
@@ -83,4 +112,19 @@ function escapeAttr(str) {
     .replace(/"/g, "&quot;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+function extractText(node) {
+  if (!node || !node.children) return "";
+  return node.children.map(c => c.text || "").join("");
+}
+
+function slugify(str) {
+  return String(str)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
