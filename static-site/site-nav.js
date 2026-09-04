@@ -7,12 +7,26 @@
    ============================================================ */
 (function(){
 
+  /* The theme-toggle button is rendered twice: one copy sits next to
+     the hamburger (visible on mobile only, always reachable without
+     opening the menu), the other lives inside .nav-links (visible on
+     desktop only, where nav-links is just the normal inline row).
+     Both share the .theme-toggle class so the existing click handler
+     and syncThemeToggle() work on either one unchanged. Which copy is
+     actually shown/hidden per breakpoint is pure CSS, see shared.css. */
+  var THEME_TOGGLE_SVGS =
+    '<svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>' +
+    '<svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>';
+
   var NAV_HTML =
     '<div class="wrap">' +
       '<a class="logo" href="/">damir<span>builds</span></a>' +
-      '<button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">' +
-        '<span></span><span></span><span></span>' +
-      '</button>' +
+      '<div class="nav-mobile-controls">' +
+        '<button class="theme-toggle theme-toggle--mobile" type="button" aria-label="Switch to light mode">' + THEME_TOGGLE_SVGS + '</button>' +
+        '<button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">' +
+          '<span></span><span></span><span></span>' +
+        '</button>' +
+      '</div>' +
       '<div class="nav-links" id="navLinks">' +
         '<div class="dropdown">' +
           '<button class="pill dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">' +
@@ -24,11 +38,9 @@
           '</div>' +
         '</div>' +
         '<a class="pill" href="/blog">Blog</a>' +
+        '<a class="pill" href="/contact.html">Contact</a>' +
         '<a class="nav-cta" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM on X</a>' +
-        '<button class="theme-toggle" type="button" aria-label="Switch to light mode">' +
-          '<svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>' +
-          '<svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>' +
-        '</button>' +
+        '<button class="theme-toggle theme-toggle--desktop" type="button" aria-label="Switch to light mode">' + THEME_TOGGLE_SVGS + '</button>' +
       '</div>' +
     '</div>';
 
@@ -60,11 +72,14 @@
      icon/label in sync with the current html[data-theme], and flips
      it (+ persists the choice) on click. */
   function syncThemeToggle(){
-    var btn = document.querySelector('.theme-toggle');
-    if(!btn) return;
+    var btns = document.querySelectorAll('.theme-toggle');
+    if(!btns.length) return;
     var isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
-    btn.setAttribute('title', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    var label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+    btns.forEach(function(btn){
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+    });
   }
 
   /* ---------- Dropdown open/close (delegated to document) ---------- */

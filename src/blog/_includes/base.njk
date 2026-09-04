@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="canonical" href="https://damirbuilds.com{% if post %}/blog/{{ post.slug }}/{% else %}/blog/{% endif %}">
@@ -117,10 +117,10 @@
      which cut the blur off mid-fade and produced a hard ring. The
      homepage/service-page rocket glow avoids this the same way: no
      clipping ancestor, so the blur is free to feather to nothing.
-     Horizontal bleed is caught safely by `overflow-x:clip` on <html>
-     in shared.css instead, which doesn't clip this element's own
-     paint, only stops the page from ever getting a horizontal
-     scrollbar. */
+     Horizontal bleed is caught safely by `overflow-x:hidden` on
+     <html> and <body> in shared.css instead, which stops the page
+     from ever getting a horizontal scrollbar without clipping this
+     element's own paint. */
   .blog-hero::before{
     content:"";
     position:absolute;

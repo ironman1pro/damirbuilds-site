@@ -57,14 +57,14 @@
   --glow-alpha: 0.28;
 }
 
-/* Dark is the default regardless of OS preference — the inline
-   anti-flash script in every page's <head> always sets data-theme
-   explicitly ('dark' unless the visitor previously chose light via
-   the toggle), so there is deliberately no
-   `@media (prefers-color-scheme: light)` fallback here anymore: a
-   visitor whose OS is set to light still lands on dark, and only an
-   explicit click on the theme toggle (persisted to localStorage,
-   which sets data-theme="light" below) switches them to light. */
+/* The visitor's OS-level preference decides the default: the inline
+   anti-flash script in every page's <head> checks
+   `prefers-color-scheme` (falling back to dark if that can't be
+   read) and sets data-theme explicitly before first paint, so
+   there's no flash either way. localStorage always wins once a
+   visitor has clicked the toggle. The @media block below is a
+   no-JS fallback only (progressive enhancement) — the inline script
+   is what actually decides in every normal case. */
 html[data-theme="light"]{
   --bg: #FBFBFC;
   --panel: #F3F4F6;
@@ -83,6 +83,27 @@ html[data-theme="light"]{
   --cursor-hover-bg: rgba(20,24,29,0.08);
   --nav-bg: rgba(251,251,252,0.72);
   --glow-alpha: 0.16;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg: #FBFBFC;
+    --panel: #F3F4F6;
+    --panel-2: #ECEDF0;
+    --panel-3: #E4E6EA;
+    --line: #DEE1E6;
+    --text: #14181D;
+    --body-text: #333A42;
+    --muted: #5B6470;
+    --muted-2: #838C97;
+    --hot: #B23D1A;
+    --hot-rgb: 178,61,26;
+    --warm: #8F6A1A;
+    --cold: #2E6CA8;
+    --shadow-1: rgba(20,24,29,0.10);
+    --cursor-hover-bg: rgba(20,24,29,0.08);
+    --nav-bg: rgba(251,251,252,0.72);
+    --glow-alpha: 0.16;
+  }
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -250,6 +271,14 @@ nav .wrap{
 html[data-theme="light"] .theme-toggle .icon-sun{ display:none; }
 html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
 
+/* Two copies of the theme toggle exist in the markup (see site-nav.js) —
+   .theme-toggle--mobile sits next to the hamburger and only shows below
+   the nav breakpoint; .theme-toggle--desktop lives inside .nav-links and
+   only shows at/above it. .nav-mobile-controls stays display:none above
+   the breakpoint so it never affects the desktop row's layout at all. */
+.nav-mobile-controls{ display:none; align-items:center; gap:8px; }
+.theme-toggle--mobile{ display:none; }
+
 /* ---------- NAV DROPDOWN ---------- */
 .dropdown{ position:relative; }
 /* .dropdown-trigger always pairs with .pill in the markup for its
@@ -337,6 +366,8 @@ html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
 
 @media (max-width:720px){
   .nav-toggle{ display:inline-flex; }
+  .nav-mobile-controls{ display:flex; }
+  .theme-toggle--mobile{ display:inline-flex; }
   .nav-links{
     position:absolute;
     top:calc(100% + 1px);
@@ -361,7 +392,11 @@ html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
   .nav-links .pill,
   .nav-links .nav-cta{ width:100%; text-align:left; }
   .nav-links .dropdown-trigger{ justify-content:space-between; width:100%; }
-  .nav-links .theme-toggle{ align-self:flex-start; margin-top:4px; }
+  /* The desktop copy of the toggle lives inside .nav-links markup-wise,
+     but on mobile it's the .theme-toggle--mobile copy next to the
+     hamburger that's shown instead — hide this one so there's only
+     ever one visible toggle at a time. */
+  .theme-toggle--desktop{ display:none; }
   /* Services becomes an inline accordion instead of a floating box */
   .dropdown-menu{
     position:static;
