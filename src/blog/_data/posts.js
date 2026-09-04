@@ -24,9 +24,8 @@ module.exports = async function () {
     } | order(publishedAt desc)
   `);
 
-  return posts.map(post => ({
-    ...post,
-    bodyHTML: post.body
+  return posts.map(post => {
+    const bodyHTML = post.body
       ? toHTML(post.body, {
           components: {
             types: {
@@ -39,7 +38,17 @@ module.exports = async function () {
             }
           }
         })
-      : "",
-    imageUrl: post.mainImage ? builder.image(post.mainImage).width(1200).url() : null
-  }));
+      : "";
+
+    const plainText = bodyHTML.replace(/<[^>]+>/g, " ");
+    const wordCount = plainText.trim().split(/\s+/).filter(Boolean).length;
+    const readingTime = wordCount ? Math.max(1, Math.round(wordCount / 200)) : null;
+
+    return {
+      ...post,
+      bodyHTML,
+      readingTime,
+      imageUrl: post.mainImage ? builder.image(post.mainImage).width(1200).url() : null
+    };
+  });
 };

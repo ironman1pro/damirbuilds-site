@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
-<link rel="canonical" href="https://yourdomain.com/blog/{{ post.slug }}/">
-<link rel="icon" href="/favicon.ico">
+<link rel="canonical" href="https://damirbuilds.com/blog/{{ post.slug }}/">
+<link rel="icon" href="/favicon.svg">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{{ title }}">
 <meta property="og:description" content="{{ description }}">
-<meta property="og:url" content="https://yourdomain.com/blog/{{ post.slug }}/">
-<meta property="og:site_name" content="Your Site Name">
+<meta property="og:url" content="https://damirbuilds.com/blog/{{ post.slug }}/">
+<meta property="og:site_name" content="damirbuilds">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ title }}">
 <meta name="twitter:description" content="{{ description }}">
@@ -29,7 +29,7 @@
   "description": "{{ description }}",
   "datePublished": "{{ post.publishedAt }}",
   "dateModified": "{{ post.publishedAt }}",
-  "author": { "@type": "Person", "name": "Your Name" }
+  "author": { "@type": "Person", "name": "Damir" }
 }
 </script>
 {% endif %}
@@ -71,6 +71,7 @@
   @media (max-width:640px){ .wrap, .wrap-narrow{ padding:0 20px; } }
   .eyebrow{ font-family:'Inter', sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--hot); }
 
+  /* ---------- NAV ---------- */
   nav{ position:sticky; top:0; z-index:50; padding:18px 0; border-bottom:1px solid var(--line); background:rgba(10,13,16,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
   nav .wrap{ display:flex; align-items:center; justify-content:space-between; }
   .logo{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:18px; letter-spacing:-0.01em; }
@@ -84,20 +85,129 @@
   .link-quiet{ font-size:14px; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:2px; }
   .link-quiet:hover{ color:var(--text); border-color:var(--muted-2); }
 
+  /* ---------- BLOG LIST PAGE ---------- */
+  .blog-hero{
+    position:relative;
+    padding:76px 0 48px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .blog-hero::before{
+    content:"";
+    position:absolute;
+    top:-120px; right:-100px;
+    width:420px; height:420px;
+    background:radial-gradient(circle, rgba(255,90,54,0.14), transparent 70%);
+    pointer-events:none;
+  }
+  .blog-headline{ position:relative; font-size:clamp(32px, 4.8vw, 48px); margin-top:14px; max-width:16ch; }
+  .blog-sub{ position:relative; color:var(--muted); font-size:17px; max-width:56ch; margin-top:18px; }
+
+  .blog-list{ padding:60px 0 88px; }
+  .post-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:28px; }
+  .post-card{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .post-card:hover, .post-card:focus-visible{
+    border-color:var(--hot);
+    transform:translateY(-4px);
+    box-shadow:0 16px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,90,54,0.15);
+    outline:none;
+  }
+  .post-card-img{
+    width:100%;
+    aspect-ratio:16/9;
+    height:auto;
+    object-fit:cover;
+    display:block;
+    background:linear-gradient(135deg, var(--panel-2), var(--panel));
+    transition:transform .3s ease;
+  }
+  .post-card:hover .post-card-img{ transform:scale(1.03); }
+  .post-card-body{ display:flex; flex-direction:column; flex:1; padding:24px 24px 26px; }
+  .post-card-date{ font-size:12.5px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--hot); margin-bottom:12px; }
+  .post-card-body h3{ font-size:19px; margin-bottom:10px; line-height:1.3; }
+  .post-card-body p{
+    color:var(--muted);
+    font-size:14.5px;
+    line-height:1.6;
+    flex:1;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .post-card-arrow{
+    margin-top:16px;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .post-card-arrow span{ transition:transform .2s ease; }
+  .post-card:hover .post-card-arrow span{ transform:translateX(3px); }
+  .blog-state{ color:var(--muted); font-size:16px; padding:60px 0; text-align:center; border:1px dashed var(--line); border-radius:12px; }
+
+  /* ---------- SINGLE POST PAGE ---------- */
   header.post-hero{ padding:56px 0 0; }
   .post-back{ display:inline-block; margin-bottom:24px; }
-  h1.post-title{ font-size:clamp(28px, 4.6vw, 44px); margin-top:10px; }
-  .post-cover{ width:100%; max-height:440px; object-fit:cover; border-radius:10px; border:1px solid var(--line); margin-top:32px; display:block; }
+  h1.post-title{ font-size:clamp(28px, 4.6vw, 46px); margin-top:12px; }
+  .post-cover{ width:100%; max-height:460px; object-fit:cover; border-radius:12px; border:1px solid var(--line); margin-top:36px; display:block; }
 
-  .post-body{ padding:40px 0 24px; font-size:17px; color:var(--text); }
-  .post-body p{ margin-bottom:20px; color:#D7DBE0; }
-  .post-body h2{ font-size:26px; margin:40px 0 16px; }
-  .post-body h3{ font-size:21px; margin:32px 0 14px; }
-  .post-body blockquote{ border-left:2px solid var(--hot); padding:4px 0 4px 20px; margin:24px 0; color:var(--muted); font-style:italic; }
-  .post-body ul, .post-body ol{ margin:0 0 20px 22px; color:#D7DBE0; }
-  .post-body li{ margin-bottom:8px; }
-  .post-body a{ color:var(--hot); border-bottom:1px solid rgba(255,90,54,0.4); }
-  .post-body img{ width:100%; border-radius:10px; border:1px solid var(--line); margin:28px 0; display:block; }
+  .post-body{ padding:44px 0 24px; font-size:17.5px; color:var(--text); }
+  .post-body p{ margin-bottom:22px; color:#D7DBE0; }
+  .post-body > p:first-of-type::first-letter{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:52px;
+    font-weight:700;
+    color:var(--hot);
+    float:left;
+    line-height:0.85;
+    margin:8px 10px 0 0;
+  }
+  .post-body h2{ font-size:27px; margin:44px 0 18px; }
+  .post-body h3{ font-size:21px; margin:34px 0 14px; }
+  .post-body blockquote{
+    border-left:2px solid var(--hot);
+    background:var(--panel);
+    border-radius:0 8px 8px 0;
+    padding:16px 20px;
+    margin:28px 0;
+    color:var(--muted);
+    font-style:italic;
+  }
+  .post-body ul, .post-body ol{ margin:0 0 22px 22px; color:#D7DBE0; }
+  .post-body li{ margin-bottom:9px; }
+  .post-body a{ color:var(--hot); border-bottom:1px solid rgba(255,90,54,0.4); transition:border-color .15s ease; }
+  .post-body a:hover{ border-color:var(--hot); }
+  .post-body img{ width:100%; border-radius:12px; border:1px solid var(--line); margin:32px 0; display:block; }
+  .post-body pre{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    overflow-x:auto;
+    margin:28px 0;
+    font-size:14px;
+  }
+  .post-body code{
+    font-family:'SFMono-Regular', Consolas, monospace;
+    background:var(--panel);
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:0.9em;
+  }
+  .post-body pre code{ background:none; padding:0; }
+  .post-body hr{ border:none; border-top:1px solid var(--line); margin:40px 0; }
 
   .faq-section{ padding:16px 0 40px; border-top:1px solid var(--line); margin-top:24px; }
   .faq-section h2{ font-size:24px; margin:32px 0 20px; }
@@ -118,7 +228,7 @@
 
 <nav>
   <div class="wrap">
-    <a class="logo" href="/">Your<span>Site</span></a>
+    <a class="logo" href="/">damir<span>builds</span></a>
     <div class="nav-links">
       <a class="pill" href="/blog/">Blog</a>
       <a class="nav-cta" href="/contact.html">Contact</a>
@@ -165,8 +275,9 @@
 
 <footer>
   <div class="wrap">
-    <a class="logo" href="/">Your Site Name</a>
-    <p>© 2026 Your Site Name</p>
+    <a class="logo" href="/">damirbuilds</a>
+    <p>AI automations, built for revenue.</p>
+    <a href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a>
   </div>
 </footer>
 </body>
