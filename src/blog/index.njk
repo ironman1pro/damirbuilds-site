@@ -19,7 +19,7 @@ permalink: "index.html"
       {% for post in posts %}
       <a class="post-card" href="/blog/{{ post.slug }}/">
         {% if post.imageUrl %}
-        <img class="post-card-img" src="{{ post.imageUrl }}" alt="{{ post.title }}" loading="lazy">
+        <img class="post-card-img" src="{{ post.imageUrl }}" alt="{{ post.mainImageAlt or post.title }}" loading="lazy" width="1200" height="675">
         {% else %}
         <div class="post-card-img"></div>
         {% endif %}

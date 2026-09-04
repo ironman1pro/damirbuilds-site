@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "eleventy && node copy-static.js",
+    "build": "eleventy && node copy-static.js && node generate-sitemap.js",
     "dev": "eleventy --serve"
   },
   "keywords": [],

@@ -8,177 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
 <style>
-  :root{
-    --bg: #0A0D10;
-    --panel: #12161B;
-    --panel-2: #171C22;
-    --line: #232931;
-    --text: #EDEFF2;
-    --muted: #8D96A3;
-    --muted-2: #5E6673;
-    --hot: #FF5A36;
-    --warm: #FFB800;
-    --cold: #4FA8FF;
-  }
-
-  *{ box-sizing:border-box; margin:0; padding:0; }
-
-  html{ scroll-behavior:smooth; }
-
+  /* page-specific layout: footer pinned to bottom on short pages */
   body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter', sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
     min-height:100vh;
     display:flex;
     flex-direction:column;
-  }
-
-  h1,h2,h3,h4{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:600;
-    line-height:1.15;
-    letter-spacing:-0.01em;
-  }
-
-  a{ color:inherit; text-decoration:none; }
-
-  a:focus-visible, button:focus-visible{
-    outline:2px solid var(--hot);
-    outline-offset:3px;
-    border-radius:4px;
-  }
-
-  @media (prefers-reduced-motion:reduce){
-    html{ scroll-behavior:auto; }
-    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
-  }
-
-  .wrap{
-    max-width:1100px;
-    margin:0 auto;
-    padding:0 32px;
-  }
-
-  @media (max-width:640px){
-    .wrap{ padding:0 20px; }
-  }
-
-  .eyebrow{
-    font-family:'Inter', sans-serif;
-    font-size:12.5px;
-    font-weight:600;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--hot);
-  }
-
-  /* ---------- NAV ---------- */
-  nav{
-    position:sticky;
-    top:0;
-    z-index:50;
-    padding:18px 0;
-    border-bottom:1px solid var(--line);
-    background:rgba(10,13,16,0.72);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-  }
-  nav .wrap{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .logo{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:600;
-    font-size:18px;
-    letter-spacing:-0.01em;
-    transition:opacity .15s ease;
-  }
-  .logo:hover, .logo:focus-visible{ opacity:.8; outline:none; }
-  .logo span{ color:var(--hot); }
-  .nav-links{ display:flex; align-items:center; gap:12px; }
-  .nav-cta, .pill{
-    font-size:14px;
-    font-weight:500;
-    padding:9px 18px;
-    border:1px solid var(--line);
-    border-radius:6px;
-    color:var(--text);
-    background:transparent;
-    cursor:pointer;
-    transition:border-color .15s ease, background .15s ease, color .15s ease;
-  }
-  .nav-cta:hover, .nav-cta:focus-visible,
-  .pill:hover, .pill:focus-visible{
-    border-color:var(--hot);
-    background:var(--panel);
-    outline:none;
-  }
-
-  /* ---------- NAV DROPDOWN ---------- */
-  .dropdown{ position:relative; }
-  .dropdown-trigger{ display:inline-flex; align-items:center; gap:8px; }
-  .caret{
-    width:6px; height:6px;
-    border-right:1px solid currentColor;
-    border-bottom:1px solid currentColor;
-    transform:rotate(45deg);
-    transition:transform .2s ease;
-  }
-  .dropdown.open .caret{ transform:rotate(225deg); margin-top:3px; }
-  .dropdown-menu{
-    position:absolute;
-    top:calc(100% + 8px);
-    left:0;
-    min-width:210px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px;
-    opacity:0;
-    visibility:hidden;
-    transform:translateY(-6px);
-    transition:opacity .15s ease, transform .15s ease, visibility .15s ease;
-    z-index:30;
-  }
-  .dropdown.open .dropdown-menu{
-    opacity:1;
-    visibility:visible;
-    transform:translateY(0);
-  }
-  .dropdown-menu a{
-    display:block;
-    padding:9px 12px;
-    border-radius:6px;
-    font-size:14px;
-    white-space:nowrap;
-    transition:background .15s ease, color .15s ease;
-  }
-  .dropdown-menu a:hover, .dropdown-menu a:focus-visible{
-    background:rgba(255,90,54,0.1);
-    color:var(--hot);
-  }
-
-  /* ---------- BUTTONS ---------- */
-  .btn-primary{
-    background:var(--hot);
-    color:#0A0D10;
-    font-weight:600;
-    font-size:15px;
-    padding:14px 24px;
-    border-radius:6px;
-    display:inline-block;
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .btn-primary:hover{
-    transform:translateY(-1px);
-    box-shadow:0 8px 24px rgba(255,90,54,0.22);
   }
 
   /* ---------- CONTACT ---------- */
@@ -311,53 +147,11 @@
     margin-top:6px;
   }
 
-  /* ---------- FOOTER ---------- */
-  footer{
-    border-top:1px solid var(--line);
-    padding:32px 0;
-  }
-  footer .wrap{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:12px;
-  }
-  footer p{
-    font-size:13.5px;
-    color:var(--muted-2);
-  }
-  .footer-email{
-    font-size:13.5px;
-    color:var(--muted);
-    transition:color .15s ease;
-  }
-  .footer-email:hover, .footer-email:focus-visible{
-    color:var(--hot);
-    outline:none;
-  }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <a class="logo" href="index.html">damir<span>builds</span></a>
-    <div class="nav-links">
-      <div class="dropdown">
-        <button class="pill dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">
-          Services
-          <span class="caret" aria-hidden="true"></span>
-        </button>
-        <div class="dropdown-menu">
-          <a href="speed-to-lead.html">Speed-to-Lead System</a>
-        </div>
-      </div>
-      <a class="pill" href="blog.html">Blog</a>
-      <a class="nav-cta" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM on X</a>
-    </div>
-  </div>
-</nav>
+<site-nav></site-nav>
 
 <main>
   <div class="wrap contact-grid">
@@ -405,45 +199,9 @@
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <a class="logo" href="index.html">damirbuilds</a>
-    <p>AI automations, built for revenue.</p>
-    <a class="footer-email" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a>
-  </div>
-</footer>
+<site-footer></site-footer>
 
-<script>
-  document.querySelectorAll('.dropdown').forEach(function(dd){
-    var trigger = dd.querySelector('.dropdown-trigger');
-    trigger.addEventListener('click', function(e){
-      e.stopPropagation();
-      var isOpen = dd.classList.contains('open');
-      document.querySelectorAll('.dropdown.open').forEach(function(o){
-        o.classList.remove('open');
-        o.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
-      });
-      if(!isOpen){
-        dd.classList.add('open');
-        trigger.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
-  document.addEventListener('click', function(){
-    document.querySelectorAll('.dropdown.open').forEach(function(o){
-      o.classList.remove('open');
-      o.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
-    });
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape'){
-      document.querySelectorAll('.dropdown.open').forEach(function(o){
-        o.classList.remove('open');
-        o.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
-      });
-    }
-  });
-</script>
+<script src="site-nav.js" defer></script>
 
 </body>
 </html>

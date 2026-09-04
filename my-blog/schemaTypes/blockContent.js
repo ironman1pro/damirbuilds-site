@@ -24,7 +24,9 @@ export default defineType({
       // use your content.
       styles: [
         {title: 'Normal', value: 'normal'},
-        {title: 'H1', value: 'h1'},
+        // No H1 here on purpose: the post title already renders as the
+        // page's single <h1> (base.njk) — letting editors add another H1
+        // in the body would create a duplicate-heading SEO issue.
         {title: 'H2', value: 'h2'},
         {title: 'H3', value: 'h3'},
         {title: 'H4', value: 'h4'},
@@ -62,6 +64,15 @@ export default defineType({
     defineArrayMember({
       type: 'image',
       options: {hotspot: true},
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          description: 'Describe the image for screen readers and search engines. Recommended for every image.',
+          validation: (Rule) => Rule.warning('Add alt text so this image is accessible and indexable.'),
+        },
+      ],
     }),
   ],
 })

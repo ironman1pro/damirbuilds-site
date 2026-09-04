@@ -6,15 +6,15 @@ pagination:
 permalink: "/{{ post.slug }}/index.html"
 layout: base.njk
 eleventyComputed:
-  title: "{{ post.title }}"
-  description: "{{ post.excerpt }}"
+  title: "{{ post.seoTitle }}"
+  description: "{{ post.seoDescription }}"
 ---
 {{ post.bodyHTML | safe }}
 
 {% set prevPost = posts[pagination.pageNumber - 1] %}
 {% set nextPost = posts[pagination.pageNumber + 1] %}
 {% if prevPost or nextPost %}
-<nav class="post-nav">
+<nav class="post-nav" aria-label="More posts">
   {% if prevPost %}
   <a class="post-nav-item prev" href="/blog/{{ prevPost.slug }}/">
     <div class="post-nav-label">← Previous</div>
