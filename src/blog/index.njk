@@ -1,0 +1,38 @@
+---
+layout: base.njk
+title: "Blog | damirbuilds"
+description: "Notes on speed, follow-up, and growth: practical writing on lead response, automation, and what actually moves revenue."
+permalink: "index.html"
+---
+<header class="blog-hero">
+  <div class="wrap">
+    <span class="eyebrow">From the blog</span>
+    <h1 class="blog-headline">Notes on speed, follow-up, and growth.</h1>
+    <p class="blog-sub">Short, practical writeups on lead response, automation, and what actually moves revenue.</p>
+  </div>
+</header>
+
+<section class="blog-list">
+  <div class="wrap">
+    {% if posts.length > 0 %}
+    <div class="post-grid">
+      {% for post in posts %}
+      <a class="post-card" href="/blog/{{ post.slug }}/">
+        {% if post.imageUrl %}
+        <img class="post-card-img" src="{{ post.imageUrl }}" alt="{{ post.title }}" loading="lazy">
+        {% else %}
+        <div class="post-card-img"></div>
+        {% endif %}
+        <div class="post-card-body">
+          <div class="post-card-date">{{ post.publishedAt | readableDate }}</div>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="blog-state">New posts are on the way — check back soon.</p>
+    {% endif %}
+  </div>
+</section>

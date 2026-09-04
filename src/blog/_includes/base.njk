@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ title }}</title>
+<meta name="description" content="{{ description }}">
+<link rel="canonical" href="https://yourdomain.com/blog/{{ post.slug }}/">
+<link rel="icon" href="/favicon.ico">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:url" content="https://yourdomain.com/blog/{{ post.slug }}/">
+<meta property="og:site_name" content="Your Site Name">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+{% if post.imageUrl %}
+<meta property="og:image" content="{{ post.imageUrl }}">
+<meta name="twitter:image" content="{{ post.imageUrl }}">
+{% endif %}
+{% if post %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ title }}",
+  "description": "{{ description }}",
+  "datePublished": "{{ post.publishedAt }}",
+  "dateModified": "{{ post.publishedAt }}",
+  "author": { "@type": "Person", "name": "Your Name" }
+}
+</script>
+{% endif %}
+{% if post.faqs %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for faq in post.faqs %}
+    {
+      "@type": "Question",
+      "name": {{ faq.question | dump | safe }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ faq.answer | dump | safe }} }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0D10; --panel: #12161B; --panel-2: #171C22; --line: #232931;
+    --text: #EDEFF2; --muted: #8D96A3; --muted-2: #5E6673;
+    --hot: #FF5A36; --warm: #FFB800; --cold: #4FA8FF;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--text); font-family:'Inter', sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:'Space Grotesk', sans-serif; font-weight:600; line-height:1.15; letter-spacing:-0.01em; }
+  a{ color:inherit; text-decoration:none; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--hot); outline-offset:3px; border-radius:4px; }
+  @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; } }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 32px; }
+  .wrap-narrow{ max-width:720px; margin:0 auto; padding:0 32px; }
+  @media (max-width:640px){ .wrap, .wrap-narrow{ padding:0 20px; } }
+  .eyebrow{ font-family:'Inter', sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--hot); }
+
+  nav{ position:sticky; top:0; z-index:50; padding:18px 0; border-bottom:1px solid var(--line); background:rgba(10,13,16,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:18px; letter-spacing:-0.01em; }
+  .logo span{ color:var(--hot); }
+  .nav-links{ display:flex; align-items:center; gap:12px; }
+  .nav-cta, .pill{ font-size:14px; font-weight:500; padding:9px 18px; border:1px solid var(--line); border-radius:6px; color:var(--text); background:transparent; transition:border-color .15s ease, background .15s ease; }
+  .nav-cta:hover, .pill:hover{ border-color:var(--hot); background:var(--panel); }
+
+  .btn-primary{ background:var(--hot); color:#0A0D10; font-weight:600; font-size:15px; padding:14px 24px; border-radius:6px; display:inline-block; transition:transform .15s ease, box-shadow .15s ease; }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 24px rgba(255,90,54,0.22); }
+  .link-quiet{ font-size:14px; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:2px; }
+  .link-quiet:hover{ color:var(--text); border-color:var(--muted-2); }
+
+  header.post-hero{ padding:56px 0 0; }
+  .post-back{ display:inline-block; margin-bottom:24px; }
+  h1.post-title{ font-size:clamp(28px, 4.6vw, 44px); margin-top:10px; }
+  .post-cover{ width:100%; max-height:440px; object-fit:cover; border-radius:10px; border:1px solid var(--line); margin-top:32px; display:block; }
+
+  .post-body{ padding:40px 0 24px; font-size:17px; color:var(--text); }
+  .post-body p{ margin-bottom:20px; color:#D7DBE0; }
+  .post-body h2{ font-size:26px; margin:40px 0 16px; }
+  .post-body h3{ font-size:21px; margin:32px 0 14px; }
+  .post-body blockquote{ border-left:2px solid var(--hot); padding:4px 0 4px 20px; margin:24px 0; color:var(--muted); font-style:italic; }
+  .post-body ul, .post-body ol{ margin:0 0 20px 22px; color:#D7DBE0; }
+  .post-body li{ margin-bottom:8px; }
+  .post-body a{ color:var(--hot); border-bottom:1px solid rgba(255,90,54,0.4); }
+  .post-body img{ width:100%; border-radius:10px; border:1px solid var(--line); margin:28px 0; display:block; }
+
+  .faq-section{ padding:16px 0 40px; border-top:1px solid var(--line); margin-top:24px; }
+  .faq-section h2{ font-size:24px; margin:32px 0 20px; }
+  .faq-item{ padding:18px 0; border-bottom:1px solid var(--line); }
+  .faq-item h3{ font-size:17px; margin-bottom:8px; }
+  .faq-item p{ color:var(--muted); font-size:15px; }
+
+  .post-cta{ border:1px solid var(--line); background:var(--panel); border-radius:12px; padding:32px; margin:48px 0 64px; }
+  .post-cta h3{ font-size:22px; margin-bottom:10px; }
+  .post-cta p{ color:var(--muted); font-size:15px; max-width:48ch; margin-bottom:22px; }
+
+  footer{ border-top:1px solid var(--line); padding:32px 0; }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  footer p{ font-size:13.5px; color:var(--muted-2); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="/">Your<span>Site</span></a>
+    <div class="nav-links">
+      <a class="pill" href="/blog/">Blog</a>
+      <a class="nav-cta" href="/contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+{% if post %}
+<header class="post-hero">
+  <div class="wrap-narrow">
+    <a class="link-quiet post-back" href="/blog/">← Back to blog</a>
+    <span class="eyebrow">{{ post.publishedAt | readableDate }}</span>
+    <h1 class="post-title">{{ title }}</h1>
+    {% if post.imageUrl %}
+    <img class="post-cover" src="{{ post.imageUrl }}" alt="{{ title }}">
+    {% endif %}
+  </div>
+</header>
+
+<div class="wrap-narrow">
+  <div class="post-body">{{ content | safe }}</div>
+
+  {% if post.faqs %}
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    {% for faq in post.faqs %}
+    <div class="faq-item">
+      <h3>{{ faq.question }}</h3>
+      <p>{{ faq.answer }}</p>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <div class="post-cta">
+    <h3>Want to work together?</h3>
+    <p>Get in touch and tell me what you're working on.</p>
+    <a class="btn-primary" href="/contact.html">Get in touch →</a>
+  </div>
+</div>
+{% else %}
+<div class="wrap">{{ content | safe }}</div>
+{% endif %}
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="/">Your Site Name</a>
+    <p>© 2026 Your Site Name</p>
+  </div>
+</footer>
+</body>
+</html>

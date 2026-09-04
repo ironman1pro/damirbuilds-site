@@ -1,0 +1,5 @@
+node_modules/
+_site/
+_site-preview/
+my-blog/node_modules/
+my-blog/.sanity/

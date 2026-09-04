@@ -1,0 +1,12 @@
+---
+pagination:
+  data: posts
+  size: 1
+  alias: post
+permalink: "/{{ post.slug }}/index.html"
+layout: base.njk
+eleventyComputed:
+  title: "{{ post.title }}"
+  description: "{{ post.excerpt }}"
+---
+{{ post.bodyHTML | safe }}
