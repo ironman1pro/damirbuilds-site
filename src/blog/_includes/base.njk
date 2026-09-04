@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="canonical" href="https://damirbuilds.com{% if post %}/blog/{{ post.slug }}/{% else %}/blog/{% endif %}">
@@ -31,7 +31,7 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": {{ title | dump | safe }},
+  "headline": {{ post.title | dump | safe }},
   "description": {{ description | dump | safe }},
   "datePublished": "{{ post.publishedAt }}",
   "dateModified": "{{ post.updatedAt or post.publishedAt }}",
@@ -56,7 +56,7 @@
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://damirbuilds.com/" },
     { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://damirbuilds.com/blog/" },
-    { "@type": "ListItem", "position": 3, "name": {{ title | dump | safe }}, "item": "https://damirbuilds.com/blog/{{ post.slug }}/" }
+    { "@type": "ListItem", "position": 3, "name": {{ post.title | dump | safe }}, "item": "https://damirbuilds.com/blog/{{ post.slug }}/" }
   ]
 }
 </script>
@@ -112,12 +112,21 @@
     border-bottom:1px solid var(--line);
     overflow:hidden;
   }
+  /* Blurred circle rather than a radial-gradient with a transparent
+     stop — a gradient sized to a box it gets clipped inside of (this
+     sits under overflow:hidden) can hit the box edge before it's
+     actually faded out, showing as a hard, blotchy ring. A blurred
+     element has no hard edge of its own, so it always feathers to
+     nothing cleanly. Same fix used for the rocket glow on the
+     homepage/service page. */
   .blog-hero::before{
     content:"";
     position:absolute;
-    top:-120px; right:-100px;
-    width:420px; height:420px;
-    background:radial-gradient(circle, rgba(var(--hot-rgb),0.14), transparent 70%);
+    top:-30%; right:-10%;
+    width:340px; height:340px;
+    background:rgba(var(--hot-rgb), var(--glow-alpha));
+    border-radius:50%;
+    filter:blur(70px);
     pointer-events:none;
   }
   .blog-headline{ position:relative; font-size:clamp(28px, 4.8vw, 48px); margin-top:14px; max-width:16ch; }
@@ -191,9 +200,28 @@
   .post-meta .dot{ opacity:0.5; }
   .post-cover{ width:100%; max-height:480px; object-fit:cover; border-radius:14px; border:1px solid var(--line); margin-top:32px; display:block; box-shadow:0 24px 48px var(--shadow-1); }
 
-  .post-toc{ border:1px solid var(--line); background:var(--panel); border-radius:12px; padding:22px 26px; margin:40px 0 8px; }
-  .post-toc-title{ font-size:12.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted-2); margin-bottom:12px; }
-  .post-toc ol{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  /* Table of contents — a native <details>/<summary> disclosure so it
+     can be collapsed/expanded by click with no JS required. The
+     "post-toc" class lives on the <details> itself; the reset for
+     shared.css's sticky `nav{}` rule targets the wrapping <nav> via
+     .post-toc-nav below instead. */
+  .post-toc{ border:1px solid var(--line); background:var(--panel); border-radius:12px; margin:40px 0 8px; overflow:hidden; }
+  .post-toc summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:16px 22px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .post-toc summary::-webkit-details-marker{ display:none; }
+  .post-toc-title{ font-size:12.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted-2); transition:color .15s ease; }
+  .post-toc summary:hover .post-toc-title{ color:var(--text); }
+  .post-toc-chevron{ color:var(--muted-2); flex-shrink:0; transition:transform .2s ease; }
+  .post-toc[open] .post-toc-chevron{ transform:rotate(180deg); }
+  .post-toc ol{ list-style:none; margin:0; padding:0 22px 20px; display:flex; flex-direction:column; gap:9px; }
   .post-toc li.toc-h3{ margin-left:18px; }
   .post-toc a{ font-size:14.5px; color:var(--body-text); line-height:1.4; transition:color .15s ease; }
   .post-toc a:hover{ color:var(--hot); }
@@ -224,7 +252,7 @@
   .post-body li{ margin-bottom:9px; }
   .post-body a{ color:var(--hot); border-bottom:1px solid rgba(var(--hot-rgb),0.4); transition:border-color .15s ease; overflow-wrap:break-word; }
   .post-body a:hover{ border-color:var(--hot); }
-  .post-body img{ width:100%; height:auto; border-radius:12px; border:1px solid var(--line); margin:32px 0; display:block; }
+  .post-body img{ width:100%; height:auto; border-radius:8px; border:1px solid var(--line); margin:32px 0; display:block; }
   .post-body pre{
     background:var(--panel);
     border:1px solid var(--line);
@@ -252,9 +280,28 @@
 
   .faq-section{ padding:16px 0 40px; border-top:1px solid var(--line); margin-top:24px; }
   .faq-section h2{ font-size:24px; margin:32px 0 20px; }
-  .faq-item{ padding:18px 0; border-bottom:1px solid var(--line); }
-  .faq-item h3{ font-size:17px; margin-bottom:8px; }
-  .faq-item p{ color:var(--muted); font-size:15px; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-item h3{ margin:0; font-weight:inherit; }
+  .faq-q{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 0;
+    background:none;
+    border:none;
+    text-align:left;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+  }
+  .faq-icon{ flex-shrink:0; font-size:22px; font-weight:400; line-height:1; color:var(--muted-2); transition:transform .2s ease, color .2s ease; }
+  .faq-item.open .faq-icon{ transform:rotate(45deg); color:var(--hot); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-a p{ color:var(--muted); font-size:15px; padding-bottom:18px; }
 
   .post-cta{
     position:relative;
@@ -286,7 +333,7 @@
      reset its structural (sticky-bar) properties here. Each element's own
      class rule above/below (higher specificity than bare `nav{}`) still
      supplies its own padding/background/border. */
-  nav.post-nav, nav.post-breadcrumb, nav.post-toc{ position:static; top:auto; z-index:auto; border-bottom:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
+  nav.post-nav, nav.post-breadcrumb, nav.post-toc-nav{ position:static; top:auto; z-index:auto; border-bottom:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
   nav.post-nav{ padding:0; background:none; }
   nav.post-breadcrumb{ padding:0; background:none; }
   .post-nav{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 56px; }
@@ -316,26 +363,31 @@
       <span class="sep">/</span>
       <span class="current">{{ post.title }}</span>
     </nav>
-    <h1 class="post-title">{{ title }}</h1>
+    <h1 class="post-title">{{ post.title }}</h1>
     <div class="post-meta">
       <span>{{ post.publishedAt | readableDate }}</span>
       {% if post.readingTime %}<span class="dot">·</span><span>{{ post.readingTime }} min read</span>{% endif %}
     </div>
     {% if post.imageUrl %}
-    <img class="post-cover" src="{{ post.imageUrl }}" alt="{{ post.mainImageAlt or title }}" width="1200" height="675" decoding="async">
+    <img class="post-cover" src="{{ post.imageUrl }}" alt="{{ post.mainImageAlt or post.title }}" width="1200" height="675" decoding="async">
     {% endif %}
   </div>
 </header>
 
 <div class="wrap-narrow">
   {% if post.headings.length > 1 %}
-  <nav class="post-toc" aria-label="Table of contents">
-    <span class="post-toc-title">On this page</span>
-    <ol>
-      {% for h in post.headings %}
-      <li class="{% if h.level == 3 %}toc-h3{% endif %}"><a href="#{{ h.slug }}">{{ h.text }}</a></li>
-      {% endfor %}
-    </ol>
+  <nav class="post-toc-nav" aria-label="Table of contents">
+    <details class="post-toc" open>
+      <summary>
+        <span class="post-toc-title">On this page</span>
+        <svg class="post-toc-chevron" viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <ol>
+        {% for h in post.headings %}
+        <li class="{% if h.level == 3 %}toc-h3{% endif %}"><a href="#{{ h.slug }}">{{ h.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </details>
   </nav>
   {% endif %}
 
@@ -346,8 +398,15 @@
     <h2>Frequently Asked Questions</h2>
     {% for faq in post.faqs %}
     <div class="faq-item">
-      <h3>{{ faq.question }}</h3>
-      <p>{{ faq.answer }}</p>
+      <h3>
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-{{ loop.index }}" id="faq-q-{{ loop.index }}">
+          <span>{{ faq.question }}</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+      </h3>
+      <div class="faq-a" id="faq-a-{{ loop.index }}" role="region" aria-labelledby="faq-q-{{ loop.index }}">
+        <p>{{ faq.answer }}</p>
+      </div>
     </div>
     {% endfor %}
   </section>
@@ -368,6 +427,25 @@
 
 <site-footer></site-footer>
 
+<script>
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    if(!q || !a) return;
+    q.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      if(isOpen){
+        item.classList.remove('open');
+        a.style.maxHeight = null;
+        q.setAttribute('aria-expanded', 'false');
+      }else{
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+        q.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
 <script src="/site-nav.js" defer></script>
 </body>
 </html>

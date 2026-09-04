@@ -57,28 +57,14 @@
   --glow-alpha: 0.28;
 }
 
-@media (prefers-color-scheme: light){
-  :root:not([data-theme="dark"]){
-    --bg: #FBFBFC;
-    --panel: #F3F4F6;
-    --panel-2: #ECEDF0;
-    --panel-3: #E4E6EA;
-    --line: #DEE1E6;
-    --text: #14181D;
-    --body-text: #333A42;
-    --muted: #5B6470;
-    --muted-2: #838C97;
-    --hot: #B23D1A;
-    --hot-rgb: 178,61,26;
-    --warm: #8F6A1A;
-    --cold: #2E6CA8;
-    --shadow-1: rgba(20,24,29,0.10);
-    --cursor-hover-bg: rgba(20,24,29,0.08);
-    --nav-bg: rgba(251,251,252,0.72);
-    --glow-alpha: 0.16;
-  }
-}
-
+/* Dark is the default regardless of OS preference — the inline
+   anti-flash script in every page's <head> always sets data-theme
+   explicitly ('dark' unless the visitor previously chose light via
+   the toggle), so there is deliberately no
+   `@media (prefers-color-scheme: light)` fallback here anymore: a
+   visitor whose OS is set to light still lands on dark, and only an
+   explicit click on the theme toggle (persisted to localStorage,
+   which sets data-theme="light" below) switches them to light. */
 html[data-theme="light"]{
   --bg: #FBFBFC;
   --panel: #F3F4F6;
