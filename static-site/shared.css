@@ -90,7 +90,7 @@ html[data-theme="light"]{
 /* scroll-padding-top keeps in-page anchor targets (nav "See what I
    build" link, blog table-of-contents links) from landing underneath
    the sticky nav bar (~70px tall). */
-html{ scroll-behavior:smooth; scroll-padding-top:88px; }
+html{ scroll-behavior:smooth; scroll-padding-top:88px; overflow-x:hidden; }
 
 body{
   background:var(--bg);
@@ -100,6 +100,7 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
   transition:background .2s ease, color .2s ease;
+  overflow-x:hidden;
 }
 
 img, svg{ max-width:100%; height:auto; }
