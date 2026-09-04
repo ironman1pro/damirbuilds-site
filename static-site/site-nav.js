@@ -9,7 +9,7 @@
 
   var NAV_HTML =
     '<div class="wrap">' +
-      '<a class="logo" href="index.html">damir<span>builds</span></a>' +
+      '<a class="logo" href="/">damir<span>builds</span></a>' +
       '<div class="nav-links">' +
         '<div class="dropdown">' +
           '<button class="pill dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">' +
@@ -17,7 +17,7 @@
             '<span class="caret" aria-hidden="true"></span>' +
           '</button>' +
           '<div class="dropdown-menu">' +
-            '<a href="speed-to-lead.html">Speed-to-Lead System</a>' +
+            '<a href="/speed-to-lead.html">Speed-to-Lead System</a>' +
           '</div>' +
         '</div>' +
         '<a class="pill" href="/blog">Blog</a>' +
@@ -27,7 +27,7 @@
 
   var FOOTER_HTML =
     '<div class="wrap">' +
-      '<a class="logo" href="index.html">damirbuilds</a>' +
+      '<a class="logo" href="/">damirbuilds</a>' +
       '<p>AI automations, built for revenue.</p>' +
       '<a class="footer-email" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a>' +
     '</div>';
