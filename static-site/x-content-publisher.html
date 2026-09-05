@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X Content Publisher | damirbuilds</title>
+<meta name="description" content="A custom automation that publishes your X posts automatically from a simple spreadsheet — no SaaS scheduler, no subscription, runs entirely on your own accounts.">
+<link rel="canonical" href="https://damirbuilds.com/x-content-publisher.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="X Content Publisher | damirbuilds">
+<meta property="og:description" content="Add posts to a spreadsheet once a week. They publish to X automatically, on your own Airtable and Make.com/n8n accounts, no third-party scheduler involved.">
+<meta property="og:url" content="https://damirbuilds.com/x-content-publisher.html">
+<meta property="og:site_name" content="damirbuilds">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://damirbuilds.com/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="X Content Publisher | damirbuilds">
+<meta name="twitter:description" content="Add posts to a spreadsheet once a week. They publish to X automatically, on your own accounts, no third-party scheduler involved.">
+<meta name="twitter:image" content="https://damirbuilds.com/logo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "X Content Publisher",
+  "serviceType": "Social media publishing automation",
+  "description": "A custom automation, built on the customer's own Airtable and Make.com/n8n accounts, that publishes X posts automatically from a spreadsheet on a schedule.",
+  "provider": { "@type": "Organization", "name": "damirbuilds", "url": "https://damirbuilds.com/" },
+  "url": "https://damirbuilds.com/x-content-publisher.html",
+  "offers": { "@type": "Offer", "price": "199", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Can't I just build this myself with an AI tool?", "acceptedAnswer": { "@type": "Answer", "text": "You could try, but the integration involves real technical challenges — API rate limits, authentication expiry, formatting mismatches between tools — that are already solved here. You get a working system on day one instead of a weekend of debugging." } },
+    { "@type": "Question", "name": "Do I need to be technical to use this?", "acceptedAnswer": { "@type": "Answer", "text": "No. Once it's set up, you just add content to a spreadsheet. No coding or maintenance required." } },
+    { "@type": "Question", "name": "What if I want more than basic posting?", "acceptedAnswer": { "@type": "Answer", "text": "Custom logic, AI-generated content, or multi-platform posting are all available as add-ons, quoted based on what you need." } }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* This page is intentionally dark-only (data-theme="dark" is set on
+     <html> above, no toggle, no nav) — it's a single-offer, single-scroll
+     landing page, not part of the site's browsing chrome. */
+
+  body{ overflow-x:hidden; }
+
+  .wrap-narrow{ max-width:720px; margin:0 auto; padding:0 32px; }
+  @media (max-width:640px){ .wrap-narrow{ padding:0 20px; } }
+
+  section{ padding:72px 0; border-top:1px solid var(--line); }
+  section:first-of-type{ border-top:none; }
+  @media (max-width:640px){ section{ padding:52px 0; } }
+
+  .section-head{ max-width:56ch; margin-bottom:36px; }
+  .section-head h2{ font-size:clamp(24px, 3.4vw, 32px); }
+  .section-head p{ margin-top:12px; color:var(--muted); font-size:16px; }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 0 60px;
+    overflow:hidden;
+    border-top:none;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute;
+    top:-220px; right:-160px;
+    width:480px; height:480px;
+    background:rgba(var(--hot-rgb), var(--glow-alpha));
+    border-radius:50%;
+    filter:blur(120px);
+    pointer-events:none;
+  }
+  .hero-inner{ position:relative; text-align:center; }
+  .hero-brand{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--muted);
+    margin-bottom:28px;
+  }
+  .hero-brand span{ color:var(--hot); }
+  h1.headline{
+    font-size:clamp(30px, 6vw, 46px);
+    max-width:18ch;
+    margin:0 auto;
+    color:var(--text);
+  }
+  .hero-sub{
+    margin:20px auto 0;
+    font-size:17.5px;
+    color:var(--muted);
+    max-width:46ch;
+  }
+  .hero-actions{ margin-top:32px; }
+  .hero-note{
+    margin-top:16px;
+    font-size:13px;
+    color:var(--muted-2);
+  }
+
+  /* ---------- FLOW DIAGRAM ---------- */
+  .flow-track{
+    display:flex;
+    align-items:center;
+    gap:0;
+  }
+  @media (max-width:700px){
+    .flow-track{ flex-direction:column; }
+  }
+  .flow-card{
+    flex:1;
+    min-width:0;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:24px 22px;
+    text-align:center;
+  }
+  .flow-card-icon{
+    width:44px; height:44px;
+    margin:0 auto 16px;
+    border-radius:10px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text);
+  }
+  .flow-card-icon svg{ width:22px; height:22px; }
+  .flow-card-label{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15.5px;
+    margin-bottom:16px;
+  }
+  /* mini spreadsheet visual */
+  .flow-mini-sheet{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--panel-2);
+    padding:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    text-align:left;
+  }
+  .flow-mini-thumb{
+    width:28px; height:28px;
+    border-radius:5px;
+    flex-shrink:0;
+    background:linear-gradient(135deg, var(--warm), var(--hot));
+  }
+  .flow-mini-lines{ flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
+  .flow-mini-line{ height:6px; border-radius:3px; background:var(--line); }
+  .flow-mini-line.short{ width:60%; }
+  /* mini tweet visual */
+  .flow-mini-tweet{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--panel-2);
+    padding:10px 12px;
+    text-align:left;
+  }
+  .flow-mini-tweet-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .flow-mini-avatar{ width:22px; height:22px; border-radius:50%; background:var(--muted-2); flex-shrink:0; }
+  .flow-mini-name{ font-size:12px; font-weight:600; color:var(--text); }
+  .flow-mini-tweet-lines{ display:flex; flex-direction:column; gap:5px; }
+  .flow-mini-tweet-lines .flow-mini-line{ background:var(--line); }
+  .flow-posted-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:14px;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--hot);
+    opacity:0;
+    animation:postedPulse 2.6s ease-in-out infinite;
+  }
+  .flow-posted-badge svg{ width:13px; height:13px; }
+
+  .flow-connector{
+    flex-shrink:0;
+    position:relative;
+    width:100%;
+    max-width:120px;
+    height:2px;
+    margin:0 -2px;
+    background-image:linear-gradient(to right, var(--line) 50%, transparent 50%);
+    background-size:10px 2px;
+    background-repeat:repeat-x;
+  }
+  @media (max-width:700px){
+    .flow-connector{
+      width:2px;
+      max-width:2px;
+      height:56px;
+      margin:14px 0;
+      background-image:linear-gradient(to bottom, var(--line) 50%, transparent 50%);
+      background-size:2px 10px;
+      background-repeat:repeat-y;
+    }
+  }
+  .flow-dot{
+    position:absolute;
+    top:50%; left:0;
+    width:9px; height:9px;
+    border-radius:50%;
+    background:var(--hot);
+    box-shadow:0 0 10px rgba(var(--hot-rgb),0.7);
+    transform:translate(-50%,-50%);
+    animation:flowTravelX 2.6s ease-in-out infinite;
+  }
+  @keyframes flowTravelX{
+    0%{ left:0%; opacity:0; }
+    10%{ opacity:1; }
+    50%{ left:50%; }
+    90%{ opacity:1; }
+    100%{ left:100%; opacity:0; }
+  }
+  @media (max-width:700px){
+    .flow-dot{
+      top:0; left:50%;
+      transform:translate(-50%,-50%);
+      animation:flowTravelY 2.6s ease-in-out infinite;
+    }
+    @keyframes flowTravelY{
+      0%{ top:0%; opacity:0; }
+      10%{ opacity:1; }
+      50%{ top:50%; }
+      90%{ opacity:1; }
+      100%{ top:100%; opacity:0; }
+    }
+  }
+  @keyframes postedPulse{
+    0%, 40%{ opacity:0; }
+    58%{ opacity:1; }
+    82%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+
+  /* ---------- VIDEO DEMO ---------- */
+  .demo-frame{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:
+      radial-gradient(circle at 18% 20%, rgba(var(--hot-rgb),0.16), transparent 45%),
+      radial-gradient(circle at 82% 78%, rgba(91,155,217,0.14), transparent 45%),
+      var(--panel);
+  }
+  @media (max-width:640px){ .demo-frame{ aspect-ratio:4/3; } }
+  .demo-frame video{ width:100%; height:100%; object-fit:cover; display:block; }
+  .demo-play{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    gap:14px; cursor:pointer; background:transparent; border:none;
+  }
+  .play-circle{
+    width:64px; height:64px; border-radius:50%;
+    background:var(--text);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .15s ease;
+  }
+  .demo-play:hover .play-circle{ transform:scale(1.06); }
+  .play-circle svg{ margin-left:3px; }
+  .demo-play span{ font-size:14px; color:var(--muted); }
+  .demo-caption-top{
+    text-align:center;
+    font-size:17px;
+    color:var(--text);
+    max-width:44ch;
+    margin:0 auto 28px;
+  }
+
+  /* ---------- PROBLEM ---------- */
+  .problem-text{
+    font-size:19px;
+    color:var(--body-text);
+    max-width:60ch;
+  }
+  .problem-text strong{ color:var(--text); }
+
+  /* ---------- INCLUDED CHECKLIST ---------- */
+  .check-list{ display:flex; flex-direction:column; gap:18px; }
+  .check-item{ display:flex; align-items:flex-start; gap:14px; }
+  .check-icon{
+    flex-shrink:0;
+    width:24px; height:24px;
+    border-radius:50%;
+    background:rgba(var(--hot-rgb),0.12);
+    color:var(--hot);
+    display:flex; align-items:center; justify-content:center;
+    margin-top:1px;
+  }
+  .check-icon svg{ width:13px; height:13px; }
+  .check-item p{ color:var(--body-text); font-size:16px; line-height:1.55; }
+  .check-item.bonus p{ color:var(--muted); font-size:15px; }
+  .check-item.bonus strong{ color:var(--text); }
+
+  /* ---------- TRUST / OWNERSHIP ---------- */
+  .trust-box{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:32px;
+  }
+  @media (max-width:480px){ .trust-box{ padding:22px; } }
+  .trust-box p{ color:var(--body-text); font-size:16px; margin-bottom:16px; }
+  .trust-box p:last-child{ margin-bottom:0; }
+  .trust-box strong{ color:var(--text); }
+
+  /* ---------- FAQ ---------- */
+  .faq-item{ border-top:1px solid var(--line); }
+  .faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; color:var(--text);
+    font-family:'Space Grotesk', sans-serif; font-size:16px; font-weight:500;
+    padding:20px 0; display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  }
+  .faq-q .icon{ font-size:20px; color:var(--muted-2); transition:transform .2s ease; flex-shrink:0; margin-left:20px; }
+  .faq-item.open .faq-q .icon{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-a p{ color:var(--muted); font-size:15px; padding-bottom:22px; max-width:62ch; }
+
+  /* ---------- PRICING ---------- */
+  .pricing-box{
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:16px;
+    padding:48px 32px;
+  }
+  .pricing-box::before{
+    content:"";
+    position:absolute;
+    top:-40px; left:50%;
+    width:260px; height:260px;
+    background:rgba(var(--hot-rgb), var(--glow-alpha));
+    border-radius:50%;
+    filter:blur(90px);
+    transform:translateX(-50%);
+    pointer-events:none;
+  }
+  .pricing-box h2{
+    position:relative;
+    font-size:clamp(28px, 5vw, 40px);
+    color:var(--text);
+  }
+  .pricing-box .price-line{
+    position:relative;
+    margin-top:14px;
+    color:var(--muted);
+    font-size:16px;
+    max-width:48ch;
+    margin-left:auto; margin-right:auto;
+  }
+  .pricing-box .addon-line{
+    position:relative;
+    margin-top:8px;
+    color:var(--muted-2);
+    font-size:14px;
+  }
+  .pricing-box .hero-actions{ position:relative; margin-top:30px; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+
+<header class="hero">
+  <div class="wrap-narrow hero-inner">
+    <div class="hero-brand">damir<span>builds</span></div>
+    <h1 class="headline">I used to hate posting on X. So I built a system that does it for me.</h1>
+    <p class="hero-sub">Add your content to a simple spreadsheet once a week. It publishes automatically, on your own accounts, no third-party tool involved.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#flow">See how it works</a>
+    </div>
+    <p class="hero-note">One-time setup. Runs on your own Airtable + Make.com/n8n accounts.</p>
+  </div>
+</header>
+
+<section id="flow">
+  <div class="wrap-narrow">
+    <div class="section-head" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <h2>How it works</h2>
+      <p style="margin-left:auto;margin-right:auto;">Two accounts you already own, connected once. No dashboard to check, no tool to log into.</p>
+    </div>
+
+    <div class="flow-track" aria-hidden="true">
+      <div class="flow-card">
+        <div class="flow-card-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>
+        </div>
+        <div class="flow-card-label">You add content</div>
+        <div class="flow-mini-sheet">
+          <div class="flow-mini-thumb"></div>
+          <div class="flow-mini-lines">
+            <div class="flow-mini-line"></div>
+            <div class="flow-mini-line short"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-connector">
+        <div class="flow-dot"></div>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-card-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.2 9.1 17 2.5h-2l-5 5.8-4-5.8H2l6 8.7-6.3 7.3h2l5.4-6.2 4.3 6.2H18z"/></svg>
+        </div>
+        <div class="flow-card-label">It posts automatically</div>
+        <div class="flow-mini-tweet">
+          <div class="flow-mini-tweet-head">
+            <div class="flow-mini-avatar"></div>
+            <div class="flow-mini-name">you</div>
+          </div>
+          <div class="flow-mini-tweet-lines">
+            <div class="flow-mini-line"></div>
+            <div class="flow-mini-line short"></div>
+          </div>
+        </div>
+        <div class="flow-posted-badge">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Posted
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap-narrow">
+    <p class="demo-caption-top">Watch it work: add a post, it publishes on its own.</p>
+    <div class="demo-frame">
+      <!--
+        Replace this block with your real demo video.
+        Simplest option: swap the button below for
+        <video src="YOUR-VIDEO-URL.mp4" controls></video>
+      -->
+      <button class="demo-play" onclick="this.parentElement.innerHTML='<video src=&quot;YOUR-VIDEO-URL.mp4&quot; controls autoplay style=&quot;width:100%;height:100%;object-fit:cover;&quot;></video>'">
+        <div class="play-circle">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--bg)"><path d="M4 2.5v15l14-7.5-14-7.5z"/></svg>
+        </div>
+        <span>Watch the demo</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap-narrow">
+    <p class="problem-text">Posting consistently on X takes remembering to log in at odd hours, and most people just don't. A few good days turn into a week of silence, momentum resets, and the account goes quiet again. <strong>The problem was never having something to say — it was showing up on time to say it.</strong></p>
+  </div>
+</section>
+
+<section id="included">
+  <div class="wrap-narrow">
+    <div class="section-head">
+      <h2>What's included</h2>
+    </div>
+    <div class="check-list">
+      <div class="check-item">
+        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>A fully custom automation built on your own Airtable + Make.com (or n8n) account.</p>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>No SaaS subscription, no recurring fee — Make's free tier covers typical usage.</p>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>You own 100% of the setup and the data. Nothing is licensed back to me.</p>
+      </div>
+      <div class="check-item bonus">
+        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p><strong>Bonus:</strong> the exact AI image-generation prompt and workflow I use to create visuals for posts, included free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap-narrow">
+    <div class="section-head">
+      <h2>Why this runs on your own accounts</h2>
+    </div>
+    <div class="trust-box">
+      <p>Every scheduling tool like Hypefury, Typefully, or Buffer requires connecting your X account to <strong>their</strong> platform. That means a third-party company has standing access to your content, your posting data, and your account, for as long as you use it.</p>
+      <p>This automation runs entirely on accounts you already own — your Airtable, your Make.com or n8n. Nothing passes through a third party. If that company gets breached, gets acquired, or quietly changes its policies, none of it touches you, because none of it was ever theirs to touch.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap-narrow">
+    <div class="section-head">
+      <h2>Before you ask</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">Can't I just build this myself with an AI tool?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-1"><p>You could try, but the integration involves real technical challenges — API rate limits, authentication expiry, formatting mismatches between tools — that are already solved here. You get a working system on day one instead of a weekend of debugging.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">Do I need to be technical to use this?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-2"><p>No. Once it's set up, you just add content to a spreadsheet. No coding or maintenance required.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">What if I want more than basic posting?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-3"><p>Custom logic, AI-generated content, or multi-platform posting are all available as add-ons, quoted based on what you need.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap-narrow">
+    <div class="pricing-box">
+      <h2>$199, one time.<br>No subscription.</h2>
+      <p class="price-line">Most scheduling tools charge $10–20 a month, forever. This is a one-time setup fee, and you own it after that.</p>
+      <p class="addon-line">Want AI-written content or advanced logic added? That's available too — just ask.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="contact.html">Get started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<site-footer></site-footer>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(open => {
+        open.classList.remove('open');
+        open.querySelector('.faq-a').style.maxHeight = null;
+        open.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+        q.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>
