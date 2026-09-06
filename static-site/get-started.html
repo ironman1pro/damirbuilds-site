@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>Get Started | damirbuilds</title>
 <meta name="description" content="Set up your X Content Publisher automation in three quick steps: your info, your setup preferences, and payment.">
 <meta name="robots" content="noindex, follow">
@@ -18,6 +19,12 @@
      page on purpose, same reasoning as the x-content-publisher page it
      continues from. */
   body{ overflow-x:hidden; }
+  /* Several toggled elements below (.btn-text, .btn-primary, etc.) set
+     their own `display`, which as an author rule otherwise beats the
+     browser's default `[hidden]{display:none}` UA rule at equal
+     specificity — without this, toggling the `hidden` attribute on them
+     via JS would silently do nothing. */
+  [hidden]{ display:none !important; }
 
   .onboard-shell{
     max-width:640px;
@@ -426,6 +433,63 @@
   .success-state h2{ font-size:22px; color:var(--text); margin-bottom:10px; }
   .success-state p{ color:var(--muted); font-size:15px; max-width:44ch; margin:0 auto; }
 
+  .btn-text{
+    display:inline-block;
+    margin-top:14px;
+    font-size:13.5px;
+    color:var(--muted-2);
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .btn-text:hover{ color:var(--text); }
+
+  .confirm-prompt{
+    margin-top:26px;
+    padding:22px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--panel-2);
+  }
+  .confirm-question{ font-size:15px; font-weight:600; color:var(--text); margin-bottom:14px; }
+  .screenshot-upload{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:var(--muted-2);
+    border:1px dashed var(--line);
+    border-radius:8px;
+    padding:9px 14px;
+    cursor:pointer;
+    margin-bottom:14px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .screenshot-upload svg{ width:15px; height:15px; flex-shrink:0; }
+  .screenshot-upload:hover{ border-color:var(--hot); color:var(--text); }
+  .confirm-prompt .btn-primary{ display:block; width:100%; box-sizing:border-box; margin-bottom:2px; }
+  .confirm-thanks{ color:var(--hot) !important; font-weight:600; margin-top:20px; }
+
+  /* ---------- TRUST BAR ---------- */
+  .trust-bar{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px 18px;
+    margin:2px 0 20px;
+  }
+  .trust-item{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12.5px;
+    color:var(--muted-2);
+  }
+  .trust-item svg{ width:14px; height:14px; color:var(--hot); flex-shrink:0; }
+
   .submit-error{
     display:none;
     text-align:center;
@@ -511,6 +575,11 @@
 <script>document.documentElement.classList.add('js');</script>
 <a class="skip-link" href="#main">Skip to content</a>
 
+<button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode" style="position:fixed; top:16px; right:16px; z-index:60; background:var(--bg);">
+  <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
+  <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
+</button>
+
 <main id="main">
 <div class="onboard-shell">
   <div class="onboard-header">
@@ -543,6 +612,11 @@
   <div class="form-card">
     <form id="onboardForm" action="https://formspree.io/f/mljewjbr" method="POST" novalidate>
       <input type="hidden" name="_subject" value="New X Content Publisher signup">
+      <!-- Formspree honeypot: real people never fill this in, so a filled
+           value is a strong bot signal. Leaving it out entirely is also
+           what can make a legitimate submission look bot-like (no
+           honeypot field to prove a human skipped it), so it's kept. -->
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
       <!-- ---------------- STEP 1: PERSONAL INFO ---------------- -->
       <div class="form-step active" data-step="1">
@@ -651,6 +725,12 @@
         <p class="step-intro">$149, one time. Pick whichever method works for you.</p>
         <p class="lead-note" id="leadNote"></p>
 
+        <div class="trust-bar">
+          <span class="trust-item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 9V6.5a5 5 0 0 1 10 0V9" stroke-linecap="round"/><rect x="3.5" y="9" width="13" height="8.5" rx="2"/></svg>Secure payment</span>
+          <span class="trust-item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7.5"/><path d="M10 5.5V10l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in 48 hours</span>
+          <span class="trust-item"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 9.5A7 7 0 1 1 6 4" stroke-linecap="round"/><path d="M17 3.5v4h-4" stroke-linecap="round" stroke-linejoin="round"/></svg>Built &amp; supported personally</span>
+        </div>
+
         <div class="payment-options">
           <label class="payment-option">
             <input type="radio" name="Payment method" value="Crypto" data-payment="crypto" checked>
@@ -709,6 +789,22 @@
       <h2>You're all set</h2>
       <p id="successPaidText">Thanks — I've got your info and I'll be watching for your payment. I'll reach out at the email you gave me once it's confirmed, and I'll have your automation live within 48 hours after that.</p>
       <a class="btn-primary payment-cta" id="successPayLink" href="#" target="_blank" rel="noopener" style="margin-top:6px;">Pay $149 again</a>
+
+      <div class="confirm-prompt" id="confirmPrompt" hidden>
+        <p class="confirm-question">Did you complete the payment?</p>
+        <label class="screenshot-upload" for="paymentScreenshot">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13v2.5a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5V13M10 3v9m0-9L6.5 6.5M10 3l3.5 3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="screenshotLabel">Attach a screenshot (optional)</span>
+          <input type="file" id="paymentScreenshot" accept="image/*" hidden>
+        </label>
+        <button type="button" class="btn-primary" id="confirmPaidBtn">Yes, I've paid</button>
+        <button type="button" class="btn-text" id="notYetBtn">Not yet</button>
+      </div>
+
+      <p class="confirm-thanks" id="confirmThanks" hidden>✓ Got it, thank you! I'll confirm on my end and reach out if I need anything.</p>
+
+      <button type="button" class="btn-text" id="reopenConfirmLink" hidden>Already paid? Let me know</button>
+      <button type="button" class="btn-text" id="changeMethodLink">&larr; Change payment method</button>
     </div>
   </div>
 
@@ -741,6 +837,7 @@
     const successState = document.getElementById('successState');
 
     function goToStep(n){
+      currentStepNum = n;
       steps.forEach(s => s.classList.toggle('active', s.dataset.step === String(n)));
       stepNodes.forEach(node => {
         const num = Number(node.dataset.stepNode);
@@ -751,6 +848,7 @@
         c.classList.toggle('done', Number(c.dataset.connector) < n);
       });
       formCard.scrollIntoView({ behavior:'smooth', block:'start' });
+      saveDraft();
     }
 
     function validateStep(stepEl){
@@ -766,6 +864,59 @@
       });
       return valid;
     }
+
+    // ---------- Autosave (survives a refresh or an accidental tab close) ----------
+    // Draft only, kept in this browser: never sent anywhere on its own,
+    // and cleared the moment the real submissions above succeed.
+    const DRAFT_KEY = 'getStartedDraft_v1';
+    let currentStepNum = 1;
+
+    function saveDraft(){
+      try{
+        const data = { __step: currentStepNum, __leadSent: leadSent };
+        form.querySelectorAll('input[name]').forEach(input => {
+          if(input.type === 'radio' || input.type === 'checkbox'){
+            if(input.checked) data[input.name] = input.value;
+          } else {
+            data[input.name] = input.value;
+          }
+        });
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+      }catch(err){ /* private browsing, storage disabled, etc. — fine to skip */ }
+    }
+
+    function restoreDraft(){
+      try{
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if(!raw) return;
+        const data = JSON.parse(raw);
+        Object.keys(data).forEach(key => {
+          if(key === '__step' || key === '__leadSent') return;
+          form.querySelectorAll('[name="' + CSS.escape(key) + '"]').forEach(el => {
+            if(el.type === 'radio' || el.type === 'checkbox'){
+              el.checked = (el.value === data[key]);
+            } else {
+              el.value = data[key];
+            }
+          });
+        });
+        const checkedPayment = form.querySelector('[data-payment]:checked');
+        if(checkedPayment) checkedPayment.dispatchEvent(new Event('change'));
+        if(data.__leadSent){
+          leadSent = true;
+          leadNote.textContent = "✓ Got your info — pick how you'd like to pay below.";
+          leadNote.className = 'lead-note visible is-ok';
+        }
+        if(data.__step && data.__step > 1) goToStep(data.__step);
+      }catch(err){ /* corrupt or blocked storage — just start fresh */ }
+    }
+
+    function clearDraft(){
+      try{ localStorage.removeItem(DRAFT_KEY); }catch(err){}
+    }
+
+    form.addEventListener('input', saveDraft);
+    form.addEventListener('change', saveDraft);
 
     // ---------- Lead capture ----------
     // The old design only sent anything to Damir once someone clicked a
@@ -827,24 +978,97 @@
       });
     });
 
+    // ---------- Post-payment confirmation ----------
+    const confirmPrompt = document.getElementById('confirmPrompt');
+    const confirmThanks = document.getElementById('confirmThanks');
+    const reopenConfirmLink = document.getElementById('reopenConfirmLink');
+    const notYetBtn = document.getElementById('notYetBtn');
+    const confirmPaidBtn = document.getElementById('confirmPaidBtn');
+    const screenshotInput = document.getElementById('paymentScreenshot');
+    const screenshotLabel = document.getElementById('screenshotLabel');
+    const changeMethodLink = document.getElementById('changeMethodLink');
+    let awaitingConfirm = false;
+
+    function showPaymentForm(){
+      confirmPrompt.hidden = true;
+      confirmThanks.hidden = true;
+      reopenConfirmLink.hidden = true;
+      successState.classList.remove('active');
+      document.querySelector('.form-card form').style.display = '';
+      document.querySelector('.stepper').style.display = '';
+      awaitingConfirm = false;
+      formCard.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+    changeMethodLink.addEventListener('click', showPaymentForm);
+
     // Clicking an actual pay button is the strongest signal there is —
     // fire a "chose to pay" ping right then (the link still opens
-    // normally in a new tab) and swap this step over to a simple
-    // thank-you state, no separate confirm click needed.
+    // normally in a new tab) and swap this step over to a thank-you
+    // state. When they come back to this tab, ask directly whether the
+    // payment went through instead of just hoping they'll say so.
     document.querySelectorAll('.payment-detail .payment-cta').forEach(link => {
       link.addEventListener('click', () => {
         const methodLabels = { crypto: 'crypto', wise: 'Wise', bank: 'bank transfer' };
         const method = link.closest('.payment-detail').dataset.paymentDetail;
         sendLead('💰 Chose to pay via ' + (methodLabels[method] || method) + ' — X Content Publisher');
+        clearDraft();
 
         document.getElementById('successPayLink').href = link.href;
         document.getElementById('successPayLink').textContent = 'Pay $149 again';
 
         document.querySelector('.form-card form').style.display = 'none';
         document.querySelector('.stepper').style.display = 'none';
+        confirmPrompt.hidden = true;
+        confirmThanks.hidden = true;
+        reopenConfirmLink.hidden = true;
         successState.classList.add('active');
         successState.scrollIntoView({ behavior:'smooth', block:'start' });
+        awaitingConfirm = true;
       });
+    });
+
+    // Returning to this tab after clicking a pay link is the natural
+    // moment to ask — no need to make them hunt for a button.
+    document.addEventListener('visibilitychange', () => {
+      if(document.visibilityState === 'visible' && awaitingConfirm){
+        awaitingConfirm = false;
+        confirmPrompt.hidden = false;
+        confirmPrompt.scrollIntoView({ behavior:'smooth', block:'center' });
+      }
+    });
+
+    reopenConfirmLink.addEventListener('click', () => {
+      reopenConfirmLink.hidden = true;
+      confirmThanks.hidden = true;
+      confirmPrompt.hidden = false;
+    });
+
+    notYetBtn.addEventListener('click', () => {
+      confirmPrompt.hidden = true;
+      reopenConfirmLink.hidden = false;
+    });
+
+    screenshotInput.addEventListener('change', () => {
+      screenshotLabel.textContent = screenshotInput.files[0]
+        ? screenshotInput.files[0].name
+        : 'Attach a screenshot (optional)';
+    });
+
+    confirmPaidBtn.addEventListener('click', async () => {
+      confirmPaidBtn.disabled = true;
+      confirmPaidBtn.textContent = 'Sending…';
+      const fd = new FormData(form);
+      fd.set('_subject', '✅ Payment confirmed by buyer — X Content Publisher');
+      if(screenshotInput.files[0]) fd.set('Payment screenshot', screenshotInput.files[0]);
+      try{
+        await fetch(form.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+      }catch(err){ /* they've already told us on-page either way — the
+                      reassurance line below still stands even if this
+                      particular ping doesn't land */ }
+      confirmPrompt.hidden = true;
+      confirmThanks.hidden = false;
+      confirmPaidBtn.disabled = false;
+      confirmPaidBtn.textContent = "Yes, I've paid";
     });
 
     // Exit-intent: fires once, only on a genuine mouse-leave toward the
@@ -868,6 +1092,11 @@
     exitContinue.addEventListener('click', hideExit);
     exitOverlay.addEventListener('click', (e) => { if(e.target === exitOverlay) hideExit(); });
     document.addEventListener('keydown', (e) => { if(e.key === 'Escape') hideExit(); });
+
+    // Restore whatever was saved, last — after every listener above is
+    // wired up, so the payment-method "change" event it fires and the
+    // step it jumps to both land correctly.
+    restoreDraft();
   })();
 </script>
 <script src="site-nav.js" defer></script>
