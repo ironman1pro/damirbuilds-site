@@ -733,17 +733,7 @@
 
         <div class="payment-options">
           <label class="payment-option">
-            <input type="radio" name="Payment method" value="Crypto" data-payment="crypto" checked>
-            <span class="payment-icon icon-crypto" aria-hidden="true">&#8383;</span>
-            <span>
-              <span class="payment-title">Crypto</span>
-              <span class="payment-sub">Pay with BTC, ETH, USDC and more</span>
-            </span>
-            <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </label>
-
-          <label class="payment-option">
-            <input type="radio" name="Payment method" value="Wise" data-payment="wise">
+            <input type="radio" name="Payment method" value="Wise" data-payment="wise" checked>
             <span class="payment-icon icon-wise"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l5-6 4 4 5-6"/><path d="M12 2h5v5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>
               <span class="payment-title">Wise</span>
@@ -761,13 +751,19 @@
             </span>
             <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </label>
+
+          <label class="payment-option">
+            <input type="radio" name="Payment method" value="Crypto" data-payment="crypto">
+            <span class="payment-icon icon-crypto" aria-hidden="true">&#8383;</span>
+            <span>
+              <span class="payment-title">Crypto</span>
+              <span class="payment-sub">Pay with BTC, ETH, USDC and more</span>
+            </span>
+            <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </label>
         </div>
 
-        <div class="payment-detail active" data-payment-detail="crypto">
-          <a class="btn-primary payment-cta" href="https://nowpayments.io/payment/?iid=4750851942" target="_blank" rel="noopener">Pay $149 with crypto</a>
-        </div>
-
-        <div class="payment-detail" data-payment-detail="wise">
+        <div class="payment-detail active" data-payment-detail="wise">
           <a class="btn-primary payment-cta" href="https://wise.com/pay/r/Kf1-xzO1K8BNw64" target="_blank" rel="noopener">Pay $149 with Wise</a>
         </div>
 
@@ -777,6 +773,10 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
             <p><strong>Important:</strong> add the email you used above in the transfer note, so I can match your payment to your setup.</p>
           </div>
+        </div>
+
+        <div class="payment-detail" data-payment-detail="crypto">
+          <a class="btn-primary payment-cta" href="https://nowpayments.io/payment/?iid=4750851942" target="_blank" rel="noopener">Pay $149 with crypto</a>
         </div>
 
         <button type="button" class="btn-back" data-back="2" style="margin-top:8px;">&larr; Back</button>
