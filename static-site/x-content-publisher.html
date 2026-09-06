@@ -468,40 +468,58 @@
     100%{ opacity:0; }
   }
 
-  /* ---------- VIDEO DEMO ---------- */
+  /* ---------- SCREENSHOT DEMO ---------- */
+  /* Real screenshots of the three steps, not stock video. Framed like a
+     little window: rounded corners, a soft glow behind it so it lifts
+     off the page, a floating app-name tag over the top-left corner,
+     and the same hover-lift used on every other card on this page so
+     the section feels alive instead of a flat wall of screenshots. */
   .demo-frame{
     position:relative;
     width:100%;
-    aspect-ratio:16/9;
     border-radius:12px;
     overflow:hidden;
     border:1px solid var(--line);
-    background:
-      radial-gradient(circle at 18% 20%, rgba(var(--hot-rgb),0.16), transparent 45%),
-      radial-gradient(circle at 82% 78%, rgba(91,155,217,0.14), transparent 45%),
-      var(--panel);
+    background:var(--panel);
+    box-shadow:0 20px 44px var(--shadow-1);
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
   }
-  @media (max-width:640px){ .demo-frame{ aspect-ratio:4/3; } }
-  .demo-frame video{ width:100%; height:100%; object-fit:cover; display:block; }
-  .demo-play{
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center; flex-direction:column;
-    gap:14px; cursor:pointer; background:transparent; border:none;
+  .demo-frame:hover{
+    transform:translateY(-6px);
+    border-color:var(--hot);
+    box-shadow:0 28px 56px var(--shadow-1), 0 0 0 1px rgba(var(--hot-rgb),0.15);
   }
-  .play-circle{
-    width:64px; height:64px; border-radius:50%;
-    background:var(--text);
+  .demo-frame img{ width:100%; height:auto; display:block; }
+  .demo-frame::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:84px;
+    background:linear-gradient(to bottom, rgba(10,13,16,0.5), transparent);
+    pointer-events:none;
+    z-index:1;
+  }
+  .demo-tag{
+    position:absolute; top:14px; left:14px; z-index:2;
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(10,13,16,0.62);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    color:#fff;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px; font-weight:600;
+    padding:6px 12px 6px 8px;
+    border-radius:999px;
+  }
+  .demo-tag svg{ width:13px; height:13px; flex-shrink:0; }
+  .demo-step-number{
+    position:absolute; top:14px; right:14px; z-index:2;
     display:flex; align-items:center; justify-content:center;
-    transition:transform .15s ease;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:var(--hot);
+    color:#0A0D10;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px; font-weight:700;
   }
-  .demo-play:hover .play-circle{ transform:scale(1.06); }
-  .play-circle svg{ margin-left:3px; }
-  .demo-play span{ font-size:14px; color:var(--muted); }
-  /* Two side-by-side autoplaying clips: scheduling the post in Airtable,
-     then finding it live on X. Stacks to one column on mobile. */
-  /* Stacked full-width, not side-by-side — each clip gets real screen
-     real estate instead of being squeezed into half a narrow column. */
-  .demo-grid{ display:grid; grid-template-columns:1fr; gap:28px; }
+  .demo-grid{ display:grid; grid-template-columns:1fr; gap:32px; }
   .demo-clip-label{
     text-align:center;
     font-family:'Space Grotesk', sans-serif;
@@ -1153,36 +1171,27 @@
         <p class="demo-clip-label">1. Schedule the post</p>
         <p class="demo-clip-sub">Added once in Airtable, set to auto-post.</p>
         <div class="demo-frame">
-          <!--
-            PASTE THE REAL AIRTABLE DEMO VIDEO URL HERE once it's ready —
-            replace REPLACE-WITH-AIRTABLE-DEMO-VIDEO-URL.mp4 below. It
-            autoplays muted and loops, so no click-to-play is needed.
-          -->
-          <video src="REPLACE-WITH-AIRTABLE-DEMO-VIDEO-URL.mp4" autoplay muted loop playsinline></video>
+          <span class="demo-tag"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>Airtable</span>
+          <span class="demo-step-number">1</span>
+          <img src="demo-step-1-schedule.png" width="1286" height="779" alt="Airtable content calendar with every post row marked Ready to Publish" loading="lazy">
         </div>
       </div>
       <div class="demo-clip">
         <p class="demo-clip-label">2. It goes live on X</p>
         <p class="demo-clip-sub">Posted automatically, right on schedule.</p>
         <div class="demo-frame">
-          <!--
-            PASTE THE REAL X DEMO VIDEO URL HERE once it's ready — replace
-            REPLACE-WITH-X-DEMO-VIDEO-URL.mp4 below.
-          -->
-          <video src="REPLACE-WITH-X-DEMO-VIDEO-URL.mp4" autoplay muted loop playsinline></video>
+          <span class="demo-tag">Live on X</span>
+          <span class="demo-step-number">2</span>
+          <img src="demo-step-2-live.png" width="602" height="680" alt="The scheduled post live on X, published automatically on time" loading="lazy">
         </div>
       </div>
       <div class="demo-clip">
         <p class="demo-clip-label">3. Marked as published</p>
         <p class="demo-clip-sub">The spreadsheet row updates itself. Nothing to track by hand.</p>
         <div class="demo-frame">
-          <!--
-            PASTE THE REAL "MARKED AS PUBLISHED" DEMO VIDEO URL HERE once
-            it's ready — replace REPLACE-WITH-PUBLISHED-DEMO-VIDEO-URL.mp4
-            below. Shows the Airtable row flipping to a "Published" status
-            right after the post goes live, closing the loop.
-          -->
-          <video src="REPLACE-WITH-PUBLISHED-DEMO-VIDEO-URL.mp4" autoplay muted loop playsinline></video>
+          <span class="demo-tag"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>Airtable</span>
+          <span class="demo-step-number">3</span>
+          <img src="demo-step-3-published.png" width="1282" height="781" alt="The same Airtable calendar with rows automatically flipped to Published" loading="lazy">
         </div>
       </div>
     </div>
