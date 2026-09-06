@@ -456,12 +456,27 @@ footer p{
   font-size:13.5px;
   color:var(--muted-2);
 }
+.footer-links{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
 .footer-email{
   font-size:13.5px;
   color:var(--muted);
   transition:color .15s ease;
 }
 .footer-email:hover, .footer-email:focus-visible{
+  color:var(--hot);
+  outline:none;
+}
+.footer-link{
+  font-size:13.5px;
+  color:var(--muted-2);
+  transition:color .15s ease;
+}
+.footer-link:hover, .footer-link:focus-visible{
   color:var(--hot);
   outline:none;
 }

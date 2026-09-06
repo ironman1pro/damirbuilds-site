@@ -48,7 +48,10 @@
     '<div class="wrap">' +
       '<a class="logo" href="/">damirbuilds</a>' +
       '<p>AI automations, built for revenue.</p>' +
-      '<a class="footer-email" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a>' +
+      '<div class="footer-links">' +
+        '<a class="footer-email" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a>' +
+        '<a class="footer-link" href="/privacy-policy.html">Privacy Policy</a>' +
+      '</div>' +
     '</div>';
 
   /* Rendered inside real <nav>/<footer> tags (not just the <site-nav>/
