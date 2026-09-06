@@ -480,6 +480,7 @@ footer p{
   pointer-events:none;
   z-index:9999;
   transform:translate(-50%,-50%);
+  opacity:0;
   transition:opacity .2s ease;
 }
 #cursor-ring{
@@ -491,14 +492,32 @@ footer p{
   pointer-events:none;
   z-index:9998;
   transform:translate(-50%,-50%);
-  transition:width .25s ease, height .25s ease, background .25s ease;
+  opacity:0;
+  transition:width .25s ease, height .25s ease, background .25s ease, opacity .2s ease;
 }
 #cursor-ring.is-hover{
   width:50px; height:50px;
   border-color:var(--text);
   background:var(--cursor-hover-bg);
 }
+/* Both stay hidden (opacity:0 above) until the first real mousemove
+   adds .is-visible — otherwise they render pinned to their CSS default
+   top-left position the instant the page loads, before the pointer has
+   actually moved there. .is-hover is declared after, so it still wins
+   the tie and hides the dot on hover once visible. */
+#cursor-dot.is-visible, #cursor-ring.is-visible{ opacity:1; }
 #cursor-dot.is-hover{ opacity:0; }
 @media (pointer: coarse), (hover: none){
   #cursor-dot, #cursor-ring{ display:none; }
+}
+/* Some "mobile" views (a narrowed desktop window, a tablet with a
+   trackpad, responsive mode without touch emulation) still report a
+   fine pointer, which left the cursor dot/ring rendering — pinned to
+   the top-left corner until the first real mousemove — on top of
+   narrow layouts it was never designed for. Hide it outright below
+   the site's own mobile breakpoint, regardless of pointer type, and
+   restore the normal system cursor there too. */
+@media (max-width:820px){
+  #cursor-dot, #cursor-ring{ display:none; }
+  a, button, .logo, [role="button"], body{ cursor:auto; }
 }

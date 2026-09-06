@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>X Content Publisher | damirbuilds</title>
-<meta name="description" content="A custom automation that publishes your X posts automatically from a simple spreadsheet — no SaaS scheduler, no subscription, runs entirely on your own accounts.">
+<meta name="description" content="A custom automation that publishes your X posts automatically from a simple spreadsheet. No SaaS scheduler, no subscription. Runs entirely on your own accounts.">
 <link rel="canonical" href="https://damirbuilds.com/x-content-publisher.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -36,9 +36,10 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "Can't I just build this myself with an AI tool?", "acceptedAnswer": { "@type": "Answer", "text": "You could try, but the integration involves real technical challenges — API rate limits, authentication expiry, formatting mismatches between tools — that are already solved here. You get a working system on day one instead of a weekend of debugging." } },
+    { "@type": "Question", "name": "Can't I just build this myself with an AI tool?", "acceptedAnswer": { "@type": "Answer", "text": "You could try, but the integration involves real technical challenges (API rate limits, authentication expiry, formatting mismatches between tools) that are already solved here. You get a working system on day one instead of a weekend of debugging." } },
     { "@type": "Question", "name": "Do I need to be technical to use this?", "acceptedAnswer": { "@type": "Answer", "text": "No. Once it's set up, you just add content to a spreadsheet. No coding or maintenance required." } },
-    { "@type": "Question", "name": "What if I want more than basic posting?", "acceptedAnswer": { "@type": "Answer", "text": "Custom logic, AI-generated content, or multi-platform posting are all available as add-ons, quoted based on what you need." } }
+    { "@type": "Question", "name": "What if I want more than basic posting?", "acceptedAnswer": { "@type": "Answer", "text": "Custom logic, AI-generated content, or multi-platform posting are all available as add-ons, quoted based on what you need." } },
+    { "@type": "Question", "name": "Already using Hypefury, Buffer, or Typefully?", "acceptedAnswer": { "@type": "Answer", "text": "I can migrate your existing content and schedule over for you as part of the setup, so there's no need to recreate everything from scratch." } }
   ]
 }
 </script>
@@ -55,14 +56,113 @@
 
   .wrap-narrow{ max-width:720px; margin:0 auto; padding:0 32px; }
   @media (max-width:640px){ .wrap-narrow{ padding:0 20px; } }
+  /* The flow diagram went from 2 cards to 3, and each one carries a
+     mini mockup (thumbnail, lines, status chip) that needs real room —
+     720px left them visibly cramped. Widen just this section's
+     container; the section-head text stays readable since it's capped
+     separately at 56ch. */
+  #flow .wrap-narrow{ max-width:920px; }
 
   section{ padding:72px 0; border-top:1px solid var(--line); }
   section:first-of-type{ border-top:none; }
   @media (max-width:640px){ section{ padding:52px 0; } }
 
   .section-head{ max-width:56ch; margin-bottom:36px; }
+  .section-head .eyebrow{ display:block; margin-bottom:10px; }
   .section-head h2{ font-size:clamp(24px, 3.4vw, 32px); }
   .section-head p{ margin-top:12px; color:var(--muted); font-size:16px; }
+
+  /* ---------- ALTERNATING SECTION TINT ---------- */
+  /* Flat black end to end reads dry — a few sections get a hair of
+     panel tone behind them so the page has visual rhythm without
+     resorting to hard dividers or color. */
+  .tint{ background:var(--panel-2); }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  /* Progressive enhancement: content is fully visible with no JS and
+     for anyone who prefers reduced motion. Only .js on <html> (set by
+     an inline script at the top of body) plus a motion-safe query
+     puts elements in their pre-reveal state, so there's no risk of
+     content getting stuck invisible. */
+  @media (prefers-reduced-motion:no-preference){
+    html.js .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+    html.js .reveal.in-view{ opacity:1; transform:none; }
+  }
+
+  /* ---------- STICKY MOBILE CTA ---------- */
+  .mobile-cta{
+    display:none;
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:40;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    box-shadow:0 -8px 24px rgba(0,0,0,0.25);
+    transform:translateY(100%);
+    transition:transform .25s ease;
+  }
+  .mobile-cta.show{ transform:translateY(0); }
+  .mobile-cta .btn-primary{ display:block; width:100%; text-align:center; }
+  @media (max-width:700px){
+    .mobile-cta{ display:block; }
+  }
+
+  /* ---------- ANNOUNCEMENT BAR ---------- */
+  .announce-bar{
+    display:block;
+    text-align:center;
+    background:var(--accent-btn);
+    color:#0A0D10;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 20px;
+    transition:opacity .15s ease;
+  }
+  .announce-bar:hover, .announce-bar:focus-visible{ opacity:.92; outline:none; }
+  .announce-bar span{ opacity:.8; margin-left:2px; }
+
+  /* ---------- HIGHLIGHTS ---------- */
+  .highlights-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  @media (max-width:780px){
+    .highlights-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto; }
+  }
+  .highlight-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:24px 22px;
+    text-align:center;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .highlight-card:hover{
+    border-color:var(--hot);
+    transform:translateY(-4px);
+    box-shadow:0 16px 32px var(--shadow-1), 0 0 0 1px rgba(var(--hot-rgb),0.15);
+  }
+  .highlight-icon{
+    width:40px; height:40px;
+    margin:0 auto 16px;
+    border-radius:10px;
+    background:rgba(var(--hot-rgb),0.12);
+    color:var(--hot);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .highlight-icon svg{ width:19px; height:19px; }
+  .highlight-card h3{
+    font-size:17px;
+    margin-bottom:10px;
+    color:var(--text);
+  }
+  .highlight-card p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.55;
+  }
 
   /* ---------- HERO ---------- */
   header.hero{
@@ -83,16 +183,44 @@
   }
   .hero-inner{ position:relative; text-align:center; }
   .hero-brand{
-    display:inline-flex;
+    display:flex;
     align-items:center;
+    justify-content:center;
     gap:8px;
     font-family:'Space Grotesk', sans-serif;
     font-weight:600;
     font-size:15px;
     color:var(--muted);
-    margin-bottom:28px;
+    margin-bottom:20px;
   }
   .hero-brand span{ color:var(--hot); }
+
+  /* ---------- PERSONAL INTRO ---------- */
+  .hero-intro{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin:0 auto 28px;
+    padding:8px 18px 8px 8px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:999px;
+    width:fit-content;
+    max-width:100%;
+  }
+  .hero-intro img{
+    width:40px; height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+  }
+  .hero-intro span{
+    font-size:13.5px;
+    color:var(--body-text);
+    text-align:left;
+  }
+  .hero-intro strong{ color:var(--text); }
   h1.headline{
     font-size:clamp(30px, 6vw, 46px);
     max-width:18ch;
@@ -118,8 +246,14 @@
     align-items:center;
     gap:0;
   }
-  @media (max-width:700px){
-    .flow-track{ flex-direction:column; }
+  @media (max-width:820px){
+    /* align-items:center (needed for the row layout above) shrink-wraps
+       each stacked card to its own content width instead of stretching
+       them to match — card 1's "Ready to publish" chip happens to force
+       a wider natural width than the other cards' content, so it visibly
+       stuck out wider than card 2/3 below it. Stretch fixes all three to
+       the same full-width column. */
+    .flow-track{ flex-direction:column; align-items:stretch; }
   }
   .flow-card{
     flex:1;
@@ -129,6 +263,12 @@
     border-radius:14px;
     padding:24px 22px;
     text-align:center;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .flow-card:hover{
+    border-color:var(--hot);
+    transform:translateY(-4px);
+    box-shadow:0 16px 32px var(--shadow-1), 0 0 0 1px rgba(var(--hot-rgb),0.15);
   }
   .flow-card-icon{
     width:44px; height:44px;
@@ -146,16 +286,23 @@
     font-size:15.5px;
     margin-bottom:16px;
   }
-  /* mini spreadsheet visual */
+  /* mini spreadsheet visual — a compact mock of one Airtable row, laid
+     out as two stacked rows so it reads as several distinct fields
+     (image, content, publish date, status) rather than one text blob. */
   .flow-mini-sheet{
     border:1px solid var(--line);
     border-radius:8px;
     background:var(--panel-2);
     padding:10px;
     display:flex;
+    flex-direction:column;
+    gap:9px;
+    text-align:left;
+  }
+  .flow-mini-sheet-row{
+    display:flex;
     align-items:center;
     gap:8px;
-    text-align:left;
   }
   .flow-mini-thumb{
     width:28px; height:28px;
@@ -166,6 +313,27 @@
   .flow-mini-lines{ flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
   .flow-mini-line{ height:6px; border-radius:3px; background:var(--line); }
   .flow-mini-line.short{ width:60%; }
+  .flow-mini-meta{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .flow-mini-meta--end{ justify-content:flex-end; }
+  .flow-mini-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:10.5px;
+    font-weight:600;
+    line-height:1;
+    padding:4px 8px;
+    border-radius:20px;
+    background:var(--panel-3);
+    color:var(--muted-2);
+    white-space:nowrap;
+  }
+  .flow-mini-chip svg{ width:9px; height:9px; flex-shrink:0; }
+  .flow-mini-chip.ready{ background:rgba(var(--hot-rgb),0.14); color:var(--hot); }
+  /* On card 3 this same chip stands in for the animated "Posted" badge
+     used on card 2 — it fades in only once dot 2 actually arrives,
+     instead of sitting there as a permanently-published row. */
+  .flow-mini-chip.step-2{ opacity:0; animation:postedPulseStage2 5.2s ease-in-out infinite; }
   /* mini tweet visual */
   .flow-mini-tweet{
     border:1px solid var(--line);
@@ -177,8 +345,17 @@
   .flow-mini-tweet-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
   .flow-mini-avatar{ width:22px; height:22px; border-radius:50%; background:var(--muted-2); flex-shrink:0; }
   .flow-mini-name{ font-size:12px; font-weight:600; color:var(--text); }
-  .flow-mini-tweet-lines{ display:flex; flex-direction:column; gap:5px; }
+  /* the tweet body mirrors the spreadsheet row's image+lines layout
+     (same .flow-mini-thumb) so it visually reads as the same piece of
+     content, image included, having arrived from the spreadsheet. */
+  .flow-mini-tweet-body{ display:flex; align-items:center; gap:8px; }
+  .flow-mini-tweet-lines{ flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
   .flow-mini-tweet-lines .flow-mini-line{ background:var(--line); }
+  .flow-mini-tweet-meta{
+    margin-top:9px;
+    font-size:10.5px;
+    color:var(--muted-2);
+  }
   .flow-posted-badge{
     display:inline-flex;
     align-items:center;
@@ -188,23 +365,35 @@
     font-weight:600;
     color:var(--hot);
     opacity:0;
-    animation:postedPulse 2.6s ease-in-out infinite;
   }
   .flow-posted-badge svg{ width:13px; height:13px; }
+  /* Three-card sequence now: spreadsheet → X → marked as published.
+     One shared 5.2s cycle, split into two halves so the story reads in
+     order — dot 1 travels and "Posted" appears in the first half, then
+     dot 2 travels and "Published" appears in the second half — instead
+     of both legs firing at once. */
+  .flow-posted-badge.step-1{ animation:postedPulseStage1 5.2s ease-in-out infinite; }
 
   .flow-connector{
     flex-shrink:0;
     position:relative;
     width:100%;
-    max-width:120px;
+    max-width:90px;
     height:2px;
     margin:0 -2px;
     background-image:linear-gradient(to right, var(--line) 50%, transparent 50%);
     background-size:10px 2px;
     background-repeat:repeat-x;
   }
-  @media (max-width:700px){
+  @media (max-width:820px){
     .flow-connector{
+      /* .flow-track switches to align-items:stretch on mobile so the
+         cards all match width — but stretch only affects auto-sized
+         items. This connector has an explicit width, so instead of
+         stretching it just sat at the container's start edge (the left
+         side) instead of centered under the cards. align-self pulls it
+         back to center regardless of the container's align-items. */
+      align-self:center;
       width:2px;
       max-width:2px;
       height:56px;
@@ -222,33 +411,59 @@
     background:var(--hot);
     box-shadow:0 0 10px rgba(var(--hot-rgb),0.7);
     transform:translate(-50%,-50%);
-    animation:flowTravelX 2.6s ease-in-out infinite;
   }
-  @keyframes flowTravelX{
+  /* Dot 1 (card 1 → card 2) runs in the cycle's first half and arrives
+     right as postedPulseStage1 turns "Posted" on — dot 2 (card 2 → card
+     3) sits invisible until the second half, then does the same for
+     "Published" on card 3. */
+  .flow-dot.stage-1{ animation:flowTravelX1 5.2s ease-in-out infinite; }
+  .flow-dot.stage-2{ animation:flowTravelX2 5.2s ease-in-out infinite; }
+  @keyframes flowTravelX1{
     0%{ left:0%; opacity:0; }
-    10%{ opacity:1; }
-    50%{ left:50%; }
-    90%{ opacity:1; }
+    4%{ opacity:1; }
+    39%{ left:100%; opacity:1; }
+    43%{ left:100%; opacity:0; }
     100%{ left:100%; opacity:0; }
   }
-  @media (max-width:700px){
+  @keyframes flowTravelX2{
+    0%, 50%{ left:0%; opacity:0; }
+    54%{ opacity:1; }
+    89%{ left:100%; opacity:1; }
+    93%{ left:100%; opacity:0; }
+    100%{ left:100%; opacity:0; }
+  }
+  @media (max-width:820px){
     .flow-dot{
       top:0; left:50%;
       transform:translate(-50%,-50%);
-      animation:flowTravelY 2.6s ease-in-out infinite;
     }
-    @keyframes flowTravelY{
+    .flow-dot.stage-1{ animation-name:flowTravelY1; }
+    .flow-dot.stage-2{ animation-name:flowTravelY2; }
+    @keyframes flowTravelY1{
       0%{ top:0%; opacity:0; }
-      10%{ opacity:1; }
-      50%{ top:50%; }
-      90%{ opacity:1; }
+      4%{ opacity:1; }
+      39%{ top:100%; opacity:1; }
+      43%{ top:100%; opacity:0; }
+      100%{ top:100%; opacity:0; }
+    }
+    @keyframes flowTravelY2{
+      0%, 50%{ top:0%; opacity:0; }
+      54%{ opacity:1; }
+      89%{ top:100%; opacity:1; }
+      93%{ top:100%; opacity:0; }
       100%{ top:100%; opacity:0; }
     }
   }
-  @keyframes postedPulse{
-    0%, 40%{ opacity:0; }
-    58%{ opacity:1; }
-    82%{ opacity:1; }
+  @keyframes postedPulseStage1{
+    0%, 37%{ opacity:0; }
+    41%{ opacity:1; }
+    96%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+  @keyframes postedPulseStage2{
+    0%, 88%{ opacity:0; }
+    92%{ opacity:1; }
+    98%{ opacity:1; }
     100%{ opacity:0; }
   }
 
@@ -281,12 +496,149 @@
   .demo-play:hover .play-circle{ transform:scale(1.06); }
   .play-circle svg{ margin-left:3px; }
   .demo-play span{ font-size:14px; color:var(--muted); }
+  /* Two side-by-side autoplaying clips: scheduling the post in Airtable,
+     then finding it live on X. Stacks to one column on mobile. */
+  /* Stacked full-width, not side-by-side — each clip gets real screen
+     real estate instead of being squeezed into half a narrow column. */
+  .demo-grid{ display:grid; grid-template-columns:1fr; gap:28px; }
+  .demo-clip-label{
+    text-align:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    font-weight:600;
+    color:var(--text);
+    margin-bottom:6px;
+  }
+  .demo-clip-sub{
+    text-align:center;
+    font-size:13.5px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
   .demo-caption-top{
     text-align:center;
-    font-size:17px;
-    color:var(--text);
-    max-width:44ch;
     margin:0 auto 28px;
+  }
+
+  /* ---------- ARCHITECTURE ---------- */
+  .arch-track{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+  }
+  @media (max-width:820px){
+    .arch-track{ flex-direction:column; }
+  }
+  .arch-node{
+    flex:1;
+    min-width:0;
+    max-width:230px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:24px 18px;
+    text-align:center;
+  }
+  @media (max-width:820px){
+    .arch-node{ max-width:320px; width:100%; }
+  }
+  .arch-node-mid{ background:var(--panel-2); }
+  .arch-icon{
+    width:40px; height:40px;
+    margin:0 auto 14px;
+    border-radius:10px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text);
+  }
+  .arch-node-mid .arch-icon{ background:var(--panel-3); }
+  .arch-icon svg{ width:19px; height:19px; }
+  .arch-label{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--text);
+  }
+  .arch-caption{
+    margin-top:8px;
+    font-size:12.5px;
+    color:var(--muted-2);
+    line-height:1.5;
+  }
+  .arch-arrow{
+    flex-shrink:0;
+    font-size:20px;
+    color:var(--muted-2);
+  }
+  @media (max-width:820px){
+    .arch-arrow{ transform:rotate(90deg); }
+  }
+  .arch-note{
+    margin:32px auto 0;
+    text-align:center;
+    color:var(--body-text);
+    font-size:16px;
+    max-width:60ch;
+  }
+  .arch-bullets{
+    max-width:420px;
+    margin:28px auto 0;
+    text-align:left;
+  }
+
+  /* The "old way" (#saas-model) reuses the same .arch-* structure as
+     the "new way" (#architecture) below it, but deliberately duller
+     and flatter — plain system font, square-ish corners, dim gray
+     icon boxes, no accent color anywhere — so the contrast between
+     "outdated" and "well-designed" reads instantly without needing
+     any extra copy to explain it. */
+  #saas-model .arch-node{
+    font-family:Arial, Helvetica, sans-serif;
+    border-radius:5px;
+    border-color:#33363b;
+    background:#1B1D20;
+    box-shadow:0 3px 10px rgba(0,0,0,0.35);
+  }
+  #saas-model .arch-icon{
+    border-radius:4px;
+    background:#26282c;
+    border-color:#33363b;
+    color:#9199a3;
+  }
+  #saas-model .arch-label{
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:700;
+    color:#c7ccd1;
+  }
+  #saas-model .arch-caption{ font-family:Arial, Helvetica, sans-serif; color:#787f87; }
+  #saas-model .arch-arrow{ color:#4d5157; }
+  #saas-model .check-icon.x-mark{ border-radius:4px; }
+
+  /* The "new way" gets the site's real accent + a hover lift, so it
+     reads as the obviously better-built option sitting right below. */
+  #architecture .arch-node{
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  #architecture .arch-node:hover{
+    border-color:var(--hot);
+    transform:translateY(-4px);
+    box-shadow:0 16px 32px var(--shadow-1), 0 0 0 1px rgba(var(--hot-rgb),0.15);
+  }
+  #architecture .arch-icon{
+    background:rgba(var(--hot-rgb),0.12);
+    border-color:transparent;
+    color:var(--hot);
+  }
+
+  /* Reused for the small "why this is bad / why this is good" bullet
+     lists under each diagram — same layout as the "What's included"
+     checklist, with a muted gray X standing in for the check on the
+     "old way" side instead of introducing a separate red/danger color. */
+  .check-icon.x-mark{
+    background:rgba(142,150,163,0.14);
+    color:var(--muted-2);
   }
 
   /* ---------- PROBLEM ---------- */
@@ -313,6 +665,197 @@
   .check-item p{ color:var(--body-text); font-size:16px; line-height:1.55; }
   .check-item.bonus p{ color:var(--muted); font-size:15px; }
   .check-item.bonus strong{ color:var(--text); }
+
+  /* ---------- WHAT'S INCLUDED (feature grid + bonus) ---------- */
+  .included-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:18px;
+  }
+  @media (max-width:700px){
+    .included-grid{ grid-template-columns:1fr; }
+  }
+  .included-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:26px 24px;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .included-card:hover{
+    border-color:var(--hot);
+    transform:translateY(-4px);
+    box-shadow:0 16px 32px var(--shadow-1), 0 0 0 1px rgba(var(--hot-rgb),0.15);
+  }
+  /* 5 cards don't divide evenly into 2 columns — let the 5th span the
+     full width on desktop so the grid ends flush instead of leaving a
+     lone half-empty row. */
+  .included-card:nth-child(5){ grid-column:1 / -1; }
+  @media (max-width:700px){
+    .included-card:nth-child(5){ grid-column:auto; }
+  }
+  .included-icon{
+    width:40px; height:40px;
+    border-radius:10px;
+    background:rgba(var(--hot-rgb),0.12);
+    color:var(--hot);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:16px;
+  }
+  .included-icon svg{ width:19px; height:19px; }
+  .included-card h3{ font-size:17px; margin-bottom:8px; color:var(--text); }
+  .included-card p{ color:var(--muted); font-size:14.5px; line-height:1.55; }
+
+  /* Bonus gets its own distinct card — a ribbon badge and a small
+     visual, rather than blending into the checklist above it, so it
+     reads as a genuine extra rather than a 6th line item. Built so a
+     second bonus card can just be stacked below this one later. */
+  .bonus-card{
+    position:relative;
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:24px;
+    align-items:center;
+    margin-top:20px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:16px;
+    padding:28px;
+    overflow:hidden;
+  }
+  @media (max-width:600px){
+    .bonus-card{ grid-template-columns:1fr; text-align:center; padding:26px 22px; }
+  }
+  .bonus-badge{
+    position:absolute;
+    top:0; right:0;
+    background:var(--accent-btn);
+    color:#0A0D10;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:7px 16px;
+    border-bottom-left-radius:12px;
+  }
+  .bonus-visual{
+    position:relative;
+    width:100%;
+    aspect-ratio:1;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:
+      radial-gradient(circle at 25% 25%, rgba(var(--hot-rgb),0.24), transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(91,155,217,0.18), transparent 55%),
+      var(--panel-2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text);
+  }
+  .bonus-visual svg{ width:32px; height:32px; opacity:.9; }
+  @media (max-width:600px){
+    .bonus-visual{ max-width:150px; margin:0 auto; }
+  }
+  .bonus-content h3{ font-size:19px; margin-bottom:8px; margin-top:8px; color:var(--text); }
+  @media (max-width:600px){ .bonus-content h3{ margin-top:20px; } }
+  .bonus-content p{ color:var(--body-text); font-size:15px; line-height:1.55; }
+
+  /* ---------- COMPARISON ---------- */
+  .compare{
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  @media (max-width:700px){
+    .compare{
+      border:none;
+      border-radius:0;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+  }
+  .compare-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  @media (max-width:700px){
+    .compare-row{ grid-template-columns:1fr; }
+  }
+  .compare-row + .compare-row{ border-top:1px solid var(--line); }
+  @media (max-width:700px){
+    /* Each stacked row splits into two full-width cells with nothing
+       marking which column they belong to, so a con/pro pair reads as
+       four anonymous, near-identical list items in a row. The repeated
+       header labels solve that on desktop but get lost once they're
+       just two more stacked rows at the top — so hide the header here
+       and stamp each cell with its own column label instead. */
+    .compare-header{ display:none; }
+    .compare-row + .compare-row{ border-top:none; }
+    .compare-row:not(.compare-header){
+      border:1px solid var(--line);
+      border-radius:10px;
+      overflow:hidden;
+    }
+  }
+  .compare-cell{
+    display:flex;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:20px 24px;
+    font-size:15px;
+    line-height:1.5;
+  }
+  @media (max-width:700px){
+    .compare-cell::before{
+      flex:1 0 100%;
+      font-family:'Space Grotesk', sans-serif;
+      font-weight:600;
+      font-size:11px;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .compare-cell.left::before{ content:"SaaS scheduler"; color:var(--muted-2); }
+    .compare-cell.right::before{ content:"X Content Publisher"; color:var(--hot); }
+  }
+  .compare-cell .glyph{
+    flex-shrink:0;
+    width:18px; height:18px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:1px;
+  }
+  .compare-cell .glyph svg{ width:10px; height:10px; }
+  .compare-cell.left{
+    color:var(--muted-2);
+    background:var(--panel);
+    border-right:1px solid var(--line);
+  }
+  .compare-cell.left .glyph{ background:rgba(142,150,163,0.14); color:var(--muted-2); }
+  @media (max-width:700px){
+    .compare-cell.left{ border-right:none; border-bottom:1px solid var(--line); }
+  }
+  .compare-cell.right{
+    color:var(--text);
+    background:var(--panel-2);
+    font-weight:500;
+    transition:background .2s ease;
+  }
+  .compare-cell.right .glyph{ background:rgba(var(--hot-rgb),0.15); color:var(--hot); }
+  .compare-row:not(.compare-header):hover .compare-cell.right{
+    background:var(--panel-3);
+  }
+  .compare-header .compare-cell{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:16px 24px;
+  }
+  .compare-header .left{ color:var(--muted); }
+  .compare-header .right{ color:var(--hot); }
+  .compare-header .compare-cell{ align-items:center; }
 
   /* ---------- TRUST / OWNERSHIP ---------- */
   .trust-box{
@@ -380,18 +923,36 @@
     font-size:14px;
   }
   .pricing-box .hero-actions{ position:relative; margin-top:30px; }
+
+  /* Offer-stack checklist reuses .check-list/.check-item/.check-icon
+     from the "What's included" section, just scoped to sit centered
+     and left-aligned-text inside the pricing box. */
+  .pricing-box .check-list{
+    position:relative;
+    text-align:left;
+    max-width:460px;
+    margin:28px auto 0;
+  }
+  .pricing-box .price-line{ margin-top:26px; }
 </style>
 </head>
 <body>
+<script>document.documentElement.classList.add('js');</script>
 <a class="skip-link" href="#main">Skip to content</a>
+
+<a class="announce-bar" href="#pricing">I build these personally, one at a time. Live in 48 hours. Only a few spots open each month <span>→</span></a>
 
 <main id="main">
 
 <header class="hero">
   <div class="wrap-narrow hero-inner">
     <div class="hero-brand">damir<span>builds</span></div>
-    <h1 class="headline">I used to hate posting on X. So I built a system that does it for me.</h1>
-    <p class="hero-sub">Add your content to a simple spreadsheet once a week. It publishes automatically, on your own accounts, no third-party tool involved.</p>
+    <div class="hero-intro">
+      <img src="damir-avatar.webp" width="40" height="40" alt="Portrait of Damir" loading="eager">
+      <span>Personally built and run by <strong>me</strong>, not an agency</span>
+    </div>
+    <h1 class="headline">Consistent X posts, on autopilot, without handing your data to a SaaS tool.</h1>
+    <p class="hero-sub">Automates your X posting without storing your content on a third-party SaaS tool. One-time setup fee, no monthly subscription.</p>
     <div class="hero-actions">
       <a class="btn-primary" href="#flow">See how it works</a>
     </div>
@@ -399,30 +960,61 @@
   </div>
 </header>
 
-<section id="flow">
+<section id="highlights">
   <div class="wrap-narrow">
-    <div class="section-head" style="margin-left:auto;margin-right:auto;text-align:center;">
+    <div class="highlights-grid reveal">
+      <div class="highlight-card">
+        <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"/><circle cx="7.5" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <h3>One-time setup</h3>
+        <p>Set up once. No monthly bill, ever.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/></svg></div>
+        <h3>You own your data</h3>
+        <p>Unlike scheduling tools, your data lives in your account, never a third party's.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></div>
+        <h3>Fully reversible</h3>
+        <p>Pause it or turn it off anytime. It's your workflow, in your account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flow" class="tint">
+  <div class="wrap-narrow">
+    <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <span class="eyebrow" style="text-align:center;">The workflow</span>
       <h2>How it works</h2>
       <p style="margin-left:auto;margin-right:auto;">Two accounts you already own, connected once. No dashboard to check, no tool to log into.</p>
     </div>
 
-    <div class="flow-track" aria-hidden="true">
+    <div class="flow-track reveal" aria-hidden="true">
       <div class="flow-card">
         <div class="flow-card-icon">
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>
         </div>
-        <div class="flow-card-label">You add content</div>
+        <div class="flow-card-label">You add content to your spreadsheet</div>
         <div class="flow-mini-sheet">
-          <div class="flow-mini-thumb"></div>
-          <div class="flow-mini-lines">
-            <div class="flow-mini-line"></div>
-            <div class="flow-mini-line short"></div>
+          <div class="flow-mini-meta">
+            <span class="flow-mini-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="14" height="13" rx="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke-linecap="round"/></svg>2:04 PM · Sep 12</span>
+          </div>
+          <div class="flow-mini-sheet-row">
+            <div class="flow-mini-thumb"></div>
+            <div class="flow-mini-lines">
+              <div class="flow-mini-line"></div>
+              <div class="flow-mini-line short"></div>
+            </div>
+          </div>
+          <div class="flow-mini-meta flow-mini-meta--end">
+            <span class="flow-mini-chip ready"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ready to publish</span>
           </div>
         </div>
       </div>
 
       <div class="flow-connector">
-        <div class="flow-dot"></div>
+        <div class="flow-dot stage-1"></div>
       </div>
 
       <div class="flow-card">
@@ -435,14 +1027,44 @@
             <div class="flow-mini-avatar"></div>
             <div class="flow-mini-name">you</div>
           </div>
-          <div class="flow-mini-tweet-lines">
-            <div class="flow-mini-line"></div>
-            <div class="flow-mini-line short"></div>
+          <div class="flow-mini-tweet-body">
+            <div class="flow-mini-thumb"></div>
+            <div class="flow-mini-tweet-lines">
+              <div class="flow-mini-line"></div>
+              <div class="flow-mini-line short"></div>
+            </div>
           </div>
+          <div class="flow-mini-tweet-meta">2:04 PM · Sep 12</div>
         </div>
-        <div class="flow-posted-badge">
+        <div class="flow-posted-badge step-1">
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Posted
+        </div>
+      </div>
+
+      <div class="flow-connector">
+        <div class="flow-dot stage-2"></div>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-card-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>
+        </div>
+        <div class="flow-card-label">It's marked as published</div>
+        <div class="flow-mini-sheet">
+          <div class="flow-mini-meta">
+            <span class="flow-mini-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="14" height="13" rx="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke-linecap="round"/></svg>2:04 PM · Sep 12</span>
+          </div>
+          <div class="flow-mini-sheet-row">
+            <div class="flow-mini-thumb"></div>
+            <div class="flow-mini-lines">
+              <div class="flow-mini-line"></div>
+              <div class="flow-mini-line short"></div>
+            </div>
+          </div>
+          <div class="flow-mini-meta flow-mini-meta--end">
+            <span class="flow-mini-chip ready step-2"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg>Published</span>
+          </div>
         </div>
       </div>
     </div>
@@ -451,76 +1073,222 @@
 
 <section id="demo">
   <div class="wrap-narrow">
-    <p class="demo-caption-top">Watch it work: add a post, it publishes on its own.</p>
-    <div class="demo-frame">
-      <!--
-        Replace this block with your real demo video.
-        Simplest option: swap the button below for
-        <video src="YOUR-VIDEO-URL.mp4" controls></video>
-      -->
-      <button class="demo-play" onclick="this.parentElement.innerHTML='<video src=&quot;YOUR-VIDEO-URL.mp4&quot; controls autoplay style=&quot;width:100%;height:100%;object-fit:cover;&quot;></video>'">
-        <div class="play-circle">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--bg)"><path d="M4 2.5v15l14-7.5-14-7.5z"/></svg>
+    <p class="demo-caption-top reveal"><span class="eyebrow">Real example</span></p>
+    <div class="demo-grid reveal">
+      <div class="demo-clip">
+        <p class="demo-clip-label">1. Schedule the post</p>
+        <p class="demo-clip-sub">Added once in Airtable, set to auto-post.</p>
+        <div class="demo-frame">
+          <!--
+            PASTE THE REAL AIRTABLE DEMO VIDEO URL HERE once it's ready —
+            replace REPLACE-WITH-AIRTABLE-DEMO-VIDEO-URL.mp4 below. It
+            autoplays muted and loops, so no click-to-play is needed.
+          -->
+          <video src="REPLACE-WITH-AIRTABLE-DEMO-VIDEO-URL.mp4" autoplay muted loop playsinline></video>
         </div>
-        <span>Watch the demo</span>
-      </button>
+      </div>
+      <div class="demo-clip">
+        <p class="demo-clip-label">2. It goes live on X</p>
+        <p class="demo-clip-sub">Posted automatically, right on schedule.</p>
+        <div class="demo-frame">
+          <!--
+            PASTE THE REAL X DEMO VIDEO URL HERE once it's ready — replace
+            REPLACE-WITH-X-DEMO-VIDEO-URL.mp4 below.
+          -->
+          <video src="REPLACE-WITH-X-DEMO-VIDEO-URL.mp4" autoplay muted loop playsinline></video>
+        </div>
+      </div>
+      <div class="demo-clip">
+        <p class="demo-clip-label">3. Marked as published</p>
+        <p class="demo-clip-sub">The spreadsheet row updates itself. Nothing to track by hand.</p>
+        <div class="demo-frame">
+          <!--
+            PASTE THE REAL "MARKED AS PUBLISHED" DEMO VIDEO URL HERE once
+            it's ready — replace REPLACE-WITH-PUBLISHED-DEMO-VIDEO-URL.mp4
+            below. Shows the Airtable row flipping to a "Published" status
+            right after the post goes live, closing the loop.
+          -->
+          <video src="REPLACE-WITH-PUBLISHED-DEMO-VIDEO-URL.mp4" autoplay muted loop playsinline></video>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="problem">
+<section id="saas-model">
   <div class="wrap-narrow">
-    <p class="problem-text">Posting consistently on X takes remembering to log in at odd hours, and most people just don't. A few good days turn into a week of silence, momentum resets, and the account goes quiet again. <strong>The problem was never having something to say — it was showing up on time to say it.</strong></p>
+    <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <span class="eyebrow" style="text-align:center;">The old way</span>
+      <h2>How SaaS scheduling tools actually work</h2>
+    </div>
+    <div class="arch-track reveal" aria-hidden="true">
+      <div class="arch-node">
+        <div class="arch-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.2 9.1 17 2.5h-2l-5 5.8-4-5.8H2l6 8.7-6.3 7.3h2l5.4-6.2 4.3 6.2H18z"/></svg>
+        </div>
+        <div class="arch-label">Your X account</div>
+      </div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
+      <div class="arch-node arch-node-mid">
+        <div class="arch-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="9" width="12" height="8" rx="1.5"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></svg>
+        </div>
+        <div class="arch-label">Their SaaS platform</div>
+        <p class="arch-caption">Stores your content. Bills you monthly, for as long as you stay.</p>
+      </div>
+    </div>
+    <div class="check-list arch-bullets reveal">
+      <div class="check-item">
+        <div class="check-icon x-mark"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></div>
+        <p>A third party owns your data and your posting schedule.</p>
+      </div>
+      <div class="check-item">
+        <div class="check-icon x-mark"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></div>
+        <p>You pay every month, for as long as you stay.</p>
+      </div>
+    </div>
+    <p class="arch-note reveal">You connect your X account to their platform, and your content and posting history live on their servers, not yours. You don't own that data, you're renting access to it. <strong>Cancel, and everything you built there goes with it.</strong></p>
   </div>
 </section>
 
-<section id="included">
+<section id="architecture">
   <div class="wrap-narrow">
-    <div class="section-head">
+    <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <span class="eyebrow" style="text-align:center;">The alternative</span>
+      <h2>How this automation works</h2>
+      <p style="margin-left:auto;margin-right:auto;">Three pieces, connected by API. Nothing in the middle ever stores your content.</p>
+    </div>
+    <div class="arch-track reveal" aria-hidden="true">
+      <div class="arch-node">
+        <div class="arch-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>
+        </div>
+        <div class="arch-label">Your Airtable or spreadsheet</div>
+      </div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
+      <div class="arch-node arch-node-mid">
+        <div class="arch-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11 1 3 12h6l-1 7 8-11h-6l1-7z"/></svg>
+        </div>
+        <div class="arch-label">Make.com or n8n</div>
+        <p class="arch-caption">Passes your content through, in that moment. Never stores it.</p>
+      </div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
+      <div class="arch-node">
+        <div class="arch-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.2 9.1 17 2.5h-2l-5 5.8-4-5.8H2l6 8.7-6.3 7.3h2l5.4-6.2 4.3 6.2H18z"/></svg>
+        </div>
+        <div class="arch-label">X, through its own API</div>
+      </div>
+    </div>
+    <div class="check-list arch-bullets reveal">
+      <div class="check-item">
+        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>You own your data and your posting schedule.</p>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p>One-time setup fee.</p>
+      </div>
+    </div>
+    <p class="arch-note reveal">Your content moves straight from your spreadsheet to X's own API. Make.com or n8n only relays it in that moment. It's not a database, and it doesn't keep a copy.</p>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <span class="eyebrow">The comparison</span>
+      <h2>This workflow vs. a SaaS scheduler</h2>
+      <p>Same job, done, but the difference is in who's holding your data and how far the system can go.</p>
+    </div>
+    <div class="compare reveal">
+      <div class="compare-row compare-header">
+        <div class="compare-cell left">SaaS scheduler</div>
+        <div class="compare-cell right">X Content Publisher</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell left"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></span>Your X account connects to a company's platform, not just to X</div>
+        <div class="compare-cell right"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your own data, in your own Airtable, posted straight through X's own API</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell left"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></span>They store your content and posting history on their servers</div>
+        <div class="compare-cell right"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>No content publishing tool ever holds your content. It lives only in your spreadsheet</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell left"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></span>Monthly subscription, for as long as you use it</div>
+        <div class="compare-cell right"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>One-time setup fee. You own it after that</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell left"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></span>Locked to whatever the tool was built to do</div>
+        <div class="compare-cell right"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Fully customizable: add AI content generation, email, SMS, Slack, or any other step to the same workflow</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell left"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></span>If they're breached, acquired, or change policy, you're exposed</div>
+        <div class="compare-cell right"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Nothing to expose: there's no third party in the loop</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="included" class="tint">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <span class="eyebrow">What you get</span>
       <h2>What's included</h2>
+      <p>Everything set up, owned, and supported. Not a workflow handed off and left for you to figure out.</p>
     </div>
-    <div class="check-list">
-      <div class="check-item">
-        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <p>A fully custom automation built on your own Airtable + Make.com (or n8n) account.</p>
+    <div class="included-grid reveal">
+      <div class="included-card">
+        <div class="included-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="12" height="14" rx="1.5"/><rect x="7" y="3" width="6" height="3" rx="1"/><path d="M7.5 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Full done-for-you setup</h3>
+        <p>I build, configure, and test the entire automation for you. It's ready to use from day one. Nothing for you to piece together.</p>
       </div>
-      <div class="check-item">
-        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <p>No SaaS subscription, no recurring fee — Make's free tier covers typical usage.</p>
+      <div class="included-card">
+        <div class="included-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7"/><path d="M10 6.5v7M12.3 8.2c-.3-.9-1.2-1.4-2.3-1.4-1.3 0-2.4.7-2.4 1.8s1 1.5 2.4 1.9c1.4.4 2.4.8 2.4 1.9s-1.1 1.8-2.4 1.8c-1.1 0-2-.5-2.3-1.4" stroke-linecap="round"/><path d="M4 4l12 12" stroke-linecap="round"/></svg></div>
+        <h3>No workflow subscription</h3>
+        <p>A one-time setup fee. No recurring fee for workflow maintenance.</p>
       </div>
-      <div class="check-item">
-        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <p>You own 100% of the setup and the data. Nothing is licensed back to me.</p>
+      <div class="included-card">
+        <div class="included-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4.5h12v9.5H8.5L4 17V4.5z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>You can always reach me</h3>
+        <p>Questions, tweaks, or anything you want changed down the line: message me directly and I'll help you sort it out. No ticket queue, no outsourced support.</p>
       </div>
-      <div class="check-item bonus">
-        <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <p><strong>Bonus:</strong> the exact AI image-generation prompt and workflow I use to create visuals for posts, included free.</p>
+      <div class="included-card">
+        <div class="included-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 13.5l4.5-4.5 3 3 6-6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 5.5h4v4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Room to grow</h3>
+        <p>Add new steps to the same workflow later, like email, SMS, Slack, or multi-platform posting, without rebuilding anything.</p>
+      </div>
+      <div class="included-card">
+        <div class="included-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2.5l6 2.7v4.4c0 4-2.6 6.6-6 7.9-3.4-1.3-6-3.9-6-7.9V5.2l6-2.7z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>You own 100% of it</h3>
+        <p>The setup and the data are entirely yours. Nothing is stored with, or handed off to, a third party.</p>
       </div>
     </div>
-  </div>
-</section>
 
-<section id="trust">
-  <div class="wrap-narrow">
-    <div class="section-head">
-      <h2>Why this runs on your own accounts</h2>
-    </div>
-    <div class="trust-box">
-      <p>Every scheduling tool like Hypefury, Typefully, or Buffer requires connecting your X account to <strong>their</strong> platform. That means a third-party company has standing access to your content, your posting data, and your account, for as long as you use it.</p>
-      <p>This automation runs entirely on accounts you already own — your Airtable, your Make.com or n8n. Nothing passes through a third party. If that company gets breached, gets acquired, or quietly changes its policies, none of it touches you, because none of it was ever theirs to touch.</p>
+    <div class="bonus-card reveal">
+      <span class="bonus-badge">Bonus</span>
+      <div class="bonus-visual" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="14" height="14" rx="2"/><circle cx="7.3" cy="7.3" r="1.3" fill="currentColor" stroke="none"/><path d="M3 14l4-4 3 3 3-3.5 4 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="bonus-content">
+        <h3>Automated, on-brand post visuals</h3>
+        <p>An AI image-generation app and prompt system, built around your brand guidelines. It reads each post's copy and generates a high-end visual to match, automatically. Included free with setup.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="faq">
   <div class="wrap-narrow">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <span class="eyebrow">FAQ</span>
       <h2>Before you ask</h2>
     </div>
-    <div class="faq-list">
+    <div class="faq-list reveal">
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">Can't I just build this myself with an AI tool?<span class="icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" id="faq-a-1"><p>You could try, but the integration involves real technical challenges — API rate limits, authentication expiry, formatting mismatches between tools — that are already solved here. You get a working system on day one instead of a weekend of debugging.</p></div>
+        <div class="faq-a" id="faq-a-1"><p>You could try, but the integration involves real technical challenges (API rate limits, authentication expiry, formatting mismatches between tools) that are already solved here. You get a working system on day one instead of a weekend of debugging.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">Do I need to be technical to use this?<span class="icon" aria-hidden="true">+</span></button>
@@ -530,24 +1298,57 @@
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">What if I want more than basic posting?<span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-a-3"><p>Custom logic, AI-generated content, or multi-platform posting are all available as add-ons, quoted based on what you need.</p></div>
       </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4">Already using Hypefury, Buffer, or Typefully?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-4"><p>I can migrate your existing content and schedule over for you as part of the setup, so there's no need to recreate everything from scratch.</p></div>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="pricing">
   <div class="wrap-narrow">
-    <div class="pricing-box">
+    <div class="pricing-box reveal">
       <h2>$199, one time.<br>No subscription.</h2>
+      <div class="check-list">
+        <div class="check-item">
+          <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Custom X auto-posting automation, fully built and tested for you.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Runs on your own Airtable + Make.com (or n8n) account. You own everything.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>No SaaS subscription, no recurring fee.</p>
+        </div>
+        <div class="check-item">
+          <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Free migration of your existing content and schedule if you're switching from another tool.</p>
+        </div>
+        <div class="check-item bonus">
+          <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p><strong>Bonus:</strong> the AI image-generation prompt and workflow used to create post visuals, included free.</p>
+        </div>
+        <div class="check-item bonus">
+          <div class="check-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Optional add-ons available afterward: AI-written content, multi-platform posting, custom logic, quoted separately.</p>
+        </div>
+      </div>
       <p class="price-line">Most scheduling tools charge $10–20 a month, forever. This is a one-time setup fee, and you own it after that.</p>
-      <p class="addon-line">Want AI-written content or advanced logic added? That's available too — just ask.</p>
       <div class="hero-actions">
-        <a class="btn-primary" href="contact.html">Get started</a>
+        <a class="btn-primary" href="get-started.html">Get started</a>
       </div>
     </div>
   </div>
 </section>
 
 </main>
+
+<div class="mobile-cta" id="mobileCta">
+  <a class="btn-primary" href="get-started.html">Get started</a>
+</div>
 
 <site-footer></site-footer>
 
@@ -569,6 +1370,43 @@
       }
     });
   });
+
+  // Scroll-reveal: progressive enhancement only (html.js + motion-safe
+  // CSS above hide .reveal elements pre-intersection). If IntersectionObserver
+  // isn't supported, just reveal everything immediately.
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+  }
+
+  // Sticky mobile CTA: show once past the hero, hide again once the
+  // real pricing section is on screen so there's never a redundant
+  // duplicate CTA stacked on top of it.
+  (function(){
+    const bar = document.getElementById('mobileCta');
+    const hero = document.querySelector('header.hero');
+    const pricing = document.getElementById('pricing');
+    if(!bar || !hero || !pricing || !('IntersectionObserver' in window)) return;
+    let pastHero = false, atPricing = false;
+    const sync = () => bar.classList.toggle('show', pastHero && !atPricing);
+    new IntersectionObserver((entries) => {
+      entries.forEach(entry => { pastHero = !entry.isIntersecting; });
+      sync();
+    }, { rootMargin: '-1px 0px 0px 0px' }).observe(hero);
+    new IntersectionObserver((entries) => {
+      entries.forEach(entry => { atPricing = entry.isIntersecting; });
+      sync();
+    }, { threshold: 0.1 }).observe(pricing);
+  })();
 </script>
 <script src="site-nav.js" defer></script>
 </body>

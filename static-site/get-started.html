@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started | damirbuilds</title>
+<meta name="description" content="Set up your X Content Publisher automation in three quick steps: your info, your setup preferences, and payment.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://damirbuilds.com/get-started.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* Dark-only, no nav — a checkout-style flow keeps every exit off the
+     page on purpose, same reasoning as the x-content-publisher page it
+     continues from. */
+  body{ overflow-x:hidden; }
+
+  .onboard-shell{
+    max-width:640px;
+    margin:0 auto;
+    padding:56px 32px 96px;
+  }
+  @media (max-width:640px){
+    .onboard-shell{ padding:40px 20px 72px; }
+  }
+
+  .onboard-header{ text-align:center; margin-bottom:40px; }
+  .onboard-brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--muted);
+    margin-bottom:20px;
+  }
+  .onboard-brand span{ color:var(--hot); }
+  .onboard-header h1{
+    font-size:clamp(24px, 4vw, 30px);
+    color:var(--text);
+  }
+  .onboard-header p{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:15px;
+  }
+
+  /* ---------- PERSONAL INTRO ---------- */
+  /* A real face and a genuinely warm line reduce the "am I about to pay
+     a stranger" hesitation right before someone commits, better than
+     any more copy explaining the product could. */
+  .onboard-intro{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin:0 auto 22px;
+    padding:8px 18px 8px 8px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:999px;
+    width:fit-content;
+    max-width:100%;
+  }
+  .onboard-intro img{
+    width:44px; height:44px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+  }
+  .onboard-intro span{
+    font-size:13.5px;
+    color:var(--body-text);
+    text-align:left;
+  }
+  .onboard-intro strong{ color:var(--text); }
+
+  /* ---------- STEPPER ---------- */
+  .stepper{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0;
+    margin-bottom:36px;
+  }
+  .step-node{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .step-circle{
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1.5px solid var(--line);
+    background:var(--panel);
+    color:var(--muted-2);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    transition:border-color .2s ease, background .2s ease, color .2s ease;
+  }
+  .step-label{
+    font-size:12px;
+    color:var(--muted-2);
+    white-space:nowrap;
+  }
+  .step-node.active .step-circle{
+    border-color:var(--hot);
+    background:rgba(var(--hot-rgb),0.12);
+    color:var(--hot);
+  }
+  .step-node.active .step-label{ color:var(--text); }
+  .step-node.done .step-circle{
+    border-color:var(--hot);
+    background:var(--hot);
+    color:#0A0D10;
+  }
+  .step-node.done .step-label{ color:var(--muted); }
+  .step-connector{
+    flex:1;
+    height:1.5px;
+    max-width:64px;
+    background:var(--line);
+    margin:0 6px 20px;
+    transition:background .2s ease;
+  }
+  .step-connector.done{ background:var(--hot); }
+
+  /* ---------- FORM CARD ---------- */
+  .form-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:16px;
+    padding:36px 32px;
+  }
+  @media (max-width:480px){ .form-card{ padding:26px 20px; } }
+
+  .form-step{ display:none; }
+  .form-step.active{ display:block; }
+
+  .form-step h2{
+    font-size:20px;
+    color:var(--text);
+    margin-bottom:6px;
+  }
+  .form-step > p.step-intro{
+    color:var(--muted);
+    font-size:14.5px;
+    margin-bottom:28px;
+  }
+
+  .field{ margin-bottom:20px; }
+  .field label{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+    margin-bottom:8px;
+  }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field select{
+    width:100%;
+    padding:12px 14px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--text);
+    font-size:15px;
+    font-family:inherit;
+    transition:border-color .15s ease;
+  }
+  .field input::placeholder{ color:var(--muted-2); }
+  .field input:focus, .field select:focus{
+    outline:none;
+    border-color:var(--hot);
+  }
+  .field-hint{ font-size:12.5px; color:var(--muted-2); margin-top:6px; }
+  .field-error{
+    font-size:12.5px;
+    color:var(--hot);
+    margin-top:6px;
+    display:none;
+  }
+  .field.invalid input, .field.invalid select{ border-color:var(--hot); }
+  .field.invalid .field-error{ display:block; }
+
+  .handle-input{ position:relative; }
+  .handle-input span{
+    position:absolute;
+    left:14px; top:50%;
+    transform:translateY(-50%);
+    color:var(--muted-2);
+    font-size:15px;
+    pointer-events:none;
+  }
+  .handle-input input{ padding-left:26px !important; }
+
+  /* ---------- CHOICE CARDS (step 2) ---------- */
+  .choice-group{ margin-bottom:26px; }
+  .choice-group > label.group-label{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+    margin-bottom:10px;
+  }
+  .choice-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  @media (max-width:480px){ .choice-grid{ grid-template-columns:1fr; } }
+  .choice-grid.choice-grid-3{ grid-template-columns:repeat(3, 1fr); }
+  @media (max-width:560px){ .choice-grid.choice-grid-3{ grid-template-columns:1fr; } }
+
+  .choice-card{
+    position:relative;
+    display:block;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    border-radius:10px;
+    padding:14px 16px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .choice-card input{ position:absolute; opacity:0; pointer-events:none; }
+  .choice-card .choice-title{
+    display:block;
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .choice-card .choice-sub{
+    display:block;
+    font-size:12.5px;
+    color:var(--muted-2);
+    margin-top:3px;
+  }
+  .choice-card:hover{ border-color:var(--muted-2); }
+  .choice-card:has(input:checked){
+    border-color:var(--hot);
+    background:rgba(var(--hot-rgb),0.08);
+  }
+  .choice-card:has(input:checked) .choice-title{ color:var(--hot); }
+  .choice-card .choice-check{
+    position:absolute;
+    top:12px; right:12px;
+    width:16px; height:16px;
+    border-radius:50%;
+    border:1.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .choice-card:has(input:checked) .choice-check{
+    border-color:var(--hot);
+    background:var(--hot);
+  }
+  .choice-card .choice-check svg{
+    width:9px; height:9px;
+    color:#0A0D10;
+    opacity:0;
+  }
+  .choice-card:has(input:checked) .choice-check svg{ opacity:1; }
+
+  /* ---------- PAYMENT (step 3) ---------- */
+  .payment-options{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .payment-option{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    border-radius:10px;
+    padding:16px 18px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .payment-option input{ position:absolute; opacity:0; pointer-events:none; }
+  .payment-option:hover{ border-color:var(--muted-2); }
+  .payment-option:has(input:checked){
+    border-color:var(--hot);
+    background:rgba(var(--hot-rgb),0.08);
+  }
+  .payment-icon{
+    flex-shrink:0;
+    width:38px; height:38px;
+    border-radius:9px;
+    background:var(--panel-3);
+    color:var(--text);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .payment-icon svg{ width:19px; height:19px; }
+  /* Each method gets a distinct, brand-adjacent tint (crypto gold,
+     Wise-style teal, bank blue) so the row reads at a glance instead of
+     three identical gray boxes — without using any real trademarked
+     logo. */
+  .payment-icon.icon-crypto{ background:rgba(224,169,61,0.16); color:var(--warm); font-size:17px; font-weight:700; }
+  .payment-icon.icon-wise{ background:rgba(0,181,155,0.16); color:#00B59B; }
+  .payment-icon.icon-bank{ background:rgba(91,155,217,0.16); color:var(--cold); }
+  .payment-option .payment-title{ font-size:15px; font-weight:600; color:var(--text); }
+  .payment-option .payment-sub{ font-size:12.5px; color:var(--muted-2); margin-top:2px; }
+  .payment-option .choice-check{
+    position:absolute;
+    top:50%; right:16px;
+    transform:translateY(-50%);
+    width:18px; height:18px;
+    border-radius:50%;
+    border:1.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .payment-option:has(input:checked) .choice-check{
+    border-color:var(--hot);
+    background:var(--hot);
+  }
+  .payment-option .choice-check svg{ width:10px; height:10px; color:#0A0D10; opacity:0; }
+  .payment-option:has(input:checked) .choice-check svg{ opacity:1; }
+
+  .payment-detail{
+    display:none;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--panel-2);
+    padding:22px 22px;
+    margin-bottom:8px;
+  }
+  .payment-detail.active{ display:block; }
+  .payment-detail h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:15px;
+    color:var(--text);
+    margin-bottom:10px;
+  }
+  .payment-detail p{
+    font-size:14px;
+    color:var(--body-text);
+    line-height:1.6;
+    margin-bottom:10px;
+  }
+  .payment-detail dl{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:6px 14px;
+    font-size:13.5px;
+    margin:14px 0;
+  }
+  .payment-detail dt{ color:var(--muted-2); }
+  .payment-detail dd{ color:var(--text); font-weight:500; overflow-wrap:anywhere; }
+  .payment-note{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    border:1px solid rgba(var(--hot-rgb),0.3);
+    background:rgba(var(--hot-rgb),0.08);
+    border-radius:8px;
+    padding:12px 14px;
+    margin-top:14px;
+  }
+  .payment-note svg{ width:16px; height:16px; color:var(--hot); flex-shrink:0; margin-top:1px; }
+  .payment-note p{ margin:0; font-size:13px; color:var(--text); line-height:1.5; }
+  .payment-note strong{ color:var(--hot); }
+  .payment-cta{ margin-top:16px; }
+
+  /* ---------- BUTTON ROW ---------- */
+  .btn-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:32px;
+  }
+  .btn-back{
+    font-size:14px;
+    color:var(--muted);
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:10px 4px;
+    transition:color .15s ease;
+  }
+  .btn-back:hover{ color:var(--text); }
+  button.btn-primary{
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .btn-row .btn-primary{ margin-left:auto; }
+
+  .summary-line{
+    font-size:13px;
+    color:var(--muted-2);
+    text-align:center;
+    margin-top:22px;
+  }
+
+  /* ---------- SUCCESS STATE ---------- */
+  .success-state{ display:none; text-align:center; }
+  .success-state.active{ display:block; }
+  .success-icon{
+    width:56px; height:56px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:rgba(var(--hot-rgb),0.12);
+    color:var(--hot);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .success-icon svg{ width:26px; height:26px; }
+  .success-state h2{ font-size:22px; color:var(--text); margin-bottom:10px; }
+  .success-state p{ color:var(--muted); font-size:15px; max-width:44ch; margin:0 auto; }
+
+  .submit-error{
+    display:none;
+    text-align:center;
+    font-size:13.5px;
+    color:var(--hot);
+    margin-top:16px;
+  }
+  .submit-error.active{ display:block; }
+
+  .reassure-line{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted-2);
+    margin-top:18px;
+    line-height:1.5;
+  }
+
+  /* ---------- EXIT-INTENT MODAL ---------- */
+  .exit-overlay{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    background:rgba(6,8,10,0.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .exit-overlay.show{ opacity:1; pointer-events:auto; }
+  .exit-modal{
+    position:relative;
+    max-width:420px;
+    width:100%;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:16px;
+    padding:32px 28px;
+    text-align:center;
+    transform:translateY(10px);
+    transition:transform .2s ease;
+  }
+  .exit-overlay.show .exit-modal{ transform:translateY(0); }
+  .exit-modal img{
+    width:56px; height:56px;
+    border-radius:50%;
+    object-fit:cover;
+    margin:0 auto 16px;
+  }
+  .exit-modal h2{ font-size:26px; line-height:1.2; color:var(--text); margin-bottom:12px; }
+  .exit-modal p{ font-size:14.5px; color:var(--muted); line-height:1.55; margin-bottom:22px; }
+  .exit-modal .btn-primary{ width:100%; text-align:center; box-sizing:border-box; }
+  .exit-modal .exit-secondary{
+    display:block;
+    margin-top:14px;
+    font-size:13.5px;
+    color:var(--muted-2);
+    background:none;
+    border:none;
+    cursor:pointer;
+    width:100%;
+  }
+  .exit-modal .exit-secondary:hover{ color:var(--muted); }
+  .exit-close{
+    position:absolute;
+    top:14px; right:14px;
+    width:28px; height:28px;
+    border-radius:50%;
+    background:none;
+    border:none;
+    color:var(--muted-2);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .15s ease, color .15s ease;
+  }
+  .exit-close:hover{ background:var(--panel-2); color:var(--text); }
+  .exit-close svg{ width:14px; height:14px; }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+<div class="onboard-shell">
+  <div class="onboard-header">
+    <div class="onboard-brand">damir<span>builds</span></div>
+    <div class="onboard-intro">
+      <img src="damir-avatar.webp" width="44" height="44" alt="Portrait of Damir" loading="lazy" decoding="async">
+      <span><strong>Excited to work with you!</strong><br>I'll be building this myself, personally.</span>
+    </div>
+    <h1>Let's get your automation set up</h1>
+    <p>Three quick steps. I'll have it live within 48 hours.</p>
+  </div>
+
+  <div class="stepper" aria-hidden="true">
+    <div class="step-node active" data-step-node="1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Your info</div>
+    </div>
+    <div class="step-connector" data-connector="1"></div>
+    <div class="step-node" data-step-node="2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Setup</div>
+    </div>
+    <div class="step-connector" data-connector="2"></div>
+    <div class="step-node" data-step-node="3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Payment</div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <form id="onboardForm" action="https://formspree.io/f/REPLACE-WITH-YOUR-FORM-ID" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="New X Content Publisher signup">
+
+      <!-- ---------------- STEP 1: PERSONAL INFO ---------------- -->
+      <div class="form-step active" data-step="1">
+        <h2>Your info</h2>
+        <p class="step-intro">So I know who I'm building this for and how to reach you.</p>
+
+        <div class="field" data-field="name">
+          <label for="fullName">Full name</label>
+          <input type="text" id="fullName" name="Full name" placeholder="Jane Doe" autocomplete="name" required>
+          <p class="field-error">Please enter your name.</p>
+        </div>
+
+        <div class="field" data-field="email">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="Email" placeholder="jane@example.com" autocomplete="email" required>
+          <p class="field-error">Please enter a valid email.</p>
+        </div>
+
+        <div class="field" data-field="handle">
+          <label for="xHandle">X account handle</label>
+          <div class="handle-input">
+            <span>@</span>
+            <input type="text" id="xHandle" name="X handle" placeholder="yourhandle" autocomplete="off" required>
+          </div>
+          <p class="field-hint">The account this automation will post to.</p>
+          <p class="field-error">Please enter your X handle.</p>
+        </div>
+
+        <div class="btn-row">
+          <span></span>
+          <button type="button" class="btn-primary" data-next="2">Continue</button>
+        </div>
+      </div>
+
+      <!-- ---------------- STEP 2: SETUP CONFIGURATION ---------------- -->
+      <div class="form-step" data-step="2">
+        <h2>Setup configuration</h2>
+        <p class="step-intro">A few preferences so the workflow fits how you already work.</p>
+
+        <div class="choice-group">
+          <label class="group-label">Spreadsheet tool</label>
+          <div class="choice-grid">
+            <label class="choice-card">
+              <input type="radio" name="Spreadsheet tool" value="Airtable" checked>
+              <span class="choice-title">Airtable</span>
+              <span class="choice-sub">Recommended</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="Spreadsheet tool" value="Google Sheets">
+              <span class="choice-title">Google Sheets</span>
+              <span class="choice-sub">Also supported</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="choice-group">
+          <label class="group-label">Automation platform</label>
+          <div class="choice-grid">
+            <label class="choice-card">
+              <input type="radio" name="Automation platform" value="Make.com" checked>
+              <span class="choice-title">Make.com</span>
+              <span class="choice-sub">Recommended, free plan works</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="Automation platform" value="n8n">
+              <span class="choice-title">n8n</span>
+              <span class="choice-sub">Paid plan</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="choice-group">
+          <label class="group-label">Posting frequency</label>
+          <div class="choice-grid choice-grid-3">
+            <label class="choice-card">
+              <input type="radio" name="Posting frequency" value="Daily" checked>
+              <span class="choice-title">Daily</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="Posting frequency" value="A few times a week">
+              <span class="choice-title">A few / week</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="Posting frequency" value="Weekly">
+              <span class="choice-title">Weekly</span>
+              <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-back" data-back="1">&larr; Back</button>
+          <button type="button" class="btn-primary" data-next="3">Continue</button>
+        </div>
+      </div>
+
+      <!-- ---------------- STEP 3: PAYMENT ---------------- -->
+      <div class="form-step" data-step="3">
+        <h2>Payment</h2>
+        <p class="step-intro">$199, one time. Pick whichever method works for you.</p>
+
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="Payment method" value="Crypto" data-payment="crypto" checked>
+            <span class="payment-icon icon-crypto" aria-hidden="true">&#8383;</span>
+            <span>
+              <span class="payment-title">Crypto</span>
+              <span class="payment-sub">Pay with BTC, ETH, USDC and more</span>
+            </span>
+            <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </label>
+
+          <label class="payment-option">
+            <input type="radio" name="Payment method" value="Wise" data-payment="wise">
+            <span class="payment-icon icon-wise"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l5-6 4 4 5-6"/><path d="M12 2h5v5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>
+              <span class="payment-title">Wise</span>
+              <span class="payment-sub">Zero fees. For those who already have a Wise account</span>
+            </span>
+            <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </label>
+
+          <label class="payment-option">
+            <input type="radio" name="Payment method" value="Bank transfer" data-payment="bank">
+            <span class="payment-icon icon-bank"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8l7-4.5L17 8"/><path d="M4 8.5v7M8 8.5v7M12 8.5v7M16 8.5v7" stroke-linecap="round"/><path d="M2.5 17h15" stroke-linecap="round"/></svg></span>
+            <span>
+              <span class="payment-title">Bank transfer</span>
+              <span class="payment-sub">Direct to my bank account</span>
+            </span>
+            <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </label>
+        </div>
+
+        <div class="payment-detail active" data-payment-detail="crypto">
+          <h3>Pay with crypto</h3>
+          <p>Send $199 (or equivalent) to one of the addresses below.</p>
+          <dl>
+            <dt>BTC</dt><dd>REPLACE-WITH-BTC-ADDRESS</dd>
+            <dt>ETH</dt><dd>REPLACE-WITH-ETH-ADDRESS</dd>
+            <dt>USDC (network)</dt><dd>REPLACE-WITH-USDC-ADDRESS</dd>
+          </dl>
+          <div class="payment-note">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
+            <p><strong>Important:</strong> crypto transfers don't carry a reference field, so email the transaction hash and the email you used above to <a class="link-quiet" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a> so I can match your payment to your setup.</p>
+          </div>
+        </div>
+
+        <div class="payment-detail" data-payment-detail="wise">
+          <h3>Pay with Wise</h3>
+          <p>Zero fees. Send $199 to the Wise account below, or use the link to pay directly.</p>
+          <dl>
+            <dt>Name</dt><dd>REPLACE-WITH-WISE-ACCOUNT-NAME</dd>
+            <dt>Wise tag / email</dt><dd>REPLACE-WITH-WISE-TAG-OR-EMAIL</dd>
+          </dl>
+          <a class="btn-primary payment-cta" href="REPLACE-WITH-WISE-PAYMENT-LINK" target="_blank" rel="noopener">Pay $199 with Wise</a>
+          <div class="payment-note">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
+            <p><strong>Important:</strong> add the email you used above in the payment notes/reference, so I can match your payment to your setup.</p>
+          </div>
+        </div>
+
+        <div class="payment-detail" data-payment-detail="bank">
+          <h3>Pay by bank transfer</h3>
+          <p>Send $199 using the account details below.</p>
+          <dl>
+            <dt>Account name</dt><dd>REPLACE-WITH-ACCOUNT-NAME</dd>
+            <dt>Account number / IBAN</dt><dd>REPLACE-WITH-ACCOUNT-NUMBER</dd>
+            <dt>SWIFT / BIC</dt><dd>REPLACE-WITH-SWIFT-BIC</dd>
+            <dt>Bank name</dt><dd>REPLACE-WITH-BANK-NAME</dd>
+          </dl>
+          <div class="payment-note">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
+            <p><strong>Important:</strong> add the email you used above in the transfer notes/reference, so I can match your payment to your setup.</p>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-back" data-back="2">&larr; Back</button>
+          <button type="submit" class="btn-primary" id="submitBtn">Complete signup</button>
+        </div>
+        <p class="submit-error" id="submitError">Something went wrong sending your info. Please try again, or DM me directly at <a class="link-quiet" href="https://x.com/damirbuilds" target="_blank" rel="noopener">@damirbuilds</a>.</p>
+        <p class="reassure-line">Built and supported personally by me, not an outsourced team. Your info is only ever used to set up your automation.</p>
+      </div>
+    </form>
+
+    <div class="success-state" id="successState">
+      <div class="success-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>You're all set</h2>
+      <p>Thanks — I've got your info. Complete payment above if you haven't yet, and I'll have your automation live within 48 hours. I'll reach out at the email you gave me if I need anything.</p>
+    </div>
+  </div>
+
+  <p class="summary-line">Questions before you finish? DM me at <a class="link-quiet" href="https://x.com/damirbuilds" target="_blank" rel="noopener">@damirbuilds</a>.</p>
+</div>
+</main>
+
+<div class="exit-overlay" id="exitOverlay" role="dialog" aria-modal="true" aria-labelledby="exitTitle">
+  <div class="exit-modal">
+    <button type="button" class="exit-close" id="exitClose" aria-label="Close">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg>
+    </button>
+    <img src="damir-avatar.webp" width="56" height="56" alt="Portrait of Damir" loading="lazy" decoding="async">
+    <h2 id="exitTitle">Wait, before you go!</h2>
+    <p>Setup only takes a few minutes, and I build it personally within 48 hours. If something's holding you back, just ask, I'm glad to help before you commit to anything.</p>
+    <button type="button" class="btn-primary" id="exitContinue">Yes, let's finish this</button>
+    <a class="exit-secondary" href="https://x.com/damirbuilds" target="_blank" rel="noopener">I have a question first</a>
+  </div>
+</div>
+
+<site-footer></site-footer>
+
+<script>
+  (function(){
+    const form = document.getElementById('onboardForm');
+    const steps = Array.from(document.querySelectorAll('.form-step'));
+    const stepNodes = Array.from(document.querySelectorAll('.step-node'));
+    const connectors = Array.from(document.querySelectorAll('.step-connector'));
+    const formCard = document.querySelector('.form-card');
+    const successState = document.getElementById('successState');
+    const submitError = document.getElementById('submitError');
+
+    function goToStep(n){
+      steps.forEach(s => s.classList.toggle('active', s.dataset.step === String(n)));
+      stepNodes.forEach(node => {
+        const num = Number(node.dataset.stepNode);
+        node.classList.toggle('active', num === n);
+        node.classList.toggle('done', num < n);
+      });
+      connectors.forEach(c => {
+        c.classList.toggle('done', Number(c.dataset.connector) < n);
+      });
+      formCard.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    function validateStep(stepEl){
+      let valid = true;
+      stepEl.querySelectorAll('.field').forEach(field => {
+        const input = field.querySelector('input, select');
+        if(!input) return;
+        let ok = true;
+        if(input.required && !input.value.trim()) ok = false;
+        if(input.type === 'email' && input.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) ok = false;
+        field.classList.toggle('invalid', !ok);
+        if(!ok) valid = false;
+      });
+      return valid;
+    }
+
+    document.querySelectorAll('[data-next]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const currentStep = btn.closest('.form-step');
+        if(!validateStep(currentStep)) return;
+        goToStep(Number(btn.dataset.next));
+      });
+    });
+    document.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => goToStep(Number(btn.dataset.back)));
+    });
+
+    // Payment method switch
+    document.querySelectorAll('[data-payment]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('.payment-detail').forEach(d => {
+          d.classList.toggle('active', d.dataset.paymentDetail === radio.dataset.payment);
+        });
+      });
+    });
+
+    // AJAX submit to Formspree, with a plain fallback if fetch/JS fails.
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const step3 = steps.find(s => s.dataset.step === '3');
+      if(!validateStep(step3)) return;
+      submitError.classList.remove('active');
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      try{
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if(res.ok){
+          formCard.querySelector('form').style.display = 'none';
+          document.querySelector('.stepper').style.display = 'none';
+          successState.classList.add('active');
+          successState.scrollIntoView({ behavior:'smooth', block:'start' });
+        } else {
+          throw new Error('Submit failed');
+        }
+      } catch(err){
+        submitError.classList.add('active');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Complete signup';
+      }
+    });
+
+    // Exit-intent: fires once, only on a genuine mouse-leave toward the
+    // top of the viewport (the classic "heading for the tab bar" signal)
+    // and never once they've reached the success screen — there's
+    // nothing left to win back at that point.
+    const exitOverlay = document.getElementById('exitOverlay');
+    const exitClose = document.getElementById('exitClose');
+    const exitContinue = document.getElementById('exitContinue');
+    let exitShown = false;
+    function hideExit(){ exitOverlay.classList.remove('show'); }
+    function maybeShowExit(e){
+      if(exitShown || successState.classList.contains('active')) return;
+      if(e.clientY > 0) return;
+      exitShown = true;
+      exitOverlay.classList.add('show');
+      document.removeEventListener('mouseout', maybeShowExit);
+    }
+    document.addEventListener('mouseout', maybeShowExit);
+    exitClose.addEventListener('click', hideExit);
+    exitContinue.addEventListener('click', hideExit);
+    exitOverlay.addEventListener('click', (e) => { if(e.target === exitOverlay) hideExit(); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') hideExit(); });
+  })();
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>

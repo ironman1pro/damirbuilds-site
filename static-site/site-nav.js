@@ -176,11 +176,20 @@
       document.body.appendChild(ring);
     });
 
-    var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0, hasMoved = false;
 
     window.addEventListener('mousemove', function(e){
       mouseX = e.clientX; mouseY = e.clientY;
       dot.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) translate(-50%,-50%)';
+      // Stay hidden (opacity:0 in CSS) until this first real mousemove —
+      // otherwise both elements render pinned to the top-left corner
+      // the instant the page loads, before the pointer ever moved there.
+      if(!hasMoved){
+        hasMoved = true;
+        ringX = mouseX; ringY = mouseY;
+        dot.classList.add('is-visible');
+        ring.classList.add('is-visible');
+      }
     });
 
     function loop(){
