@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>X Content Publisher | damirbuilds</title>
 <meta name="description" content="A custom automation that publishes your X posts automatically from a simple spreadsheet. No SaaS scheduler, no subscription. Runs entirely on your own accounts.">
 <link rel="canonical" href="https://damirbuilds.com/x-content-publisher.html">
@@ -48,9 +49,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
-  /* This page is intentionally dark-only (data-theme="dark" is set on
-     <html> above, no toggle, no nav) — it's a single-offer, single-scroll
-     landing page, not part of the site's browsing chrome. */
+  /* This is a single-offer, single-scroll landing page with no site nav —
+     but it still respects the visitor's light/dark preference like the
+     rest of the site, via the floating toggle button below. */
 
   body{ overflow-x:hidden; }
 
@@ -222,8 +223,8 @@
   }
   .hero-intro strong{ color:var(--text); }
   h1.headline{
-    font-size:clamp(30px, 6vw, 46px);
-    max-width:18ch;
+    font-size:clamp(26px, 4.2vw, 38px);
+    max-width:30ch;
     margin:0 auto;
     color:var(--text);
   }
@@ -1007,6 +1008,11 @@
 <body>
 <script>document.documentElement.classList.add('js');</script>
 <a class="skip-link" href="#main">Skip to content</a>
+
+<button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode" style="position:fixed; top:16px; right:16px; z-index:60; background:var(--bg);">
+  <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
+  <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
+</button>
 
 <a class="announce-bar" href="#pricing">I build these personally, one at a time. Live in 48 hours. Only a few spots open each month <span>→</span></a>
 
