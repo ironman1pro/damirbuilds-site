@@ -42,7 +42,9 @@
     { "@type": "Question", "name": "Do I have to give you access to my CRM before I even see it work?", "acceptedAnswer": { "@type": "Answer", "text": "No. I build it first against a replica of your actual form. You test it freely, no access shared at all. Only once you've approved it do we connect it to your real leads, scoped to the minimum needed." } },
     { "@type": "Question", "name": "What if I want to keep using this after the pilot?", "acceptedAnswer": { "@type": "Answer", "text": "Continue as-is, or have the workflow migrated into your own automation account for full ownership. Either way, it keeps running." } },
     { "@type": "Question", "name": "I already have a CRM with automation features. Why do I need this?", "acceptedAnswer": { "@type": "Answer", "text": "Most CRMs handle routing, reminders, and pipelines well. Almost none reply to a brand-new lead, personally and instantly, within the first minute. That gap is exactly what this fills." } },
-    { "@type": "Question", "name": "Will this work with my form or CRM?", "acceptedAnswer": { "@type": "Answer", "text": "Built to work with most common form tools and CRMs. We confirm compatibility before anything starts." } }
+    { "@type": "Question", "name": "Will this work with my form or CRM?", "acceptedAnswer": { "@type": "Answer", "text": "Built to work with most common form tools and CRMs. We confirm compatibility before anything starts." } },
+    { "@type": "Question", "name": "What does this run on, and are there any other costs?", "acceptedAnswer": { "@type": "Answer", "text": "It runs on n8n, a widely used, well-established automation platform, not some fragile no-name tool. n8n's free plan is enough to get it built and see it working firsthand. Once real lead volume starts flowing, most people upgrade to a paid n8n plan (a few dollars a month) for extra speed and headroom, it's a small step up on a platform you already own, not a new dependency on me. And that one plan isn't just for this: it covers every workflow you decide to add later too, so any future automation runs on the same account at no extra platform cost." } },
+    { "@type": "Question", "name": "How do I get started?", "acceptedAnswer": { "@type": "Answer", "text": "DM me on X with a link to your form and a bit about your business. I'll build the replica and have it ready for you to test within 48 hours, no cost or commitment until you approve it." } }
   ]
 }
 </script>
@@ -714,6 +716,45 @@
   </div>
 </section>
 
+<section id="faq">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2>Before you ask</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">What if it sends something embarrassing or wrong?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-1"><p>The logic is tested against your actual business and tone before it ever goes live. You review it before it's turned on. This isn't a generic chatbot guessing, it's built around how you'd actually respond.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">Do I have to give you access to my CRM before I even see it work?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-2"><p>No. I build it first against a replica of your actual form. You test it freely, no access shared at all. Only once you've approved it do we connect it to your real leads, scoped to the minimum needed.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">What if I want to keep using this after the pilot?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-3"><p>Continue as-is, or have the workflow migrated into your own automation account for full ownership. Either way, it keeps running.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4">I already have a CRM with automation features. Why do I need this?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-4"><p>Most CRMs handle routing, reminders, and pipelines well. Almost none reply to a brand-new lead, personally and instantly, within the first minute. That gap is exactly what this fills.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5">Will this work with my form or CRM?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-5"><p>Built to work with most common form tools and CRMs. We confirm compatibility before anything starts.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6">What does this run on, and are there any other costs?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-6"><p>It runs on n8n, a widely used, well-established automation platform, not some fragile no-name tool. n8n's free plan is enough to get it built and see it working firsthand. Once real lead volume starts flowing, most people upgrade to a paid n8n plan (a few dollars a month) for extra speed and headroom, it's a small step up on a platform you already own, not a new dependency on me. And that one plan isn't just for this: it covers every workflow you decide to add later too, so any future automation runs on the same account at no extra platform cost.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-7">How do I get started?<span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a-7"><p>DM me on X with a link to your form and a bit about your business. I'll build the replica and have it ready for you to test within 48 hours, no cost or commitment until you approve it. <a href="#pricing">Jump to pricing &rarr;</a></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="ownership" class="tint">
   <div class="wrap-narrow">
     <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;">
@@ -792,37 +833,6 @@
       <div class="compare-row">
         <div class="compare-cell left"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></span>Building it yourself: works in testing, then breaks on a case you didn't account for</div>
         <div class="compare-cell right"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Already handles the edge cases and errors. Live in 48 hours, not weeks of firefighting bugs</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="faq">
-  <div class="wrap-narrow">
-    <div class="section-head reveal">
-      <span class="eyebrow">FAQ</span>
-      <h2>Before you ask</h2>
-    </div>
-    <div class="faq-list reveal">
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1">What if it sends something embarrassing or wrong?<span class="icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" id="faq-a-1"><p>The logic is tested against your actual business and tone before it ever goes live. You review it before it's turned on. This isn't a generic chatbot guessing, it's built around how you'd actually respond.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2">Do I have to give you access to my CRM before I even see it work?<span class="icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" id="faq-a-2"><p>No. I build it first against a replica of your actual form. You test it freely, no access shared at all. Only once you've approved it do we connect it to your real leads, scoped to the minimum needed.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3">What if I want to keep using this after the pilot?<span class="icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" id="faq-a-3"><p>Continue as-is, or have the workflow migrated into your own automation account for full ownership. Either way, it keeps running.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4">I already have a CRM with automation features. Why do I need this?<span class="icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" id="faq-a-4"><p>Most CRMs handle routing, reminders, and pipelines well. Almost none reply to a brand-new lead, personally and instantly, within the first minute. That gap is exactly what this fills.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5">Will this work with my form or CRM?<span class="icon" aria-hidden="true">+</span></button>
-        <div class="faq-a" id="faq-a-5"><p>Built to work with most common form tools and CRMs. We confirm compatibility before anything starts.</p></div>
       </div>
     </div>
   </div>
