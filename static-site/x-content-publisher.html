@@ -524,6 +524,54 @@
     font-family:'Space Grotesk', sans-serif;
     font-size:13px; font-weight:700;
   }
+  /* Click-to-zoom affordance on each demo screenshot. The frame itself
+     stays clickable (cursor:zoom-in), and this small badge in the
+     corner signals it's expandable without cluttering the image. */
+  .demo-frame{ cursor:zoom-in; }
+  .demo-zoom-hint{
+    position:absolute; bottom:14px; right:14px; z-index:2;
+    display:flex; align-items:center; justify-content:center;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(10,13,16,0.62);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    color:#fff;
+    opacity:0; transform:scale(0.85);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .demo-zoom-hint svg{ width:15px; height:15px; }
+  .demo-frame:hover .demo-zoom-hint{ opacity:1; transform:scale(1); }
+  @media (hover:none){ .demo-zoom-hint{ opacity:1; transform:scale(1); } }
+
+  /* Fullscreen lightbox for the zoomed screenshot */
+  .lightbox-overlay{
+    position:fixed; inset:0; z-index:1000;
+    display:flex; align-items:center; justify-content:center;
+    padding:5vw;
+    background:rgba(6,8,10,0.88);
+    backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+    opacity:0; visibility:hidden;
+    transition:opacity .22s ease;
+    cursor:zoom-out;
+  }
+  .lightbox-overlay.open{ opacity:1; visibility:visible; }
+  .lightbox-overlay img{
+    max-width:90vw; max-height:90vh;
+    width:auto; height:auto;
+    border-radius:10px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.55);
+    transform:scale(.96);
+    transition:transform .22s ease;
+  }
+  .lightbox-overlay.open img{ transform:scale(1); }
+  .lightbox-close{
+    position:absolute; top:22px; right:22px; z-index:2;
+    display:flex; align-items:center; justify-content:center;
+    width:40px; height:40px; border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff; cursor:pointer;
+  }
+  .lightbox-close svg{ width:18px; height:18px; }
   .demo-grid{ display:grid; grid-template-columns:1fr; gap:32px; }
   .demo-clip-label{
     text-align:center;
@@ -737,8 +785,8 @@
   .bonus-card{
     position:relative;
     display:grid;
-    grid-template-columns:140px 1fr;
-    gap:24px;
+    grid-template-columns:220px 1fr;
+    gap:28px;
     align-items:center;
     margin-top:20px;
     border:1px solid var(--line);
@@ -763,6 +811,10 @@
     padding:7px 16px;
     border-bottom-left-radius:12px;
   }
+  /* Looping fade slider of 3 example ad visuals — pure CSS, no dots,
+     no controls. Each slide holds full opacity for a stretch of the
+     cycle then cross-fades into the next; staggered negative
+     animation-delays keep exactly one slide visible at any moment. */
   .bonus-visual{
     position:relative;
     width:100%;
@@ -770,16 +822,32 @@
     border-radius:12px;
     overflow:hidden;
     border:1px solid var(--line);
-    background:
-      radial-gradient(circle at 25% 25%, rgba(var(--hot-rgb),0.24), transparent 55%),
-      radial-gradient(circle at 80% 80%, rgba(91,155,217,0.18), transparent 55%),
-      var(--panel-2);
-    display:flex; align-items:center; justify-content:center;
-    color:var(--text);
+    background:var(--panel-2);
+    box-shadow:0 16px 34px var(--shadow-1);
   }
-  .bonus-visual svg{ width:32px; height:32px; opacity:.9; }
   @media (max-width:600px){
-    .bonus-visual{ max-width:150px; margin:0 auto; }
+    .bonus-visual{ max-width:220px; margin:0 auto; }
+  }
+  .bonus-slide{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    opacity:0;
+    animation:bonusFade 12s ease-in-out infinite;
+  }
+  .bonus-slide:nth-child(1){ animation-delay:0s; }
+  .bonus-slide:nth-child(2){ animation-delay:-4s; }
+  .bonus-slide:nth-child(3){ animation-delay:-8s; }
+  @keyframes bonusFade{
+    0%{ opacity:0; }
+    8%{ opacity:1; }
+    30%{ opacity:1; }
+    41%{ opacity:0; }
+    100%{ opacity:0; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .bonus-slide{ animation:none; opacity:0; }
+    .bonus-slide:nth-child(1){ opacity:1; }
   }
   .bonus-content h3{ font-size:19px; margin-bottom:8px; margin-top:8px; color:var(--text); }
   @media (max-width:600px){ .bonus-content h3{ margin-top:20px; } }
@@ -1175,27 +1243,30 @@
       <div class="demo-clip">
         <p class="demo-clip-label">1. Schedule the post</p>
         <p class="demo-clip-sub">Added once in Airtable, set to auto-post.</p>
-        <div class="demo-frame">
+        <div class="demo-frame" data-zoomable role="button" tabindex="0" aria-label="Enlarge screenshot">
           <span class="demo-tag"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>Airtable</span>
           <span class="demo-step-number">1</span>
+          <span class="demo-zoom-hint" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.5 12.5L17 17M8.5 6.2v4.6M6.2 8.5h4.6" stroke-linecap="round"/></svg></span>
           <img src="demo-step-1-schedule.png" width="1286" height="779" alt="Airtable content calendar with every post row marked Ready to Publish" loading="lazy">
         </div>
       </div>
       <div class="demo-clip">
         <p class="demo-clip-label">2. It goes live on X</p>
         <p class="demo-clip-sub">Posted automatically, right on schedule.</p>
-        <div class="demo-frame">
+        <div class="demo-frame" data-zoomable role="button" tabindex="0" aria-label="Enlarge screenshot">
           <span class="demo-tag">Live on X</span>
           <span class="demo-step-number">2</span>
+          <span class="demo-zoom-hint" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.5 12.5L17 17M8.5 6.2v4.6M6.2 8.5h4.6" stroke-linecap="round"/></svg></span>
           <img src="demo-step-2-live.png" width="602" height="680" alt="The scheduled post live on X, published automatically on time" loading="lazy">
         </div>
       </div>
       <div class="demo-clip">
         <p class="demo-clip-label">3. Marked as published</p>
         <p class="demo-clip-sub">The spreadsheet row updates itself. Nothing to track by hand.</p>
-        <div class="demo-frame">
+        <div class="demo-frame" data-zoomable role="button" tabindex="0" aria-label="Enlarge screenshot">
           <span class="demo-tag"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M7.5 8v9M12.5 8v9" stroke-linecap="round"/></svg>Airtable</span>
           <span class="demo-step-number">3</span>
+          <span class="demo-zoom-hint" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.5 12.5L17 17M8.5 6.2v4.6M6.2 8.5h4.6" stroke-linecap="round"/></svg></span>
           <img src="demo-step-3-published.png" width="1282" height="781" alt="The same Airtable calendar with rows automatically flipped to Published" loading="lazy">
         </div>
       </div>
@@ -1356,8 +1427,10 @@
 
     <div class="bonus-card reveal">
       <span class="bonus-badge">Bonus</span>
-      <div class="bonus-visual" aria-hidden="true">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="14" height="14" rx="2"/><circle cx="7.3" cy="7.3" r="1.3" fill="currentColor" stroke="none"/><path d="M3 14l4-4 3 3 3-3.5 4 4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="bonus-visual" role="img" aria-label="Examples of on-brand ad visuals generated automatically from post copy">
+        <img class="bonus-slide" src="ad-example-1.jpg" alt="" loading="lazy">
+        <img class="bonus-slide" src="ad-example-2.jpg" alt="" loading="lazy">
+        <img class="bonus-slide" src="ad-example-3.jpg" alt="" loading="lazy">
       </div>
       <div class="bonus-content">
         <h3>Automated, on-brand post visuals</h3>
@@ -1504,6 +1577,53 @@
       entries.forEach(entry => { atPricing = entry.isIntersecting; });
       sync();
     }, { threshold: 0.1 }).observe(pricing);
+  })();
+
+  // Click-to-zoom on the demo screenshots: any .demo-frame marked
+  // data-zoomable opens its image full-size in a shared lightbox.
+  (function(){
+    const frames = document.querySelectorAll('.demo-frame[data-zoomable]');
+    if(!frames.length) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML =
+      '<button class="lightbox-close" aria-label="Close"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15" stroke-linecap="round"/></svg></button>' +
+      '<img alt="">';
+    document.body.appendChild(overlay);
+    const img = overlay.querySelector('img');
+    const closeBtn = overlay.querySelector('.lightbox-close');
+    let lastFocus = null;
+
+    function openLightbox(src, alt, triggerEl){
+      img.src = src;
+      img.alt = alt || '';
+      lastFocus = triggerEl || document.activeElement;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeLightbox(){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if(lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    frames.forEach(frame => {
+      const src = frame.querySelector('img');
+      if(!src) return;
+      const trigger = () => openLightbox(src.src, src.alt, frame);
+      frame.addEventListener('click', trigger);
+      frame.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); trigger(); }
+      });
+    });
+
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) closeLightbox(); });
+    closeBtn.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && overlay.classList.contains('open')) closeLightbox();
+    });
   })();
 </script>
 <script src="site-nav.js" defer></script>
