@@ -467,7 +467,13 @@ footer p{
 }
 
 /* ---------- CUSTOM CURSOR ---------- */
-@media (pointer: fine){
+/* any-pointer (not plain pointer) on purpose: plain `pointer` reflects
+   only the browser's guess at the PRIMARY input device, which on a lot
+   of touchscreen Windows laptops comes back "coarse" even while the
+   person is actually using a mouse/trackpad — that alone was enough to
+   skip this whole feature and hide the native cursor for nothing.
+   any-pointer just asks "is there a fine pointer available at all". */
+@media (any-pointer: fine){
   a, button, .logo, [role="button"]{ cursor:none; }
   body{ cursor:none; }
 }
@@ -507,7 +513,7 @@ footer p{
    the tie and hides the dot on hover once visible. */
 #cursor-dot.is-visible, #cursor-ring.is-visible{ opacity:1; }
 #cursor-dot.is-hover{ opacity:0; }
-@media (pointer: coarse), (hover: none){
+@media not all and (any-pointer: fine){
   #cursor-dot, #cursor-ring{ display:none; }
 }
 /* Some "mobile" views (a narrowed desktop window, a tablet with a

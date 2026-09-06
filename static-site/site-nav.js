@@ -168,7 +168,12 @@
   });
 
   /* ---------- Custom cursor (site-wide) ---------- */
-  if(window.matchMedia('(pointer: fine)').matches){
+  /* any-pointer, not pointer: plain `pointer` reflects only the browser's
+     guess at the primary input device, which on touchscreen Windows
+     laptops often comes back "coarse" even while a mouse/trackpad is
+     what's actually being used — that alone silently skipped this whole
+     block. any-pointer just checks whether a fine pointer exists at all. */
+  if(window.matchMedia('(any-pointer: fine)').matches){
     var dot = document.createElement('div'); dot.id = 'cursor-dot';
     var ring = document.createElement('div'); ring.id = 'cursor-ring';
     document.addEventListener('DOMContentLoaded', function(){
