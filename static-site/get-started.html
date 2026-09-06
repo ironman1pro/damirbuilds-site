@@ -362,7 +362,45 @@
   .payment-note svg{ width:16px; height:16px; color:var(--hot); flex-shrink:0; margin-top:1px; }
   .payment-note p{ margin:0; font-size:13px; color:var(--text); line-height:1.5; }
   .payment-note strong{ color:var(--hot); }
-  .payment-cta{ margin-top:16px; }
+  .payment-cta{ margin-top:0; width:100%; text-align:center; box-sizing:border-box; }
+
+  /* ---------- ALREADY-PAID TOGGLE ---------- */
+  .toggle-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:28px;
+    cursor:pointer;
+    user-select:none;
+    width:fit-content;
+  }
+  .toggle-switch{ position:relative; display:inline-flex; flex-shrink:0; }
+  .toggle-switch input{ position:absolute; opacity:0; width:1px; height:1px; pointer-events:none; }
+  .toggle-track{
+    width:40px; height:24px;
+    border-radius:999px;
+    background:var(--panel-3);
+    border:1px solid var(--line);
+    transition:background .2s ease, border-color .2s ease;
+    display:block;
+  }
+  .toggle-thumb{
+    position:absolute;
+    top:2px; left:2px;
+    width:18px; height:18px;
+    border-radius:50%;
+    background:var(--muted-2);
+    transition:transform .2s ease, background .2s ease;
+  }
+  .toggle-switch input:checked + .toggle-track{
+    background:rgba(var(--hot-rgb),0.25);
+    border-color:var(--hot);
+  }
+  .toggle-switch input:checked + .toggle-track .toggle-thumb{
+    transform:translateX(16px);
+    background:var(--hot);
+  }
+  .toggle-label{ font-size:14px; color:var(--text); font-weight:500; }
 
   /* ---------- BUTTON ROW ---------- */
   .btn-row{
@@ -526,7 +564,7 @@
   </div>
 
   <div class="form-card">
-    <form id="onboardForm" action="https://formspree.io/f/REPLACE-WITH-YOUR-FORM-ID" method="POST" novalidate>
+    <form id="onboardForm" action="https://formspree.io/f/mljewjbr" method="POST" novalidate>
       <input type="hidden" name="_subject" value="New X Content Publisher signup">
 
       <!-- ---------------- STEP 1: PERSONAL INFO ---------------- -->
@@ -651,7 +689,7 @@
             <span class="payment-icon icon-wise"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10l5-6 4 4 5-6"/><path d="M12 2h5v5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>
               <span class="payment-title">Wise</span>
-              <span class="payment-sub">Zero fees. For those who already have a Wise account</span>
+              <span class="payment-sub">Zero fees, for those who have a Wise account</span>
             </span>
             <span class="choice-check"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </label>
@@ -668,51 +706,32 @@
         </div>
 
         <div class="payment-detail active" data-payment-detail="crypto">
-          <h3>Pay with crypto</h3>
-          <p>Send $199 (or equivalent) to one of the addresses below.</p>
-          <dl>
-            <dt>BTC</dt><dd>REPLACE-WITH-BTC-ADDRESS</dd>
-            <dt>ETH</dt><dd>REPLACE-WITH-ETH-ADDRESS</dd>
-            <dt>USDC (network)</dt><dd>REPLACE-WITH-USDC-ADDRESS</dd>
-          </dl>
-          <div class="payment-note">
-            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
-            <p><strong>Important:</strong> crypto transfers don't carry a reference field, so email the transaction hash and the email you used above to <a class="link-quiet" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a> so I can match your payment to your setup.</p>
-          </div>
+          <a class="btn-primary payment-cta" href="https://nowpayments.io/payment/?iid=4750851942" target="_blank" rel="noopener">Pay $199 with crypto</a>
         </div>
 
         <div class="payment-detail" data-payment-detail="wise">
-          <h3>Pay with Wise</h3>
-          <p>Zero fees. Send $199 to the Wise account below, or use the link to pay directly.</p>
-          <dl>
-            <dt>Name</dt><dd>REPLACE-WITH-WISE-ACCOUNT-NAME</dd>
-            <dt>Wise tag / email</dt><dd>REPLACE-WITH-WISE-TAG-OR-EMAIL</dd>
-          </dl>
-          <a class="btn-primary payment-cta" href="REPLACE-WITH-WISE-PAYMENT-LINK" target="_blank" rel="noopener">Pay $199 with Wise</a>
-          <div class="payment-note">
-            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
-            <p><strong>Important:</strong> add the email you used above in the payment notes/reference, so I can match your payment to your setup.</p>
-          </div>
+          <a class="btn-primary payment-cta" href="https://wise.com/pay/r/Kf1-xzO1K8BNw64" target="_blank" rel="noopener">Pay $199 with Wise</a>
         </div>
 
         <div class="payment-detail" data-payment-detail="bank">
-          <h3>Pay by bank transfer</h3>
-          <p>Send $199 using the account details below.</p>
-          <dl>
-            <dt>Account name</dt><dd>REPLACE-WITH-ACCOUNT-NAME</dd>
-            <dt>Account number / IBAN</dt><dd>REPLACE-WITH-ACCOUNT-NUMBER</dd>
-            <dt>SWIFT / BIC</dt><dd>REPLACE-WITH-SWIFT-BIC</dd>
-            <dt>Bank name</dt><dd>REPLACE-WITH-BANK-NAME</dd>
-          </dl>
+          <a class="btn-primary payment-cta" href="https://wise.com/pay/r/Kf1-xzO1K8BNw64" target="_blank" rel="noopener">Continue to bank transfer details</a>
           <div class="payment-note">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6.5v4.5M10 13.7v.1" stroke-linecap="round"/><circle cx="10" cy="10" r="7.5"/></svg>
-            <p><strong>Important:</strong> add the email you used above in the transfer notes/reference, so I can match your payment to your setup.</p>
+            <p><strong>Important:</strong> add the email you used above in the transfer note, so I can match your payment to your setup.</p>
           </div>
         </div>
 
+        <label class="toggle-row">
+          <span class="toggle-switch">
+            <input type="checkbox" id="paidToggle" name="Already paid" value="Yes">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </span>
+          <span class="toggle-label">I've already paid</span>
+        </label>
+
         <div class="btn-row">
           <button type="button" class="btn-back" data-back="2">&larr; Back</button>
-          <button type="submit" class="btn-primary" id="submitBtn">Complete signup</button>
+          <button type="submit" class="btn-primary" id="submitBtn">Notify Damir</button>
         </div>
         <p class="submit-error" id="submitError">Something went wrong sending your info. Please try again, or DM me directly at <a class="link-quiet" href="https://x.com/damirbuilds" target="_blank" rel="noopener">@damirbuilds</a>.</p>
         <p class="reassure-line">Built and supported personally by me, not an outsourced team. Your info is only ever used to set up your automation.</p>
@@ -722,7 +741,8 @@
     <div class="success-state" id="successState">
       <div class="success-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>You're all set</h2>
-      <p>Thanks — I've got your info. Complete payment above if you haven't yet, and I'll have your automation live within 48 hours. I'll reach out at the email you gave me if I need anything.</p>
+      <p id="successPaidText">Thanks — I've got your info. Once you've paid, I'll have your automation live within 48 hours. I'll reach out at the email you gave me if I need anything.</p>
+      <a class="btn-primary payment-cta" id="successPayLink" href="#" target="_blank" rel="noopener" style="margin-top:6px;">Pay $199 now</a>
     </div>
   </div>
 
@@ -811,6 +831,14 @@
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
+      // Flag paid signups in the subject line so a real payment reads as
+      // a sale notification, not just another lead in the inbox.
+      const subjectField = form.querySelector('[name="_subject"]');
+      if(subjectField){
+        subjectField.value = document.getElementById('paidToggle').checked
+          ? '💰 Payment confirmed — X Content Publisher'
+          : 'New X Content Publisher signup';
+      }
       try{
         const res = await fetch(form.action, {
           method: 'POST',
@@ -818,6 +846,26 @@
           headers: { 'Accept': 'application/json' }
         });
         if(res.ok){
+          const alreadyPaid = document.getElementById('paidToggle').checked;
+          const successPaidText = document.getElementById('successPaidText');
+          const successPayLink = document.getElementById('successPayLink');
+          if(alreadyPaid){
+            successPaidText.textContent = "Thanks — got your info and your payment confirmation. I'll have your automation live within 48 hours, and I'll reach out at the email you gave me if I need anything.";
+            successPayLink.style.display = 'none';
+          } else {
+            // Carry the payment method they picked over to the success
+            // screen, since the form (and its pay button) is hidden next —
+            // without this, anyone who submits before paying would land on
+            // a "you're all set" screen with no way to actually pay.
+            const activeDetail = document.querySelector('.payment-detail.active .payment-cta');
+            successPaidText.textContent = "Thanks — I've got your info. Pay using the button below whenever you're ready, then let me know so I can get started.";
+            if(activeDetail){
+              successPayLink.href = activeDetail.href;
+              successPayLink.textContent = activeDetail.textContent;
+            } else {
+              successPayLink.style.display = 'none';
+            }
+          }
           formCard.querySelector('form').style.display = 'none';
           document.querySelector('.stepper').style.display = 'none';
           successState.classList.add('active');
@@ -828,7 +876,7 @@
       } catch(err){
         submitError.classList.add('active');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Complete signup';
+        submitBtn.textContent = 'Notify Damir';
       }
     });
 
