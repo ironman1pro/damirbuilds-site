@@ -6,13 +6,13 @@
 <script>(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>X Content Publisher | damirbuilds</title>
 <meta name="description" content="A custom automation that publishes your X posts automatically from a simple spreadsheet. No SaaS scheduler, no subscription. Runs entirely on your own accounts.">
-<link rel="canonical" href="https://damirbuilds.com/x-content-publisher.html">
+<link rel="canonical" href="https://damirbuilds.com/x-content-publisher">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="X Content Publisher | damirbuilds">
 <meta property="og:description" content="Add posts to a spreadsheet once a week. They publish to X automatically, on your own Airtable and Make.com/n8n accounts, no third-party scheduler involved.">
-<meta property="og:url" content="https://damirbuilds.com/x-content-publisher.html">
+<meta property="og:url" content="https://damirbuilds.com/x-content-publisher">
 <meta property="og:site_name" content="damirbuilds">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://damirbuilds.com/logo.png">
@@ -28,7 +28,7 @@
   "serviceType": "Social media publishing automation",
   "description": "A custom automation, built on the customer's own Airtable and Make.com/n8n accounts, that publishes X posts automatically from a spreadsheet on a schedule.",
   "provider": { "@type": "Organization", "name": "damirbuilds", "url": "https://damirbuilds.com/" },
-  "url": "https://damirbuilds.com/x-content-publisher.html",
+  "url": "https://damirbuilds.com/x-content-publisher",
   "offers": { "@type": "Offer", "price": "149", "priceCurrency": "USD" }
 }
 </script>
@@ -63,6 +63,11 @@
      container; the section-head text stays readable since it's capped
      separately at 56ch. */
   #flow .wrap-narrow{ max-width:920px; }
+  /* The Airtable screenshots are dense, small-text grids — at the
+     default 720px column they got scaled down hard enough to look
+     soft/low-res. Give this section more room so they render closer
+     to their native size and stay crisp. */
+  #demo .wrap-narrow{ max-width:1040px; }
 
   section{ padding:72px 0; border-top:1px solid var(--line); }
   section:first-of-type{ border-top:none; }

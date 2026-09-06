@@ -1,0 +1,10 @@
+# Intentionally empty.
+#
+# An earlier version of this file 301-redirected the extensionless
+# alias of each page (e.g. /contact) to its .html file. That's no
+# longer how this site handles it — every page's <link rel="canonical">
+# (and og:url / JSON-LD url) now declares the extensionless URL as the
+# real one directly, so a redirect back to .html here would undo that
+# and send visitors/crawlers the wrong way. Kept as an empty file rather
+# than deleted just so the next person to look doesn't wonder if it's
+# missing by accident.
