@@ -978,7 +978,14 @@ twq('config','reor2');
       // lead below (their info gets sent to Formspree). Fired regardless
       // of whether that Formspree call succeeds, since the ad conversion
       // should count based on the user's action, not our own backend.
-      if(typeof twq === 'function'){ twq('event', 'tw-reor2-rf0zy', {}); }
+      if(typeof twq === 'function'){
+        const emailField = document.getElementById('email');
+        twq('event', 'tw-reor2-rf0zy', {
+          value: 149,
+          currency: 'USD',
+          email_address: emailField ? emailField.value : undefined
+        });
+      }
       leadNote.textContent = 'Saving your info…';
       leadNote.className = 'lead-note visible';
       const ok = await sendLead('New X Content Publisher signup — reached payment step');
