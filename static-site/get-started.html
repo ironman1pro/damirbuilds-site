@@ -592,14 +592,6 @@
   .exit-close:hover{ background:var(--panel-2); color:var(--text); }
   .exit-close svg{ width:14px; height:14px; }
 </style>
-<!-- X conversion tracking base code -->
-<script>
-!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
-},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
-a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
-twq('config','reor2');
-</script>
-<!-- End X conversion tracking base code -->
 </head>
 <body>
 <script>document.documentElement.classList.add('js');</script>
@@ -984,6 +976,14 @@ twq('config','reor2');
           value: 149,
           currency: 'USD',
           email_address: emailField ? emailField.value : undefined
+        });
+      }
+      // Same moment, mirrored as a GA4 conversion event so it shows up
+      // in Google Analytics too, not just the X Ads dashboard.
+      if(typeof gtag === 'function'){
+        gtag('event', 'generate_lead', {
+          value: 149,
+          currency: 'USD'
         });
       }
       leadNote.textContent = 'Saving your info…';
