@@ -973,6 +973,12 @@ twq('config','reor2');
     async function captureLeadOnArrival(){
       if(leadSent) return;
       leadSent = true;
+      // Fire the X Ads "Lead" conversion event the moment someone reaches
+      // this step — this is the same moment we already treat as a real
+      // lead below (their info gets sent to Formspree). Fired regardless
+      // of whether that Formspree call succeeds, since the ad conversion
+      // should count based on the user's action, not our own backend.
+      if(typeof twq === 'function'){ twq('event', 'tw-reor2-rf0zy', {}); }
       leadNote.textContent = 'Saving your info…';
       leadNote.className = 'lead-note visible';
       const ok = await sendLead('New X Content Publisher signup — reached payment step');
