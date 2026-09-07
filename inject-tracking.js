@@ -17,7 +17,7 @@ const path = require("path");
 
 const SITE_DIR = path.join(__dirname, "_site");
 
-const GA_MEASUREMENT_ID = "G-H4KZPNKXEZ";
+const GA_MEASUREMENT_ID = "G-PQP82JKXY1";
 const X_PIXEL_ID = "reor2";
 
 const TRACKING_SNIPPET = `
