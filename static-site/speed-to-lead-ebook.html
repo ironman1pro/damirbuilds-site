@@ -549,18 +549,9 @@
 
   /* ---------- faq ---------- */
   .faq-item{
-    padding:18px 0;
     border-top:1px solid var(--eb-border-soft);
   }
-  .faq-item:first-of-type{border-top:none; padding-top:0;}
-  .faq-q{
-    font-family:var(--eb-font-mono);
-    font-size:14.5px;
-    font-weight:600;
-    color:var(--eb-text);
-    margin:0 0 8px;
-  }
-  .faq-a{font-size:14.5px; margin:0;}
+  .faq-item:first-of-type{border-top:none;}
 
   /* ---------- final cta ---------- */
   .final{text-align:left;}
@@ -715,6 +706,163 @@
   }
   .stay-note strong{ color:var(--eb-text); }
 
+  /* ---------- scroll reveal ---------- */
+  @media (prefers-reduced-motion:no-preference){
+    html.js .reveal{ opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
+    html.js .reveal.in-view{ opacity:1; transform:none; }
+  }
+
+  /* ---------- shared section heading ---------- */
+  .section-h2{
+    font-family:var(--eb-font-mono);
+    font-size:clamp(21px, 4.4vw, 25px);
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin-bottom:8px;
+  }
+
+  /* ---------- headline accent highlight ---------- */
+  .hl{ color:var(--eb-accent); }
+
+  /* ---------- highlights strip (under hero) ---------- */
+  .highlights-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .highlight-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--eb-border); background:var(--eb-surface);
+    border-radius:999px; padding:9px 15px;
+    font-family:var(--eb-font-mono); font-size:12px; color:var(--eb-text-dim);
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .highlight-pill:hover{
+    border-color:var(--eb-accent);
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px -12px rgba(var(--eb-accent-rgb),0.5);
+  }
+  .highlight-pill .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--eb-accent); flex-shrink:0;
+    box-shadow:0 0 8px rgba(var(--eb-accent-rgb),0.7);
+  }
+
+  /* ---------- flow track ("what it actually does") ----------
+     Deliberately a different shape than .process-list below (used for
+     "getting it running") — a bordered-card journey with connecting
+     motion reads as "this is the mechanism", where a plain numbered list
+     reads as "these are steps you personally do". Using the same
+     component for both was the repetitive feel that got flagged.
+     Stacked full-width rather than 3-up: the page's own .wrap is only
+     640px, so three columns left each card too cramped to breathe —
+     full width gives the copy room and still reads as a distinct,
+     connected sequence via the icon + vertical connector. */
+  .flow-track{ display:flex; flex-direction:column; margin-top:8px; }
+  .flow-card{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    border:1px solid var(--eb-border);
+    background:var(--eb-surface);
+    border-radius:12px;
+    padding:20px 22px;
+    text-align:left;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .flow-card:hover{
+    border-color:var(--eb-accent);
+    transform:translateX(3px);
+    box-shadow:0 18px 36px -20px rgba(var(--eb-accent-rgb),0.4);
+  }
+  .flow-card-icon{
+    width:42px; height:42px; border-radius:10px;
+    background:rgba(var(--eb-accent-rgb),0.12); color:var(--eb-accent);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .flow-card-icon svg{ width:20px; height:20px; }
+  .flow-card h3{
+    font-family:var(--eb-font-mono); font-weight:600; font-size:15px;
+    color:var(--eb-text); margin-bottom:6px;
+  }
+  .flow-card p{ font-size:14px; margin-bottom:0; }
+  .flow-connector{
+    flex-shrink:0; position:relative; width:2px; height:26px;
+    margin:2px 0 2px 41px;
+    background-image:linear-gradient(to bottom, var(--eb-border) 50%, transparent 50%);
+    background-size:2px 9px; background-repeat:repeat-y;
+  }
+  .flow-dot{
+    position:absolute; top:0; left:0; width:8px; height:8px; border-radius:50%;
+    background:var(--eb-accent); box-shadow:0 0 10px rgba(var(--eb-accent-rgb),0.7);
+    transform:translate(-50%,-50%);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .flow-dot.stage-1{ animation:ebFlowY1 4.2s ease-in-out infinite; }
+    .flow-dot.stage-2{ animation:ebFlowY2 4.2s ease-in-out infinite; }
+    @keyframes ebFlowY1{ 0%{top:0%;opacity:0;} 4%{opacity:1;} 39%{top:100%;opacity:1;} 43%{top:100%;opacity:0;} 100%{top:100%;opacity:0;} }
+    @keyframes ebFlowY2{ 0%,50%{top:0%;opacity:0;} 54%{opacity:1;} 89%{top:100%;opacity:1;} 93%{top:100%;opacity:0;} 100%{top:100%;opacity:0;} }
+  }
+
+  /* ---------- node pulse (hero device) ---------- */
+  @media (prefers-reduced-motion:no-preference){
+    .node{ animation:nodePulse 4.2s ease-in-out infinite; }
+    .node.n1{ animation-delay:0s; }
+    .node.n2{ animation-delay:.45s; }
+    .node.n3{ animation-delay:.9s; }
+    .node.n4{ animation-delay:1.35s; }
+    .node.n5{ animation-delay:1.8s; }
+    @keyframes nodePulse{
+      0%, 78%, 100%{ border-color:var(--eb-border); box-shadow:0 6px 14px -8px rgba(0,0,0,0.5); }
+      15%{ border-color:var(--eb-accent); box-shadow:0 6px 18px -6px rgba(var(--eb-accent-rgb),0.55); }
+    }
+  }
+
+  /* ---------- inside items as hover cards ---------- */
+  .inside-item{
+    display:grid;
+    gap:14px;
+    border:1px solid var(--eb-border-soft);
+    background:var(--eb-panel);
+    border-radius:12px;
+    padding:24px 22px;
+    margin-top:16px;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .inside-item:first-of-type{ margin-top:0; }
+  .inside-item:hover{
+    border-color:var(--eb-accent);
+    transform:translateY(-3px);
+    box-shadow:0 20px 40px -20px rgba(var(--eb-accent-rgb),0.4);
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  .faq-q-btn{
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 0;
+    font-family:var(--eb-font-mono);
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--eb-text);
+  }
+  .faq-q-btn .icon{
+    font-size:19px;
+    line-height:1;
+    color:var(--eb-text-faint);
+    transition:transform .2s ease, color .2s ease;
+    flex-shrink:0;
+  }
+  .faq-item.open .faq-q-btn .icon{ transform:rotate(45deg); color:var(--eb-accent); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-a p{ font-size:14.5px; padding-bottom:18px; margin:0; }
+
+  /* ---------- animated stat number ---------- */
+  .stat-block .num{ font-variant-numeric:tabular-nums; }
+
   @media (min-width:600px){
     section{padding:72px 0;}
     .hero{padding-top:56px;}
@@ -741,7 +889,7 @@
 
   <section class="hero">
     <p class="eyebrow">// real build, not a course</p>
-    <h1>The exact n8n workflow I use to respond to every lead in under 10 seconds</h1>
+    <h1>The exact AI workflow I use to respond to every lead in <span class="hl">under 10 seconds</span></h1>
     <p class="sub">Steal my actual workflow. <strong>Copy, paste, deploy.</strong> No modules, no theory. Just the thing that works.</p>
 
     <div class="price-row">
@@ -751,6 +899,12 @@
 
     <a href="#buy" class="cta-btn">Get the Workflow for $19</a>
     <p class="cta-trust">Instant download after payment confirms</p>
+
+    <div class="highlights-row">
+      <span class="highlight-pill"><span class="dot"></span>Personalized, not templated</span>
+      <span class="highlight-pill"><span class="dot"></span>Live in ~10 minutes</span>
+      <span class="highlight-pill"><span class="dot"></span>No subscription, ever</span>
+    </div>
 
     <div class="device" aria-hidden="true">
       <div class="device-bar">
@@ -776,25 +930,61 @@
     </div>
   </section>
 
+  <section class="how-it-works">
+    <p class="eyebrow reveal">// what it actually does</p>
+    <h2 class="section-h2 reveal">What happens when a lead comes in</h2>
+    <p class="reveal" style="margin-top:10px; margin-bottom:24px;">Not lead-gen theory, and <strong>not a canned autoresponder</strong>. This is the exact mechanism, running live on your own form.</p>
+
+    <div class="flow-track reveal">
+      <div class="flow-card">
+        <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 7h8M6 10h8M6 13h5" stroke-linecap="round"/></svg></div>
+        <h3>Lead fills out your form</h3>
+        <p>Name, email, whatever they typed. <strong>Captured the instant they hit submit.</strong></p>
+      </div>
+
+      <div class="flow-connector"><div class="flow-dot stage-1"></div></div>
+
+      <div class="flow-card">
+        <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3.5c-4 0-7 3-7 6.5s3 6.5 7 6.5 7-3 7-6.5-3-6.5-7-6.5z"/><circle cx="7.2" cy="9.5" r=".9" fill="currentColor" stroke="none"/><circle cx="12.8" cy="9.5" r=".9" fill="currentColor" stroke="none"/></svg></div>
+        <h3>The AI reads it and <span class="hl">personalizes</span></h3>
+        <p>Not keyword-matching. <strong>It actually parses what they wrote</strong> and tailors the reply to it.</p>
+      </div>
+
+      <div class="flow-connector"><div class="flow-dot stage-2"></div></div>
+
+      <div class="flow-card">
+        <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg></div>
+        <h3>A personal reply, under 10s</h3>
+        <p>Written like a person would respond to <strong>that exact message</strong>. Booked before they've considered a competitor.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="problem">
-    <p class="eyebrow">// what actually happens</p>
-    <div class="problem-lines">
+    <p class="eyebrow reveal">// what actually happens</p>
+    <div class="problem-lines reveal">
       <p>A lead comes in. You're in a meeting, or asleep, or just slow to check your phone.</p>
       <p>Two hours later you reply. <strong>They've already booked with whoever answered first.</strong></p>
       <p>Speed isn't a nice-to-have here. <strong>It's the whole game.</strong></p>
     </div>
-    <div class="stat-block">
-      <div class="num">21×</div>
+    <div class="stat-block reveal">
+      <div class="num" id="statNum">0×</div>
       <div class="cap">more likely to qualify a lead when you respond in the <strong>first 5 minutes</strong> instead of the first 30</div>
     </div>
     <p class="stat-source">Source: Lead Response Management study, published in Harvard Business Review, 2011</p>
   </section>
 
   <section class="inside">
-    <p class="eyebrow">// what's actually inside</p>
-    <h2 style="font-family:var(--eb-font-mono); font-size:20px; font-weight:600; margin-bottom:6px;">Everything to copy this into your own account today</h2>
+    <p class="eyebrow reveal">// what's actually inside</p>
+    <h2 class="section-h2 reveal">Everything to copy this into your own account today</h2>
+    <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:8px;">
+      <span class="highlight-pill"><span class="dot"></span>Exact node sequence</span>
+      <span class="highlight-pill"><span class="dot"></span>Exact AI prompt</span>
+      <span class="highlight-pill"><span class="dot"></span>Auto-reply template</span>
+      <span class="highlight-pill"><span class="dot"></span>Edge-case fixes</span>
+    </div>
 
-    <div class="inside-item">
+    <div class="inside-item reveal">
       <h3>01. The exact node sequence</h3>
       <p>Every node, in order, with <strong>the settings that actually matter</strong>, not just a "here's the general idea" diagram.</p>
       <div class="mock-panel">
@@ -809,9 +999,9 @@
       </div>
     </div>
 
-    <div class="inside-item">
-      <h3>02. The AI prompt that parses incoming leads</h3>
-      <p>The exact prompt, <strong>word for word</strong>, that turns a messy form submission into a scored, structured lead.</p>
+    <div class="inside-item reveal">
+      <h3>02. The AI prompt that <span class="hl">personalizes</span> every reply</h3>
+      <p>The exact prompt, <strong>word for word</strong>, that reads what each lead actually wrote and crafts a <strong>personalized reply</strong> around it, not a generic template with their name pasted in.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">parse-lead.prompt.txt</span></div>
         <div class="mock-inner">
@@ -822,7 +1012,7 @@
       </div>
     </div>
 
-    <div class="inside-item">
+    <div class="inside-item reveal">
       <h3>03. The auto-reply template that books calls</h3>
       <p>The message that <strong>goes out in seconds</strong>, and the calendar-link logic behind it.</p>
       <div class="mock-panel">
@@ -835,7 +1025,7 @@
       </div>
     </div>
 
-    <div class="inside-item">
+    <div class="inside-item reveal">
       <h3>04. The edge cases that break it (and the fixes)</h3>
       <p>What actually went wrong once this was live, and <strong>exactly what I changed to fix each one</strong>.</p>
       <div class="mock-panel">
@@ -854,11 +1044,11 @@
   </section>
 
   <section class="process">
-    <p class="eyebrow">// getting it running</p>
-    <h2 style="font-family:var(--eb-font-mono); font-size:20px; font-weight:600; margin-bottom:6px;">From download to live in about 10 minutes</h2>
-    <p style="margin-top:10px; margin-bottom:0;">No dev work. <strong>No rebuilding anything from scratch.</strong> Four steps and it's running on your account.</p>
+    <p class="eyebrow reveal">// getting it running</p>
+    <h2 class="section-h2 reveal">From download to live in about 10 minutes</h2>
+    <p class="reveal" style="margin-top:10px; margin-bottom:0;">No dev work. <strong>No rebuilding anything from scratch.</strong> Four steps and it's running on your account.</p>
 
-    <div class="process-list">
+    <div class="process-list reveal">
       <div class="process-step">
         <div class="num"></div>
         <div>
@@ -903,8 +1093,8 @@
   </section>
 
   <section class="why">
-    <p class="eyebrow">// why this exists</p>
-    <div class="why-block">
+    <p class="eyebrow reveal">// why this exists</p>
+    <div class="why-block reveal">
       <p>I run DamirBuilds. I build AI workflow automations for a living, mostly lead-gen and follow-up systems for other businesses.</p>
       <p>This particular workflow started as something I hacked together for my own leads, because <strong>I was losing deals to my own slowness, not to my own product.</strong></p>
       <p>Once it worked, people kept asking how I'd built it. I got tired of explaining it over DMs, so I wrote it down instead: every node, every prompt, every place it broke and what I changed to fix it. This is that document. <strong>I'm not building a course around it. I'm just handing you the build.</strong></p>
@@ -917,34 +1107,40 @@
   </section>
 
   <section class="faq">
-    <p class="eyebrow">// before you buy</p>
+    <p class="eyebrow reveal">// before you buy</p>
 
-    <div class="faq-item">
-      <p class="faq-q">Do I need to know how to code?</p>
-      <p class="faq-a">No. You need an n8n account (<strong>the free tier works</strong>) and the ability to copy nodes and paste in API keys. If you can follow a recipe, you can set this up.</p>
+    <div class="faq-item reveal">
+      <button type="button" class="faq-q-btn" aria-expanded="false">Do I need to know how to code?<span class="icon" aria-hidden="true">+</span></button>
+      <div class="faq-a"><p>No. You need an n8n account (<strong>the free tier works</strong>) and the ability to copy nodes and paste in API keys. If you can follow a recipe, you can set this up.</p></div>
     </div>
 
-    <div class="faq-item">
-      <p class="faq-q">What if I don't use n8n yet?</p>
-      <p class="faq-a">n8n is a <strong>free, open-source tool</strong> for connecting apps and automating steps between them, similar to Zapier but you control the logic. The ebook walks you through getting an account running before you touch the actual workflow.</p>
+    <div class="faq-item reveal">
+      <button type="button" class="faq-q-btn" aria-expanded="false">What if I don't use n8n yet?<span class="icon" aria-hidden="true">+</span></button>
+      <div class="faq-a"><p>n8n is a <strong>free, open-source tool</strong> for connecting apps and automating steps between them, similar to Zapier but you control the logic. The ebook walks you through getting an account running before you touch the actual workflow.</p></div>
     </div>
 
-    <div class="faq-item">
-      <p class="faq-q">How do I pay with crypto if I've never done it?</p>
-      <p class="faq-a">The checkout link walks you through it: send from an exchange like Coinbase or Kraken, or a wallet if you already have one. Confirmation takes a few minutes, then <strong>the download unlocks automatically</strong>. Never done it and it feels like a wall? DM me and I'll sort you out another way.</p>
+    <div class="faq-item reveal">
+      <button type="button" class="faq-q-btn" aria-expanded="false">How do I pay with crypto if I've never done it?<span class="icon" aria-hidden="true">+</span></button>
+      <div class="faq-a"><p>The checkout link walks you through it: send from an exchange like Coinbase or Kraken, or a wallet if you already have one. Confirmation takes a few minutes, then <strong>the download unlocks automatically</strong>. Never done it and it feels like a wall? DM me and I'll sort you out another way.</p></div>
     </div>
 
-    <div class="faq-item">
-      <p class="faq-q">What if it doesn't work for my business?</p>
-      <p class="faq-a">The edge-cases section exists because this broke on me more than once before it got stable. Most "it doesn't work for my case" problems are <strong>already covered there</strong>. If yours isn't, DM me and I'll help you sort it.</p>
+    <div class="faq-item reveal">
+      <button type="button" class="faq-q-btn" aria-expanded="false">What if it doesn't work for my business?<span class="icon" aria-hidden="true">+</span></button>
+      <div class="faq-a"><p>The edge-cases section exists because this broke on me more than once before it got stable. Most "it doesn't work for my case" problems are <strong>already covered there</strong>. If yours isn't, DM me and I'll help you sort it.</p></div>
     </div>
   </section>
 
   <section class="final" id="buy">
-    <p class="eyebrow">// get it</p>
-    <h2>The exact workflow. $19. Ten seconds to a reply.</h2>
+    <p class="eyebrow reveal">// get it</p>
+    <h2 class="reveal">The exact workflow. <span class="hl">$19</span>. Ten seconds to a reply.</h2>
 
-    <div class="checkout-card">
+    <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:6px;">
+      <span class="highlight-pill"><span class="dot"></span>Instant download on confirm</span>
+      <span class="highlight-pill"><span class="dot"></span>DM support included</span>
+      <span class="highlight-pill"><span class="dot"></span>One payment, yours for good</span>
+    </div>
+
+    <div class="checkout-card reveal">
       <div class="stepper" aria-hidden="true">
         <div class="step-node active" data-step-node="1">
           <div class="step-circle">1</div>
@@ -1223,6 +1419,68 @@
       entries.forEach(entry => { atBuy = entry.isIntersecting; });
       sync();
     }, { threshold: 0.1 }).observe(buySection);
+  })();
+
+  // Scroll-reveal: fade/slide each marked block in the first time it
+  // enters the viewport. Skipped entirely for anyone who prefers reduced
+  // motion (the .reveal opacity/transform rules only exist inside that
+  // media query in <style>, so without JS or with it disabled, everything
+  // is just visible as normal, no broken hidden content either way.
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  })();
+
+  // FAQ accordion — click a question to expand its answer, click again
+  // (or another question) to collapse. Height is measured on open rather
+  // than a fixed max-height so long answers never get clipped.
+  (function(){
+    document.querySelectorAll('.faq-q-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const answer = item.querySelector('.faq-a');
+        const isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+        answer.style.maxHeight = isOpen ? answer.scrollHeight + 'px' : '';
+      });
+    });
+  })();
+
+  // Stat counts up from 0 to 21× the first time it scrolls into view,
+  // instead of just appearing — small motion cue that draws the eye to
+  // the one number on the page worth pausing on.
+  (function(){
+    const statEl = document.getElementById('statNum');
+    if(!statEl || !('IntersectionObserver' in window)) return;
+    const target = 21;
+    function animate(){
+      const start = performance.now();
+      const duration = 900;
+      function tick(now){
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        statEl.textContent = Math.round(eased * target) + '×';
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          animate();
+          statObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    statObserver.observe(statEl);
   })();
 })();
 </script>
