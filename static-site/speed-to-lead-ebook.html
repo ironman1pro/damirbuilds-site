@@ -1030,7 +1030,7 @@
           </div>
 
           <button type="button" class="cta-btn" id="paidConfirmTrigger" style="margin-top:18px;">I've completed payment &rarr;</button>
-          <p style="text-align:center; margin-top:10px;"><a href="https://nowpayments.io/payment/?iid=5265919384" target="_blank" rel="noopener" style="font-family:var(--eb-font-mono); font-size:11.5px; color:var(--eb-text-faint); text-decoration:underline; text-underline-offset:2px;">Widget not loading? Open the payment page directly</a></p>
+          <p style="text-align:center; margin-top:10px;"><a href="https://nowpayments.io/payment/?iid=5265919384" target="_blank" rel="noopener" class="pay-direct-link" style="font-family:var(--eb-font-mono); font-size:11.5px; color:var(--eb-text-faint); text-decoration:underline; text-underline-offset:2px;">Widget not loading? Open the payment page directly</a></p>
 
           <div class="dm-note">
             <span>Can't pay in crypto? <a href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM me</a> and I'll sort you out another way.</span>
@@ -1079,8 +1079,36 @@
   const successState = document.getElementById('successState');
   const leadNote = document.getElementById('leadNote');
   const paidConfirmTrigger = document.getElementById('paidConfirmTrigger');
-  const NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=5265919384';
+  const STATIC_IID = '5265919384';
+  let NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=' + STATIC_IID;
   let leadSent = false;
+
+  // By default the widget/links point at the static, shared invoice — this
+  // is what stays in place if the per-buyer invoice call below fails, so
+  // checkout never breaks even if that backend call is down. When it
+  // succeeds, this swaps everything to a fresh invoice created just for
+  // this buyer's email, so a completed payment can be tied back to who
+  // actually paid (needed for real server-side conversion tracking).
+  async function createBuyerInvoiceAndSwap(email){
+    try{
+      const res = await fetch('/api/create-invoice', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+      if(!res.ok) return;
+      const data = await res.json();
+      if(!data.id) return;
+      const frame = document.querySelector('.nowpayments-frame');
+      if(frame) frame.src = 'https://nowpayments.io/embeds/payment-widget?iid=' + data.id;
+      NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=' + data.id;
+      document.querySelectorAll('.pay-direct-link').forEach(a => { a.href = NOWPAYMENTS_URL; });
+      document.getElementById('successPayLink').href = NOWPAYMENTS_URL;
+    }catch(e){
+      // Static fallback widget stays loaded — checkout still works, we
+      // just won't have a verified per-buyer conversion for this one.
+    }
+  }
 
   // The NOWPayments widget is a fixed 410x696 iframe — scale it down (never
   // up) to fit narrower phone screens instead of letting it overflow or
@@ -1196,6 +1224,8 @@
       checkoutCard.scrollIntoView({ behavior:'smooth', block:'start' });
       if(target === 2){
         captureLeadOnArrival();
+        const emailField = document.getElementById('email');
+        if(emailField && emailField.value.trim()) createBuyerInvoiceAndSwap(emailField.value.trim());
         // The iframe is display:none until now, so it has zero width —
         // scale it only once it's actually visible to measure against.
         requestAnimationFrame(scalePaymentEmbed);
