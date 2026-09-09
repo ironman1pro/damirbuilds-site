@@ -20,9 +20,16 @@
 //     Swap in something like "DamirBuilds <hello@damirbuilds.com>" once
 //     that domain is verified in Resend (a couple of DNS records, a few
 //     minutes) so the email doesn't look like it's from a random test domain.
-//   EBOOK_DOWNLOAD_URL — defaults to <site>/downloads/speed-to-lead-ebook.pdf.
-//     Just drop the real file at static-site/downloads/speed-to-lead-ebook.pdf
-//     and this works with no code changes.
+//   EBOOK_DOWNLOAD_URL — defaults to <site>/downloads/speed-to-lead-ebook-bf948cbd31fb4ba1.pdf,
+//     an unguessable filename rather than something predictable like
+//     speed-to-lead-ebook.pdf, so someone can't just guess the URL. It's
+//     still a public, unauthenticated link — anyone who has it (a buyer
+//     forwards it, it leaks) can download it — this only stops random
+//     guessing, not sharing. static-site/_headers marks /downloads/* as
+//     noindex + no-store so it never gets crawled, cached, or indexed.
+//     Drop the real file at that exact path (or change this default, or
+//     set the env var, to use your own random name) and it works with no
+//     other code changes.
 //
 // Also requires create-invoice.js to keep sending ipn_callback_url
 // pointing at this endpoint when it creates each invoice — that's what
@@ -79,7 +86,7 @@ export async function onRequestPost(context) {
   }
 
   const origin = new URL(request.url).origin;
-  const downloadUrl = env.EBOOK_DOWNLOAD_URL || `${origin}/downloads/speed-to-lead-ebook.pdf`;
+  const downloadUrl = env.EBOOK_DOWNLOAD_URL || `${origin}/downloads/speed-to-lead-ebook-bf948cbd31fb4ba1.pdf`;
   const fromAddress = env.RESEND_FROM_EMAIL || "DamirBuilds <onboarding@resend.dev>";
 
   try {

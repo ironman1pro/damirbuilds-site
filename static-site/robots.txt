@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://damirbuilds.com/sitemap.xml
+Disallow: /downloads/

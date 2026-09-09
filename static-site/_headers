@@ -27,3 +27,16 @@
 
 /site-nav.js
   Cache-Control: public, max-age=3600, must-revalidate
+
+# Paid digital products live here, linked only from the fulfillment email
+# (see functions/api/fulfill-order.js) — never from an actual page, so
+# nothing on the site links to it and it has no reason to be crawled or
+# indexed. noindex/nofollow is a stronger signal than robots.txt alone:
+# robots.txt only asks crawlers not to fetch a URL, but if it's ever
+# discovered another way (a forwarded link, a referrer header) Google can
+# still index the bare URL with no content. This header tells it not to
+# index the URL at all, even then. no-store keeps it (and any signed
+# variant of it added later) out of shared/proxy caches too.
+/downloads/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
