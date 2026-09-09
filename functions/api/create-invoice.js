@@ -47,7 +47,10 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        price_amount: 19,
+        // TEMP TEST PRICE — was 19, dropped to 1 for a real end-to-end
+        // checkout test. MUST be changed back to 19 before real customers
+        // use this page.
+        price_amount: 1,
         price_currency: "usd",
         order_id: orderId,
         order_description: "Speed-to-Lead Ebook",
