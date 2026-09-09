@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Speed-to-Lead Ebook | DamirBuilds</title>
+<meta name="description" content="The exact n8n workflow I use to respond to every lead in under 10 seconds. The node sequence, the AI prompt, the auto-reply template, and the edge cases. $19, one time.">
+<link rel="canonical" href="https://damirbuilds.com/speed-to-lead-ebook">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Speed-to-Lead Ebook | DamirBuilds">
+<meta property="og:description" content="Steal my actual n8n workflow. Copy, paste, deploy. $19, one time.">
+<meta property="og:url" content="https://damirbuilds.com/speed-to-lead-ebook">
+<meta property="og:site_name" content="damirbuilds">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://damirbuilds.com/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Speed-to-Lead Ebook | DamirBuilds">
+<meta name="twitter:description" content="Steal my actual n8n workflow. Copy, paste, deploy. $19, one time.">
+<meta name="twitter:image" content="https://damirbuilds.com/logo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Speed-to-Lead Ebook",
+  "description": "The exact n8n workflow used to respond to every lead in under 10 seconds: node sequence, AI prompt, auto-reply template, and edge cases.",
+  "brand": { "@type": "Organization", "name": "damirbuilds", "url": "https://damirbuilds.com/" },
+  "url": "https://damirbuilds.com/speed-to-lead-ebook",
+  "offers": { "@type": "Offer", "price": "19", "priceCurrency": "USD" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* Light is this page's brand default now, shown regardless of the
+     visitor's system preference, unless they've explicitly toggled to
+     dark before (see the anti-flash script in <head>, which only reads
+     that stored choice and otherwise always starts light). Dark stays
+     available as an override for anyone who prefers it.
+
+     Neutrals are a cool, slightly sage-tinted gray rather than the old
+     warm amber/tan set — those were tuned for an orange accent and read
+     muddy once the accent moved to green. Everything here shares one
+     undertone with the accent instead of fighting it. */
+  :root{
+    --eb-bg:#F5F7F1;
+    --eb-bg-raise:#ECEFE5;
+    --eb-surface:#FFFFFF;
+    --eb-panel:#FBFCF9;
+    --eb-border:#D7DCCB;
+    --eb-border-soft:#E5E8DC;
+    --eb-text:#1B2117;
+    --eb-text-dim:#4B5443;
+    --eb-text-faint:#7C8672;
+    --eb-accent:#0F7A3D;
+    --eb-accent-rgb:15,122,61;
+    --eb-accent-soft:#15974A;
+    --eb-accent-ink:#FFFFFF;
+    --eb-go:#3E7A50;
+    --eb-warn:#B8452E;
+    --eb-font-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --eb-font-sans:'IBM Plex Sans', -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --eb-bg:#12160E;
+      --eb-bg-raise:#181D13;
+      --eb-surface:#1D2317;
+      --eb-panel:#0C0F09;
+      --eb-border:#2D3524;
+      --eb-border-soft:#232A1C;
+      --eb-text:#EAEFE3;
+      --eb-text-dim:#B7C1A9;
+      --eb-text-faint:#7E8A70;
+      --eb-accent:#22C55E;
+      --eb-accent-rgb:34,197,94;
+      --eb-accent-soft:#86EFAC;
+      --eb-accent-ink:#052E14;
+      --eb-go:#7FBF8F;
+      --eb-warn:#E2745A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --eb-bg:#12160E;
+    --eb-bg-raise:#181D13;
+    --eb-surface:#1D2317;
+    --eb-panel:#0C0F09;
+    --eb-border:#2D3524;
+    --eb-border-soft:#232A1C;
+    --eb-text:#EAEFE3;
+    --eb-text-dim:#B7C1A9;
+    --eb-text-faint:#7E8A70;
+    --eb-accent:#22C55E;
+    --eb-accent-rgb:34,197,94;
+    --eb-accent-soft:#86EFAC;
+    --eb-accent-ink:#052E14;
+    --eb-go:#7FBF8F;
+    --eb-warn:#E2745A;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  /* Several toggled elements below (.btn-text, .cta-btn, etc.) set their
+     own `display`, which as an author rule otherwise beats the browser's
+     default `[hidden]{display:none}` UA rule — without this, toggling the
+     `hidden` attribute on them via JS would silently do nothing. */
+  [hidden]{ display:none !important; }
+  body{
+    margin:0;
+    background:var(--eb-bg);
+    color:var(--eb-text);
+    font-family:var(--eb-font-sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;}
+  ::selection{background:var(--eb-accent); color:var(--eb-accent-ink);}
+
+  a{color:inherit;}
+
+  /* Faint film-grain texture over the whole page — the single biggest
+     lever for "premium" over "flat template": it keeps every solid
+     panel from reading as a plain CSS fill. Fixed + pointer-events:none
+     so it never affects layout or interaction. */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.035;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap, .topbar, footer{ position:relative; z-index:2; }
+
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  .eyebrow{
+    font-family:var(--eb-font-mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    color:var(--eb-text-faint);
+    margin:0 0 14px;
+  }
+
+  h1,h2,h3{
+    text-wrap:balance;
+    margin:0;
+  }
+
+  section{
+    padding:56px 0;
+    border-bottom:1px solid var(--eb-border-soft);
+  }
+  section:last-of-type{border-bottom:none;}
+
+  p{margin:0 0 14px; color:var(--eb-text-dim); max-width:60ch;}
+  p:last-child{margin-bottom:0;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 24px;
+    border-bottom:1px solid var(--eb-border-soft);
+    font-family:var(--eb-font-mono);
+    font-size:13px;
+  }
+  .topbar .brand{color:var(--eb-text); font-weight:600;}
+  .topbar .brand span{color:var(--eb-accent);}
+  .topbar-right{display:flex; align-items:center; gap:10px;}
+  .topbar .price-chip{
+    color:var(--eb-text-dim);
+    border:1px solid var(--eb-border);
+    border-radius:3px;
+    padding:4px 10px;
+  }
+
+  /* ---------- hero ---------- */
+  /* No overflow:hidden here — clipping it produced a hard-edged box
+     around the blurred glow instead of a soft fade (the blur got cut
+     off exactly at the section's own boundary). Left unclipped, the
+     glow just fades to fully transparent on its own before it reaches
+     any edge, and the page background is the same color past the hero
+     anyway, so there's nothing for it to bleed onto visibly. */
+  .hero{ position:relative; padding-top:44px; padding-bottom:40px; }
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-220px; right:-160px;
+    width:520px; height:520px;
+    background:radial-gradient(circle, rgba(var(--eb-accent-rgb),0.15), transparent 60%);
+    filter:blur(50px);
+    pointer-events:none;
+    z-index:0;
+  }
+  .hero > *{ position:relative; z-index:1; }
+  .hero h1{
+    font-family:var(--eb-font-mono);
+    font-size:clamp(26px, 6.4vw, 38px);
+    font-weight:600;
+    line-height:1.22;
+    letter-spacing:-0.01em;
+  }
+  .hero .sub{
+    font-size:16.5px;
+    color:var(--eb-text-dim);
+    margin-top:16px;
+    max-width:50ch;
+  }
+  .price-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-top:22px;
+    font-family:var(--eb-font-mono);
+  }
+  .price-row .amount{font-size:26px; font-weight:700; color:var(--eb-accent);}
+  .price-row .note{font-size:13px; color:var(--eb-text-faint);}
+
+  .cta-btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    font-family:var(--eb-font-mono);
+    font-weight:600;
+    font-size:16px;
+    color:var(--eb-accent-ink);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-accent) 100%, white 14%), var(--eb-accent) 55%);
+    border:1px solid var(--eb-accent);
+    border-radius:6px;
+    padding:15px 20px;
+    margin-top:22px;
+    cursor:pointer;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.28),
+      0 10px 28px rgba(var(--eb-accent-rgb), 0.32);
+    transition:transform .15s ease, filter .12s ease, box-shadow .15s ease;
+  }
+  .cta-btn:hover{
+    filter:brightness(1.04);
+    transform:translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.32),
+      0 14px 34px rgba(var(--eb-accent-rgb), 0.42);
+  }
+  .cta-btn:active{transform:translateY(1px); box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 14px rgba(var(--eb-accent-rgb), 0.35);}
+  .cta-btn:focus-visible{outline:2px solid var(--eb-accent-soft); outline-offset:3px;}
+  .cta-trust{
+    font-size:12.5px;
+    color:var(--eb-text-faint);
+    text-align:center;
+    margin-top:10px;
+    font-family:var(--eb-font-mono);
+  }
+
+  /* Lower-key repeat CTAs partway down the page — same destination as
+     the primary button, but an outline treatment so the one solid,
+     glowing button stays reserved for the hero and the actual checkout. */
+  .cta-mid{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    font-family:var(--eb-font-mono);
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--eb-accent);
+    background:transparent;
+    border:1px solid rgba(var(--eb-accent-rgb),0.5);
+    border-radius:6px;
+    padding:12px 18px;
+    margin-top:28px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .cta-mid:hover{ border-color:var(--eb-accent); background:rgba(var(--eb-accent-rgb),0.08); }
+  .cta-mid-wrap{ text-align:center; }
+
+  /* ---------- STICKY MOBILE CTA ---------- */
+  .mobile-cta{
+    display:none;
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:40;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--eb-surface);
+    border-top:1px solid var(--eb-border);
+    box-shadow:0 -12px 28px rgba(0,0,0,0.35);
+    transform:translateY(100%);
+    transition:transform .25s ease;
+  }
+  .mobile-cta.show{ transform:translateY(0); }
+  @media (max-width:700px){ .mobile-cta{ display:block; } }
+
+  /* ---------- terminal / workflow canvas mock ---------- */
+  .device{
+    margin-top:32px;
+    border:1px solid var(--eb-border);
+    border-radius:10px;
+    background:linear-gradient(180deg, var(--eb-surface), var(--eb-panel) 40%);
+    overflow:hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 24px 48px -12px rgba(0,0,0,0.45);
+  }
+  .device-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 12px;
+    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-surface) 100%, white 4%), var(--eb-surface));
+    border-bottom:1px solid var(--eb-border-soft);
+  }
+  .device-bar .dot{width:9px; height:9px; border-radius:50%; background:var(--eb-border);}
+  .device-bar .filename{
+    font-family:var(--eb-font-mono);
+    font-size:12px;
+    color:var(--eb-text-faint);
+    margin-left:6px;
+  }
+  .canvas{
+    position:relative;
+    padding:26px 16px 30px;
+    overflow:hidden;
+  }
+  .canvas svg{position:absolute; inset:0; width:100%; height:100%;}
+  .node-col{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .node{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--eb-bg-raise);
+    border:1px solid var(--eb-border);
+    border-radius:6px;
+    padding:9px 12px;
+    font-family:var(--eb-font-mono);
+    font-size:12.5px;
+    color:var(--eb-text);
+    width:fit-content;
+    max-width:88%;
+    box-shadow:0 6px 14px -8px rgba(0,0,0,0.5);
+  }
+  .node .tag{
+    font-size:9.5px;
+    letter-spacing:.05em;
+    color:var(--eb-accent);
+    background:rgba(var(--eb-accent-rgb),0.12);
+    border:1px solid rgba(var(--eb-accent-rgb),0.5);
+    border-radius:3px;
+    padding:1px 5px;
+    flex-shrink:0;
+  }
+  .node.n2{margin-left:9%;}
+  .node.n3{margin-left:18%;}
+  .node.n4{margin-left:9%;}
+  .node.n5{margin-left:0;}
+  .node .tick{color:var(--eb-go); flex-shrink:0;}
+
+  .stopwatch{
+    position:absolute;
+    top:16px;
+    right:14px;
+    z-index:2;
+    font-family:var(--eb-font-mono);
+    font-size:12px;
+    color:var(--eb-go);
+    background:var(--eb-surface);
+    border:1px solid var(--eb-border);
+    border-radius:4px;
+    padding:4px 9px;
+  }
+
+  /* ---------- problem ---------- */
+  .problem-lines p{
+    font-size:16px;
+    color:var(--eb-text);
+    max-width:52ch;
+  }
+  .stat-block{
+    margin-top:30px;
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    border-left:2px solid var(--eb-accent);
+    padding-left:18px;
+  }
+  .stat-block .num{
+    font-family:var(--eb-font-mono);
+    font-size:52px;
+    font-weight:700;
+    color:var(--eb-accent);
+    line-height:1;
+    text-shadow:0 0 24px rgba(var(--eb-accent-rgb),0.35);
+  }
+  .stat-block .cap{font-size:14.5px; color:var(--eb-text-dim); max-width:34ch; padding-top:6px;}
+  .stat-source{
+    font-family:var(--eb-font-mono);
+    font-size:11.5px;
+    color:var(--eb-text-faint);
+    margin-top:10px;
+  }
+
+  /* ---------- inside grid ---------- */
+  .inside-item{
+    display:grid;
+    gap:14px;
+    padding:22px 0;
+    border-top:1px solid var(--eb-border-soft);
+  }
+  .inside-item:first-of-type{border-top:none; padding-top:0;}
+  .inside-item h3{
+    font-family:var(--eb-font-mono);
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--eb-text);
+  }
+  .inside-item p{font-size:14.5px;}
+  .mock-panel{
+    border:1px solid var(--eb-border);
+    border-radius:8px;
+    background:linear-gradient(180deg, var(--eb-surface), var(--eb-panel) 45%);
+    font-family:var(--eb-font-mono);
+    font-size:12px;
+    overflow:hidden;
+    box-shadow:0 16px 32px -14px rgba(0,0,0,0.4);
+  }
+  .mock-panel .device-bar{padding:7px 10px;}
+  .mock-inner{padding:14px;}
+  .mock-inner .row{display:flex; gap:8px; margin-bottom:6px;}
+  .mock-inner .row:last-child{margin-bottom:0;}
+  .mock-inner .k{color:var(--eb-text-faint); flex-shrink:0;}
+  .mock-inner .v{color:var(--eb-text-dim);}
+  .blur{
+    filter:blur(3px);
+    opacity:.6;
+    user-select:none;
+  }
+  .crop-note{
+    font-size:11px;
+    color:var(--eb-text-faint);
+    font-style:italic;
+    margin-top:8px;
+  }
+  .chat-bubble{
+    max-width:78%;
+    padding:8px 11px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-bottom:8px;
+  }
+  .chat-bubble.in{background:var(--eb-bg-raise); border:1px solid var(--eb-border);}
+  .chat-bubble.out{background:var(--eb-accent); color:var(--eb-accent-ink); margin-left:auto;}
+  .chat-bubble.sys{
+    background:transparent;
+    border:1px dashed var(--eb-border);
+    color:var(--eb-go);
+    text-align:center;
+    max-width:100%;
+    font-family:var(--eb-font-mono);
+    font-size:11px;
+  }
+  .log-line{display:flex; gap:8px; margin-bottom:6px;}
+  .log-line:last-child{margin-bottom:0;}
+  .log-line .err{color:var(--eb-warn); flex-shrink:0;}
+  .log-line .fix{color:var(--eb-go);}
+
+  /* ---------- why ---------- */
+  .why-block p{font-size:15.5px; color:var(--eb-text);}
+  .why-sign{
+    font-family:var(--eb-font-mono);
+    font-size:13px;
+    color:var(--eb-text-faint);
+    margin-top:18px;
+  }
+
+  /* ---------- faq ---------- */
+  .faq-item{
+    padding:18px 0;
+    border-top:1px solid var(--eb-border-soft);
+  }
+  .faq-item:first-of-type{border-top:none; padding-top:0;}
+  .faq-q{
+    font-family:var(--eb-font-mono);
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--eb-text);
+    margin:0 0 8px;
+  }
+  .faq-a{font-size:14.5px; margin:0;}
+
+  /* ---------- final cta ---------- */
+  .final{text-align:left;}
+  .final h2{
+    font-family:var(--eb-font-mono);
+    font-size:clamp(22px, 5.6vw, 28px);
+    font-weight:600;
+    line-height:1.28;
+  }
+  .final .price-row{margin-top:18px;}
+
+  footer{
+    padding:28px 0 40px;
+    text-align:center;
+  }
+  footer p{
+    font-family:var(--eb-font-mono);
+    font-size:11.5px;
+    color:var(--eb-text-faint);
+    margin:0;
+    max-width:none;
+  }
+
+  /* ---------- CHECKOUT (embedded get-started flow) ---------- */
+  .checkout-card{
+    margin-top:26px;
+    border:1px solid var(--eb-border);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-surface) 100%, white 3%), var(--eb-surface));
+    border-radius:10px;
+    padding:26px 24px;
+    box-shadow:0 28px 56px -20px rgba(0,0,0,0.5);
+  }
+  @media (max-width:480px){ .checkout-card{ padding:22px 18px; } }
+
+  .stepper{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0;
+    margin-bottom:26px;
+  }
+  .step-node{ display:flex; flex-direction:column; align-items:center; gap:7px; }
+  .step-circle{
+    width:28px; height:28px;
+    border-radius:50%;
+    border:1.5px solid var(--eb-border);
+    background:var(--eb-panel);
+    color:var(--eb-text-faint);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--eb-font-mono);
+    font-weight:600;
+    font-size:12.5px;
+    transition:border-color .2s ease, background .2s ease, color .2s ease;
+  }
+  .step-label{ font-family:var(--eb-font-mono); font-size:11px; color:var(--eb-text-faint); white-space:nowrap; }
+  .step-node.active .step-circle{ border-color:var(--eb-accent); background:rgba(255,158,44,0.14); color:var(--eb-accent); }
+  .step-node.active .step-label{ color:var(--eb-text); }
+  .step-node.done .step-circle{ border-color:var(--eb-accent); background:var(--eb-accent); color:var(--eb-accent-ink); }
+  .step-connector{ flex:1; height:1.5px; max-width:56px; background:var(--eb-border); margin:0 6px 18px; transition:background .2s ease; }
+  .step-connector.done{ background:var(--eb-accent); }
+
+  .form-step{ display:none; }
+  .form-step.active{ display:block; }
+  .form-step h3{ font-family:var(--eb-font-mono); font-size:16px; color:var(--eb-text); margin-bottom:4px; }
+  .form-step .step-intro{ font-size:13.5px; color:var(--eb-text-dim); margin-bottom:20px; }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-family:var(--eb-font-mono);
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--eb-text);
+    margin-bottom:7px;
+  }
+  .field input{
+    width:100%;
+    padding:11px 13px;
+    border-radius:5px;
+    border:1px solid var(--eb-border);
+    background:var(--eb-bg-raise);
+    color:var(--eb-text);
+    font-size:14.5px;
+    font-family:var(--eb-font-sans);
+    box-sizing:border-box;
+    transition:border-color .15s ease;
+  }
+  .field input::placeholder{ color:var(--eb-text-faint); }
+  .field input:focus{ outline:none; border-color:var(--eb-accent); }
+  .field-error{ font-size:12px; color:var(--eb-warn); margin-top:6px; display:none; font-family:var(--eb-font-mono); }
+  .field.invalid input{ border-color:var(--eb-warn); }
+  .field.invalid .field-error{ display:block; }
+
+  .btn-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:22px; }
+  .btn-back{
+    font-family:var(--eb-font-mono);
+    font-size:13px;
+    color:var(--eb-text-faint);
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:8px 2px;
+    transition:color .15s ease;
+  }
+  .btn-back:hover{ color:var(--eb-text); }
+  .btn-row .cta-btn{ margin-top:0; flex:1; }
+  button.cta-btn{ font-family:var(--eb-font-mono); }
+
+  .lead-note{ font-family:var(--eb-font-mono); font-size:12px; margin:-4px 0 16px; min-height:16px; opacity:0; transition:opacity .25s ease; }
+  .lead-note.visible{ opacity:1; }
+  .lead-note.is-ok{ color:var(--eb-go); }
+  .lead-note.is-error{ color:var(--eb-text-faint); }
+
+  .checkout-trust{
+    display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:center;
+    margin:0 0 18px;
+    font-family:var(--eb-font-mono);
+    font-size:11.5px;
+    color:var(--eb-text-faint);
+  }
+
+  .pay-embed-wrap{
+    width:410px;
+    max-width:100%;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:6px;
+    border:1px solid var(--eb-border);
+  }
+  .pay-embed-scale{ transform-origin:top left; }
+
+  .dm-note{
+    display:flex; align-items:flex-start; gap:9px;
+    border:1px solid var(--eb-border);
+    background:var(--eb-bg-raise);
+    border-radius:6px;
+    padding:11px 13px;
+    margin-top:14px;
+    font-size:13px;
+    color:var(--eb-text-dim);
+  }
+  .dm-note a{ color:var(--eb-accent); text-decoration:underline; text-underline-offset:2px; }
+
+  .success-state{ display:none; text-align:left; }
+  .success-state.active{ display:block; }
+  .success-icon{
+    width:46px; height:46px; margin-bottom:16px;
+    border-radius:50%;
+    background:rgba(127,191,143,0.14);
+    color:var(--eb-go);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .success-icon svg{ width:22px; height:22px; }
+  .success-state h3{ font-family:var(--eb-font-mono); font-size:18px; color:var(--eb-text); margin-bottom:8px; }
+  .success-state p{ font-size:14.5px; }
+  .btn-secondary{
+    display:block; width:100%; box-sizing:border-box; text-align:center;
+    padding:12px 20px; border-radius:5px;
+    border:1px solid var(--eb-border); background:transparent;
+    color:var(--eb-text-dim); font-weight:600; font-size:13.5px;
+    font-family:var(--eb-font-mono);
+    cursor:pointer; margin-top:14px;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn-secondary:hover{ border-color:var(--eb-text-faint); background:var(--eb-bg-raise); color:var(--eb-text); }
+  .confirm-prompt{ margin-top:20px; padding:18px; border:1px solid var(--eb-border); border-radius:6px; background:var(--eb-bg-raise); }
+  .confirm-question{ font-family:var(--eb-font-mono); font-size:13.5px; font-weight:600; color:var(--eb-text); margin-bottom:12px; }
+  .btn-text{
+    display:inline-block; margin-top:12px; font-size:12.5px; color:var(--eb-text-faint);
+    background:none; border:none; cursor:pointer; font-family:var(--eb-font-mono);
+    text-decoration:underline; text-underline-offset:2px;
+  }
+  .btn-text:hover{ color:var(--eb-text); }
+  .confirm-thanks{ color:var(--eb-go) !important; font-weight:600; margin-top:16px; font-family:var(--eb-font-mono); font-size:13px; }
+
+  @media (min-width:600px){
+    section{padding:72px 0;}
+    .hero{padding-top:56px;}
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+<div class="topbar">
+  <div class="brand">Damir<span>Builds</span></div>
+  <div class="topbar-right">
+    <div class="price-chip">$19 · one-time</div>
+    <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+      <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
+      <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">// real build, not a course</p>
+    <h1>The exact n8n workflow I use to respond to every lead in under 10 seconds</h1>
+    <p class="sub">Steal my actual workflow. Copy, paste, deploy. No modules, no theory. Just the thing that works.</p>
+
+    <div class="price-row">
+      <span class="amount">$19</span>
+      <span class="note">· one payment, nothing recurring</span>
+    </div>
+
+    <a href="#buy" class="cta-btn">Get the Workflow for $19</a>
+    <p class="cta-trust">Instant download after payment confirms</p>
+
+    <div class="device" aria-hidden="true">
+      <div class="device-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="filename">speed-to-lead.workflow.json</span>
+      </div>
+      <div class="canvas">
+        <div class="stopwatch">⏱ 8.6s</div>
+        <svg viewBox="0 0 300 220" preserveAspectRatio="none">
+          <path d="M40,26 L40,60" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+          <path d="M40,60 L67,60 L67,94" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+          <path d="M67,94 L94,94 L94,128" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+          <path d="M94,128 L67,128 L67,162" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="node-col">
+          <div class="node n1"><span class="tag">TRIGGER</span> New lead via webhook</div>
+          <div class="node n2"><span class="tag">AI</span> Parse &amp; score lead</div>
+          <div class="node n3"><span class="tag">ROUTE</span> Hot / warm / cold</div>
+          <div class="node n4"><span class="tag">SEND</span> Auto-reply dispatched</div>
+          <div class="node n5"><span class="tick">✓</span> Call booked</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem">
+    <p class="eyebrow">// what actually happens</p>
+    <div class="problem-lines">
+      <p>A lead comes in. You're in a meeting, or asleep, or just slow to check your phone.</p>
+      <p>Two hours later you reply. They've already booked with whoever answered first.</p>
+      <p>Speed isn't a nice-to-have here. It's the whole game.</p>
+    </div>
+    <div class="stat-block">
+      <div class="num">21×</div>
+      <div class="cap">more likely to qualify a lead when you respond in the first 5 minutes instead of the first 30</div>
+    </div>
+    <p class="stat-source">Source: Lead Response Management study, published in Harvard Business Review, 2011</p>
+  </section>
+
+  <section class="inside">
+    <p class="eyebrow">// what's actually inside</p>
+    <h2 style="font-family:var(--eb-font-mono); font-size:20px; font-weight:600; margin-bottom:6px;">Everything to copy this into your own account today</h2>
+
+    <div class="inside-item">
+      <h3>01. The exact node sequence</h3>
+      <p>Every node, in order, with the settings that actually matter, not just a "here's the general idea" diagram.</p>
+      <div class="mock-panel">
+        <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">workflow.json · 14 nodes</span></div>
+        <div class="mock-inner">
+          <div class="row"><span class="k">01</span><span class="v">Webhook: new-lead</span></div>
+          <div class="row"><span class="k">02</span><span class="v">HTTP Request: enrich contact</span></div>
+          <div class="row"><span class="k">03</span><span class="v">AI Agent: parse + score</span></div>
+          <div class="row"><span class="k">04</span><span class="v">Switch: hot / warm / cold</span></div>
+          <div class="row"><span class="k">…</span><span class="v">10 more nodes in the book</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inside-item">
+      <h3>02. The AI prompt that parses incoming leads</h3>
+      <p>The exact prompt, word for word, that turns a messy form submission into a scored, structured lead.</p>
+      <div class="mock-panel">
+        <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">parse-lead.prompt.txt</span></div>
+        <div class="mock-inner">
+          <div class="row blur"><span class="v">You are a lead-qualification assistant. Given the raw form submission below, extract: intent, urgency (1–5)...</span></div>
+          <div class="row blur"><span class="v">...if urgency >= 4, tag as HOT and skip to fast-reply branch...</span></div>
+        </div>
+        <p class="crop-note" style="padding:0 14px 12px;">Full prompt in the ebook, redacted here</p>
+      </div>
+    </div>
+
+    <div class="inside-item">
+      <h3>03. The auto-reply template that books calls</h3>
+      <p>The message that goes out in seconds, and the calendar-link logic behind it.</p>
+      <div class="mock-panel">
+        <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">thread</span></div>
+        <div class="mock-inner">
+          <div class="chat-bubble in">"Hey, saw your site. Do you handle 10-person teams?"</div>
+          <div class="chat-bubble out">Yep, here's my calendar. Grab any 15-min slot: [link]</div>
+          <div class="chat-bubble sys">✓ reply sent in 8.6s · call booked 41 min later</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inside-item">
+      <h3>04. The edge cases that break it (and the fixes)</h3>
+      <p>What actually went wrong once this was live, and exactly what I changed to fix each one.</p>
+      <div class="mock-panel">
+        <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">known-issues.log</span></div>
+        <div class="mock-inner">
+          <div class="log-line"><span class="err">✕ dup lead</span><span class="fix">→ 60s dedupe window added</span></div>
+          <div class="log-line"><span class="err">✕ bad phone fmt</span><span class="fix">→ regex normalize step added</span></div>
+          <div class="log-line"><span class="err">✕ AI timeout</span><span class="fix">→ fallback template kicks in</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-mid-wrap">
+      <a href="#buy" class="cta-mid">Get the full workflow for $19 &rarr;</a>
+    </div>
+  </section>
+
+  <section class="why">
+    <p class="eyebrow">// why this exists</p>
+    <div class="why-block">
+      <p>I run DamirBuilds. I build AI workflow automations for a living, mostly lead-gen and follow-up systems for other businesses.</p>
+      <p>This particular workflow started as something I hacked together for my own leads, because I was losing deals to my own slowness, not to my own product.</p>
+      <p>Once it worked, people kept asking how I'd built it. I got tired of explaining it over DMs, so I wrote it down instead: every node, every prompt, every place it broke and what I changed to fix it. This is that document. I'm not building a course around it. I'm just handing you the build.</p>
+    </div>
+    <p class="why-sign">Damir, DamirBuilds</p>
+
+    <div class="cta-mid-wrap">
+      <a href="#buy" class="cta-mid">Get the full workflow for $19 &rarr;</a>
+    </div>
+  </section>
+
+  <section class="faq">
+    <p class="eyebrow">// before you buy</p>
+
+    <div class="faq-item">
+      <p class="faq-q">Do I need to know how to code?</p>
+      <p class="faq-a">No. You need an n8n account (the free tier works) and the ability to copy nodes and paste in API keys. If you can follow a recipe, you can set this up.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">What if I don't use n8n yet?</p>
+      <p class="faq-a">n8n is a free, open-source tool for connecting apps and automating steps between them, similar to Zapier but you control the logic. The ebook walks you through getting an account running before you touch the actual workflow.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">How do I pay with crypto if I've never done it?</p>
+      <p class="faq-a">The checkout link walks you through it: send from an exchange like Coinbase or Kraken, or a wallet if you already have one. Confirmation takes a few minutes, then the download unlocks automatically. Never done it and it feels like a wall? DM me and I'll sort you out another way.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">What if it doesn't work for my business?</p>
+      <p class="faq-a">The edge-cases section exists because this broke on me more than once before it got stable. Most "it doesn't work for my case" problems are already covered there. If yours isn't, DM me and I'll help you sort it.</p>
+    </div>
+  </section>
+
+  <section class="final" id="buy">
+    <p class="eyebrow">// get it</p>
+    <h2>The exact workflow. $19. Ten seconds to a reply.</h2>
+
+    <div class="checkout-card">
+      <div class="stepper" aria-hidden="true">
+        <div class="step-node active" data-step-node="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Your info</div>
+        </div>
+        <div class="step-connector" data-connector="1"></div>
+        <div class="step-node" data-step-node="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Payment</div>
+        </div>
+      </div>
+
+      <form id="checkoutForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="New Speed-to-Lead ebook signup">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="form-step active" data-step="1">
+          <h3>Your info</h3>
+          <p class="step-intro">So I know where to send the download once payment confirms.</p>
+
+          <div class="field" data-field="name">
+            <label for="fullName">Name</label>
+            <input type="text" id="fullName" name="Name" placeholder="Jane Doe" autocomplete="name" required>
+            <p class="field-error">Please enter your name.</p>
+          </div>
+
+          <div class="field" data-field="email">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="Email" placeholder="jane@example.com" autocomplete="email" required>
+            <p class="field-error">Please enter a valid email.</p>
+          </div>
+
+          <div class="field" data-field="xhandle">
+            <label for="xHandle">X handle <span style="color:var(--eb-text-faint); font-weight:400;">(optional)</span></label>
+            <input type="text" id="xHandle" name="X handle" placeholder="@yourhandle" autocomplete="off">
+            <p class="field-hint" style="font-family:var(--eb-font-mono); font-size:11.5px; color:var(--eb-text-faint); margin-top:6px;">In case I need to reach you directly about your payment.</p>
+          </div>
+
+          <div class="btn-row">
+            <span></span>
+            <button type="button" class="cta-btn" data-next="2">Continue</button>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="2">
+          <h3>Payment</h3>
+          <p class="step-intro">$19, one time. Crypto checkout only.</p>
+          <p class="lead-note" id="leadNote"></p>
+
+          <div class="checkout-trust">
+            <span>⚡ Instant download</span>
+            <span>🔒 Secure checkout</span>
+            <span>✓ No subscription</span>
+          </div>
+
+          <div class="pay-embed-wrap">
+            <div class="pay-embed-scale">
+              <iframe class="nowpayments-frame" src="https://nowpayments.io/embeds/payment-widget?iid=5265919384" width="410" height="696" frameborder="0" scrolling="no" style="overflow-y:hidden; border:none; display:block;">
+                Can't load widget
+              </iframe>
+            </div>
+          </div>
+
+          <button type="button" class="cta-btn" id="paidConfirmTrigger" style="margin-top:18px;">I've completed payment &rarr;</button>
+          <p style="text-align:center; margin-top:10px;"><a href="https://nowpayments.io/payment/?iid=5265919384" target="_blank" rel="noopener" style="font-family:var(--eb-font-mono); font-size:11.5px; color:var(--eb-text-faint); text-decoration:underline; text-underline-offset:2px;">Widget not loading? Open the payment page directly</a></p>
+
+          <div class="dm-note">
+            <span>Can't pay in crypto? <a href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM me</a> and I'll sort you out another way.</span>
+          </div>
+
+          <button type="button" class="btn-back" data-back="1" style="margin-top:14px;">&larr; Back</button>
+        </div>
+      </form>
+
+      <div class="success-state" id="successState">
+        <div class="success-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>You're all set</h3>
+        <p>Once your payment confirms on-chain, the download unlocks automatically. I've also got your email on file in case anything needs a manual nudge.</p>
+        <a class="btn-secondary" id="successPayLink" href="#" target="_blank" rel="noopener">Payment didn't go through? Open the payment page</a>
+
+        <div class="confirm-prompt" id="confirmPrompt" hidden>
+          <p class="confirm-question">Did the download unlock okay?</p>
+          <button type="button" class="cta-btn" id="confirmPaidBtn" style="width:100%; box-sizing:border-box;">Yes, all good</button>
+          <button type="button" class="btn-text" id="notYetBtn">Not yet / having trouble</button>
+        </div>
+
+        <p class="confirm-thanks" id="confirmThanks" hidden>✓ Got it. DM me if that changes and I'll sort it personally.</p>
+        <button type="button" class="btn-text" id="reopenConfirmLink" hidden>Having trouble? Let me know</button>
+      </div>
+    </div>
+
+    <p class="cta-trust" style="margin-top:14px;">Instant download after payment confirms</p>
+  </section>
+
+</div>
+</main>
+
+<div class="mobile-cta" id="mobileCta">
+  <a class="cta-btn" href="#buy" style="margin-top:0;">Get the Workflow for $19</a>
+</div>
+
+<site-footer></site-footer>
+
+<script>
+(function(){
+  const form = document.getElementById('checkoutForm');
+  const steps = Array.from(document.querySelectorAll('.form-step'));
+  const stepNodes = Array.from(document.querySelectorAll('.step-node'));
+  const connectors = Array.from(document.querySelectorAll('.step-connector'));
+  const checkoutCard = document.querySelector('.checkout-card');
+  const successState = document.getElementById('successState');
+  const leadNote = document.getElementById('leadNote');
+  const paidConfirmTrigger = document.getElementById('paidConfirmTrigger');
+  const NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=5265919384';
+  let leadSent = false;
+
+  // The NOWPayments widget is a fixed 410x696 iframe — scale it down (never
+  // up) to fit narrower phone screens instead of letting it overflow or
+  // forcing horizontal scroll.
+  function scalePaymentEmbed(){
+    const wrap = document.querySelector('.pay-embed-wrap');
+    const scaleEl = document.querySelector('.pay-embed-scale');
+    if(!wrap || !scaleEl || wrap.clientWidth === 0) return;
+    const scale = Math.min(1, wrap.clientWidth / 410);
+    scaleEl.style.transform = 'scale(' + scale + ')';
+    wrap.style.height = (696 * scale) + 'px';
+  }
+  window.addEventListener('resize', scalePaymentEmbed);
+
+  function goToStep(n){
+    steps.forEach(s => s.classList.toggle('active', s.dataset.step === String(n)));
+    stepNodes.forEach(node => {
+      const num = Number(node.dataset.stepNode);
+      node.classList.toggle('active', num === n);
+      node.classList.toggle('done', num < n);
+    });
+    connectors.forEach(c => c.classList.toggle('done', Number(c.dataset.connector) < n));
+  }
+
+  function validateStep(stepEl){
+    let valid = true;
+    stepEl.querySelectorAll('.field').forEach(field => {
+      const input = field.querySelector('input');
+      if(!input) return;
+      let ok = true;
+      if(input.required && !input.value.trim()) ok = false;
+      if(input.type === 'email' && input.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) ok = false;
+      field.classList.toggle('invalid', !ok);
+      if(!ok) valid = false;
+    });
+    return valid;
+  }
+
+  // Draft autosave — this artifact runs on its own origin, so localStorage
+  // is scoped to this page only. Best-effort: never blocks the flow if
+  // storage is unavailable (private browsing, etc).
+  const DRAFT_KEY = 'ebookCheckoutDraft_v1';
+  function saveDraft(){
+    try{
+      const data = {};
+      form.querySelectorAll('input[name]').forEach(i => { data[i.name] = i.value; });
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+    }catch(e){}
+  }
+  function restoreDraft(){
+    try{
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      Object.keys(data).forEach(key => {
+        const el = form.querySelector('[name="' + CSS.escape(key) + '"]');
+        if(el) el.value = data[key];
+      });
+    }catch(e){}
+  }
+  form.addEventListener('input', saveDraft);
+
+  async function sendLead(subject){
+    const fd = new FormData(form);
+    fd.set('_subject', subject);
+    try{
+      const res = await fetch(form.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+      return res.ok;
+    }catch(e){ return false; }
+  }
+
+  async function captureLeadOnArrival(){
+    if(leadSent) return;
+    leadSent = true;
+    leadNote.textContent = 'Saving your info…';
+    leadNote.className = 'lead-note visible';
+    const ok = await sendLead('New Speed-to-Lead ebook signup: reached payment step');
+    if(ok){
+      leadNote.textContent = '✓ Got your info. Pay below and the download unlocks automatically.';
+      leadNote.className = 'lead-note visible is-ok';
+    } else {
+      leadNote.textContent = "Couldn't save your info automatically. No worries, just DM me after you pay.";
+      leadNote.className = 'lead-note visible is-error';
+      leadSent = false;
+    }
+  }
+
+  document.querySelectorAll('[data-next]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const currentStep = btn.closest('.form-step');
+      if(!validateStep(currentStep)) return;
+      const target = Number(btn.dataset.next);
+      goToStep(target);
+      checkoutCard.scrollIntoView({ behavior:'smooth', block:'start' });
+      if(target === 2){
+        captureLeadOnArrival();
+        // The iframe is display:none until now, so it has zero width —
+        // scale it only once it's actually visible to measure against.
+        requestAnimationFrame(scalePaymentEmbed);
+        setTimeout(scalePaymentEmbed, 300);
+      }
+    });
+  });
+  document.querySelectorAll('[data-back]').forEach(btn => {
+    btn.addEventListener('click', () => goToStep(Number(btn.dataset.back)));
+  });
+
+  // The payment itself happens inline in the widget, so there's no click
+  // or tab-switch to hook — the visitor tells us themselves once they're
+  // done, same as the manual confirm step below.
+  document.getElementById('successPayLink').href = NOWPAYMENTS_URL;
+  paidConfirmTrigger.addEventListener('click', () => {
+    sendLead('💰 Says they completed payment: Speed-to-Lead ebook');
+    form.style.display = 'none';
+    document.querySelector('.stepper').style.display = 'none';
+    successState.classList.add('active');
+    successState.scrollIntoView({ behavior:'smooth', block:'start' });
+    try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+    document.getElementById('confirmPrompt').hidden = false;
+  });
+
+  const confirmPrompt = document.getElementById('confirmPrompt');
+  const confirmThanks = document.getElementById('confirmThanks');
+  const reopenConfirmLink = document.getElementById('reopenConfirmLink');
+  document.getElementById('notYetBtn').addEventListener('click', () => {
+    confirmPrompt.hidden = true;
+    reopenConfirmLink.hidden = false;
+  });
+  reopenConfirmLink.addEventListener('click', () => {
+    reopenConfirmLink.hidden = true;
+    confirmThanks.hidden = true;
+    confirmPrompt.hidden = false;
+  });
+  document.getElementById('confirmPaidBtn').addEventListener('click', () => {
+    sendLead('✅ Confirmed download worked: Speed-to-Lead ebook');
+    confirmPrompt.hidden = true;
+    confirmThanks.hidden = false;
+  });
+
+  restoreDraft();
+
+  // Sticky mobile CTA: show once past the hero, hide again once the
+  // real checkout card is on screen so there's never a duplicate CTA
+  // stacked on top of it.
+  (function(){
+    const bar = document.getElementById('mobileCta');
+    const hero = document.querySelector('.hero');
+    const buySection = document.getElementById('buy');
+    if(!bar || !hero || !buySection || !('IntersectionObserver' in window)) return;
+    let pastHero = false, atBuy = false;
+    const sync = () => bar.classList.toggle('show', pastHero && !atBuy);
+    new IntersectionObserver((entries) => {
+      entries.forEach(entry => { pastHero = !entry.isIntersecting; });
+      sync();
+    }, { rootMargin: '-1px 0px 0px 0px' }).observe(hero);
+    new IntersectionObserver((entries) => {
+      entries.forEach(entry => { atBuy = entry.isIntersecting; });
+      sync();
+    }, { threshold: 0.1 }).observe(buySection);
+  })();
+})();
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>
