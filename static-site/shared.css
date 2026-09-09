@@ -13,17 +13,18 @@
    choice has ever been made — when the OS is set to light and no
    data-theme attribute is present yet.
 
-   Palette v2: the accent moved from a bright "safety orange" (#FF5A36)
-   to a deeper, richer terracotta (#E8562F dark / #B23D1A light) —
-   same warm hue family (keeps the flame/rocket motif and the
-   hot/warm/cold lead-temperature metaphor intact) but less neon, more
-   premium. --warm/--cold are similarly muted rather than pure
-   primary-color. --hot-rgb holds the accent as an "r,g,b" triplet so
-   low-opacity tint overlays (rgba(var(--hot-rgb), 0.1) etc.) stay in
-   sync with the accent automatically instead of hardcoding stale hex.
-   The accent is also now used more sparingly — eyebrow labels use a
-   neutral tone instead, reserving color for things that are actually
-   interactive (buttons, links, active/hover states). */
+   Palette v3: the accent moved from the terracotta/orange (#E8562F
+   dark / #B23D1A light) to the same green used on the ebook page
+   (#22C55E dark / #0F7A3D light), so the whole site reads as one
+   brand instead of the ebook page standing apart. --warm/--cold are
+   left as their own muted amber/blue — they're the hot/warm/cold
+   lead-temperature metaphor color, not the brand accent, so they
+   don't need to track this change. --hot-rgb holds the accent as an
+   "r,g,b" triplet so low-opacity tint overlays (rgba(var(--hot-rgb),
+   0.1) etc.) stay in sync with the accent automatically instead of
+   hardcoding stale hex. The accent is also used sparingly — eyebrow
+   labels use a neutral tone instead, reserving color for things that
+   are actually interactive (buttons, links, active/hover states). */
 :root{
   --bg: #0A0D10;
   --panel: #12161B;
@@ -34,8 +35,8 @@
   --body-text: #D7DBE0;
   --muted: #8D96A3;
   --muted-2: #5E6673;
-  --hot: #E8562F;
-  --hot-rgb: 232,86,47;
+  --hot: #22C55E;
+  --hot-rgb: 34,197,94;
   --warm: #E0A93D;
   --cold: #5B9BD9;
   /* Button/CTA color is deliberately separate from --hot: --hot is
@@ -45,8 +46,8 @@
      on top of it — so it can and should stay vivid in both themes.
      Reusing the deepened --hot for button backgrounds made light-mode
      buttons look muddy/brick instead of like a confident CTA. */
-  --accent-btn: #E8562F;
-  --accent-btn-rgb: 232,86,47;
+  --accent-btn: #22C55E;
+  --accent-btn-rgb: 34,197,94;
   --shadow-1: rgba(0,0,0,0.35);
   --cursor-hover-bg: rgba(237,239,242,0.12);
   --nav-bg: rgba(10,13,16,0.72);
@@ -75,8 +76,8 @@ html[data-theme="light"]{
   --body-text: #333A42;
   --muted: #5B6470;
   --muted-2: #838C97;
-  --hot: #B23D1A;
-  --hot-rgb: 178,61,26;
+  --hot: #0F7A3D;
+  --hot-rgb: 15,122,61;
   --warm: #8F6A1A;
   --cold: #2E6CA8;
   --shadow-1: rgba(20,24,29,0.10);
@@ -95,8 +96,8 @@ html[data-theme="light"]{
     --body-text: #333A42;
     --muted: #5B6470;
     --muted-2: #838C97;
-    --hot: #B23D1A;
-    --hot-rgb: 178,61,26;
+    --hot: #0F7A3D;
+    --hot-rgb: 15,122,61;
     --warm: #8F6A1A;
     --cold: #2E6CA8;
     --shadow-1: rgba(20,24,29,0.10);

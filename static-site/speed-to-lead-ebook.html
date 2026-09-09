@@ -783,13 +783,17 @@
   }
   .flow-card p{ font-size:14px; margin-bottom:0; }
   .flow-connector{
-    flex-shrink:0; position:relative; width:2px; height:26px;
-    margin:2px 0 2px 41px;
-    background-image:linear-gradient(to bottom, var(--eb-border) 50%, transparent 50%);
-    background-size:2px 9px; background-repeat:repeat-y;
+    flex-shrink:0; position:relative; width:2px; height:20px;
+    /* Centered exactly under the 42px icon: 1px card border + 22px
+       padding + half the icon width (21px) = 44px, minus half the
+       connector's own 2px width. Also overlaps 1px into each card
+       above/below so the line reads as continuous through the stack
+       instead of floating disconnected in the gap. */
+    margin:-1px 0 -1px 43px;
+    background:var(--eb-border);
   }
   .flow-dot{
-    position:absolute; top:0; left:0; width:8px; height:8px; border-radius:50%;
+    position:absolute; top:0; left:0; width:9px; height:9px; border-radius:50%;
     background:var(--eb-accent); box-shadow:0 0 10px rgba(var(--eb-accent-rgb),0.7);
     transform:translate(-50%,-50%);
   }
@@ -938,24 +942,30 @@
     <div class="flow-track reveal">
       <div class="flow-card">
         <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 7h8M6 10h8M6 13h5" stroke-linecap="round"/></svg></div>
-        <h3>Lead fills out your form</h3>
-        <p>Name, email, whatever they typed. <strong>Captured the instant they hit submit.</strong></p>
+        <div>
+          <h3>Lead fills out your form</h3>
+          <p>Name, email, whatever they typed. <strong>Captured the instant they hit submit.</strong></p>
+        </div>
       </div>
 
       <div class="flow-connector"><div class="flow-dot stage-1"></div></div>
 
       <div class="flow-card">
         <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3.5c-4 0-7 3-7 6.5s3 6.5 7 6.5 7-3 7-6.5-3-6.5-7-6.5z"/><circle cx="7.2" cy="9.5" r=".9" fill="currentColor" stroke="none"/><circle cx="12.8" cy="9.5" r=".9" fill="currentColor" stroke="none"/></svg></div>
-        <h3>The AI reads it and <span class="hl">personalizes</span></h3>
-        <p>Not keyword-matching. <strong>It actually parses what they wrote</strong> and tailors the reply to it.</p>
+        <div>
+          <h3>The AI reads it and <span class="hl">personalizes</span></h3>
+          <p>Not keyword-matching. <strong>It actually parses what they wrote</strong> and tailors the reply to it.</p>
+        </div>
       </div>
 
       <div class="flow-connector"><div class="flow-dot stage-2"></div></div>
 
       <div class="flow-card">
         <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg></div>
-        <h3>A personal reply, under 10s</h3>
-        <p>Written like a person would respond to <strong>that exact message</strong>. Booked before they've considered a competitor.</p>
+        <div>
+          <h3>A personal reply, under 10s</h3>
+          <p>Written like a person would respond to <strong>that exact message</strong>. Booked before they've considered a competitor.</p>
+        </div>
       </div>
     </div>
   </section>
