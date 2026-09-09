@@ -3,21 +3,29 @@
 // The ebook checkout used to send everyone to the same static NOWPayments
 // invoice (iid=5265919384). That's fine for taking payment, but it means
 // NOWPayments has no way to tell us WHO paid — every buyer looks the same.
-// Each checkout gets its own invoice instead, so we know who to redirect
-// and what to tell the tracking pixels once they've actually paid.
+// Each checkout gets its own invoice instead, tagged with the buyer's
+// email in order_id, so we know who to email once they've actually paid
+// and what to tell the tracking pixels.
 //
-// Conversion tracking happens on the client side, on the thank-you page
-// this redirects to (success_url below) — it fires the same X pixel and
-// GA4 gtag calls already used for the Lead event, using the email and
-// price passed through the URL. We tried a server-side approach first
-// (NOWPayments IPN webhook -> X's Conversion API), but X's Conversion API
-// requires a separate "Ads API access" approval that isn't granted by
-// default, so that path is on hold — this client-side approach works
-// today without waiting on that approval.
+// Two separate things happen once a payment confirms, on two separate
+// paths:
+//   1. Delivery — NOWPayments calls ipn_callback_url (fulfill-order.js)
+//      directly from its own servers. That's the only thing that
+//      actually emails the buyer their download; it doesn't depend on
+//      their browser doing anything.
+//   2. Ad conversion tracking — client-side, on the thank-you page this
+//      redirects to (success_url below), firing the same X pixel and
+//      GA4 gtag calls already used for the Lead event. We tried a
+//      server-side version of this too (IPN -> X's Conversion API), but
+//      X's Conversion API requires a separate "Ads API access" approval
+//      that isn't granted by default, so that path is on hold —
+//      client-side tracking works today without waiting on it.
 //
-// Requires the NOWPAYMENTS_API_KEY environment variable to be set in the
-// Cloudflare Pages project settings (Settings → Environment variables).
-// Get the key from your NOWPayments dashboard: Payment settings → API keys.
+// Requires these Cloudflare Pages environment variables:
+//   NOWPAYMENTS_API_KEY    — NOWPayments dashboard → Payment settings → API keys.
+//   NOWPAYMENTS_IPN_SECRET — NOWPayments dashboard → Settings → IPN secret key
+//                            (only needed for fulfill-order.js to verify
+//                            the callback below is genuinely from NOWPayments).
 
 const PRICE_USD = 19;
 
@@ -62,6 +70,7 @@ export async function onRequestPost(context) {
         price_currency: "usd",
         order_id: orderId,
         order_description: "Speed-to-Lead Ebook",
+        ipn_callback_url: `${origin}/api/fulfill-order`,
         success_url: successUrl.toString(),
         cancel_url: `${origin}/speed-to-lead-ebook`,
       }),

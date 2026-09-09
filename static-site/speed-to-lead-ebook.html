@@ -704,37 +704,16 @@
   }
   .dm-note a{ color:var(--eb-accent); text-decoration:underline; text-underline-offset:2px; }
 
-  .success-state{ display:none; text-align:left; }
-  .success-state.active{ display:block; }
-  .success-icon{
-    width:46px; height:46px; margin-bottom:16px;
-    border-radius:50%;
-    background:rgba(127,191,143,0.14);
-    color:var(--eb-go);
-    display:flex; align-items:center; justify-content:center;
+  .stay-note{
+    margin-top:18px;
+    padding:11px 13px;
+    border:1px solid var(--eb-border);
+    border-radius:6px;
+    background:var(--eb-bg-raise);
+    font-size:13px;
+    color:var(--eb-text-dim);
   }
-  .success-icon svg{ width:22px; height:22px; }
-  .success-state h3{ font-family:var(--eb-font-mono); font-size:18px; color:var(--eb-text); margin-bottom:8px; }
-  .success-state p{ font-size:14.5px; }
-  .btn-secondary{
-    display:block; width:100%; box-sizing:border-box; text-align:center;
-    padding:12px 20px; border-radius:5px;
-    border:1px solid var(--eb-border); background:transparent;
-    color:var(--eb-text-dim); font-weight:600; font-size:13.5px;
-    font-family:var(--eb-font-mono);
-    cursor:pointer; margin-top:14px;
-    transition:border-color .15s ease, background .15s ease, color .15s ease;
-  }
-  .btn-secondary:hover{ border-color:var(--eb-text-faint); background:var(--eb-bg-raise); color:var(--eb-text); }
-  .confirm-prompt{ margin-top:20px; padding:18px; border:1px solid var(--eb-border); border-radius:6px; background:var(--eb-bg-raise); }
-  .confirm-question{ font-family:var(--eb-font-mono); font-size:13.5px; font-weight:600; color:var(--eb-text); margin-bottom:12px; }
-  .btn-text{
-    display:inline-block; margin-top:12px; font-size:12.5px; color:var(--eb-text-faint);
-    background:none; border:none; cursor:pointer; font-family:var(--eb-font-mono);
-    text-decoration:underline; text-underline-offset:2px;
-  }
-  .btn-text:hover{ color:var(--eb-text); }
-  .confirm-thanks{ color:var(--eb-go) !important; font-weight:600; margin-top:16px; font-family:var(--eb-font-mono); font-size:13px; }
+  .stay-note strong{ color:var(--eb-text); }
 
   @media (min-width:600px){
     section{padding:72px 0;}
@@ -1029,7 +1008,7 @@
             </div>
           </div>
 
-          <button type="button" class="cta-btn" id="paidConfirmTrigger" style="margin-top:18px;">I've completed payment &rarr;</button>
+          <p class="stay-note"><strong>Stay on this page after you pay.</strong> Once your payment confirms on the blockchain, you'll be redirected automatically — no need to click anything or refresh.</p>
           <p style="text-align:center; margin-top:10px;"><a href="https://nowpayments.io/payment/?iid=5265919384" target="_blank" rel="noopener" class="pay-direct-link" style="font-family:var(--eb-font-mono); font-size:11.5px; color:var(--eb-text-faint); text-decoration:underline; text-underline-offset:2px;">Widget not loading? Open the payment page directly</a></p>
 
           <div class="dm-note">
@@ -1039,22 +1018,6 @@
           <button type="button" class="btn-back" data-back="1" style="margin-top:14px;">&larr; Back</button>
         </div>
       </form>
-
-      <div class="success-state" id="successState">
-        <div class="success-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>You're all set</h3>
-        <p>Once your payment confirms on-chain, the download unlocks automatically. I've also got your email on file in case anything needs a manual nudge.</p>
-        <a class="btn-secondary" id="successPayLink" href="#" target="_blank" rel="noopener">Payment didn't go through? Open the payment page</a>
-
-        <div class="confirm-prompt" id="confirmPrompt" hidden>
-          <p class="confirm-question">Did the download unlock okay?</p>
-          <button type="button" class="cta-btn" id="confirmPaidBtn" style="width:100%; box-sizing:border-box;">Yes, all good</button>
-          <button type="button" class="btn-text" id="notYetBtn">Not yet / having trouble</button>
-        </div>
-
-        <p class="confirm-thanks" id="confirmThanks" hidden>✓ Got it. DM me if that changes and I'll sort it personally.</p>
-        <button type="button" class="btn-text" id="reopenConfirmLink" hidden>Having trouble? Let me know</button>
-      </div>
     </div>
 
     <p class="cta-trust" style="margin-top:14px;">Instant download after payment confirms</p>
@@ -1076,9 +1039,7 @@
   const stepNodes = Array.from(document.querySelectorAll('.step-node'));
   const connectors = Array.from(document.querySelectorAll('.step-connector'));
   const checkoutCard = document.querySelector('.checkout-card');
-  const successState = document.getElementById('successState');
   const leadNote = document.getElementById('leadNote');
-  const paidConfirmTrigger = document.getElementById('paidConfirmTrigger');
   const STATIC_IID = '5265919384';
   let NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=' + STATIC_IID;
   let leadSent = false;
@@ -1103,7 +1064,6 @@
       if(frame) frame.src = 'https://nowpayments.io/embeds/payment-widget?iid=' + data.id;
       NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=' + data.id;
       document.querySelectorAll('.pay-direct-link').forEach(a => { a.href = NOWPAYMENTS_URL; });
-      document.getElementById('successPayLink').href = NOWPAYMENTS_URL;
     }catch(e){
       // Static fallback widget stays loaded — checkout still works, we
       // just won't have a verified per-buyer conversion for this one.
@@ -1237,37 +1197,11 @@
     btn.addEventListener('click', () => goToStep(Number(btn.dataset.back)));
   });
 
-  // The payment itself happens inline in the widget, so there's no click
-  // or tab-switch to hook — the visitor tells us themselves once they're
-  // done, same as the manual confirm step below.
-  document.getElementById('successPayLink').href = NOWPAYMENTS_URL;
-  paidConfirmTrigger.addEventListener('click', () => {
-    sendLead('💰 Says they completed payment: Speed-to-Lead ebook');
-    form.style.display = 'none';
-    document.querySelector('.stepper').style.display = 'none';
-    successState.classList.add('active');
-    successState.scrollIntoView({ behavior:'smooth', block:'start' });
-    try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
-    document.getElementById('confirmPrompt').hidden = false;
-  });
-
-  const confirmPrompt = document.getElementById('confirmPrompt');
-  const confirmThanks = document.getElementById('confirmThanks');
-  const reopenConfirmLink = document.getElementById('reopenConfirmLink');
-  document.getElementById('notYetBtn').addEventListener('click', () => {
-    confirmPrompt.hidden = true;
-    reopenConfirmLink.hidden = false;
-  });
-  reopenConfirmLink.addEventListener('click', () => {
-    reopenConfirmLink.hidden = true;
-    confirmThanks.hidden = true;
-    confirmPrompt.hidden = false;
-  });
-  document.getElementById('confirmPaidBtn').addEventListener('click', () => {
-    sendLead('✅ Confirmed download worked: Speed-to-Lead ebook');
-    confirmPrompt.hidden = true;
-    confirmThanks.hidden = false;
-  });
+  // The payment itself happens inline in the widget. There's no manual
+  // "I've paid" step anymore — NOWPayments redirects the browser straight
+  // to the thank-you page once the transaction actually confirms
+  // on-chain, so there's nothing to click and nothing that can fire
+  // before the payment is real.
 
   restoreDraft();
 
