@@ -3,18 +3,23 @@
 // The ebook checkout used to send everyone to the same static NOWPayments
 // invoice (iid=5265919384). That's fine for taking payment, but it means
 // NOWPayments has no way to tell us WHO paid — every buyer looks the same.
-// To get a real, per-buyer "purchase" signal we can hand to X Ads / GA4,
-// each checkout needs its own invoice.
+// Each checkout gets its own invoice instead, so we know who to redirect
+// and what to tell the tracking pixels once they've actually paid.
 //
-// The buyer's email rides along as part of order_id ("<email>::<ms since
-// epoch>") instead of in a database — nowpayments-ipn.js just splits it
-// back out when the payment finishes. It'll show up in plain text in your
-// NOWPayments dashboard order history, which is fine (only you see that)
-// and is actually handy for manually looking up an order.
+// Conversion tracking happens on the client side, on the thank-you page
+// this redirects to (success_url below) — it fires the same X pixel and
+// GA4 gtag calls already used for the Lead event, using the email and
+// price passed through the URL. We tried a server-side approach first
+// (NOWPayments IPN webhook -> X's Conversion API), but X's Conversion API
+// requires a separate "Ads API access" approval that isn't granted by
+// default, so that path is on hold — this client-side approach works
+// today without waiting on that approval.
 //
 // Requires the NOWPAYMENTS_API_KEY environment variable to be set in the
 // Cloudflare Pages project settings (Settings → Environment variables).
 // Get the key from your NOWPayments dashboard: Payment settings → API keys.
+
+const PRICE_USD = 19;
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -35,8 +40,14 @@ export async function onRequestPost(context) {
     return json({ error: "Server misconfigured: missing NOWPAYMENTS_API_KEY" }, 500);
   }
 
+  // No database, no IPN needed — order_id is just for your own NOWPayments
+  // dashboard reference now, not parsed back out anywhere.
   const orderId = `${email}::${Date.now()}`;
   const origin = new URL(request.url).origin;
+
+  const successUrl = new URL(`${origin}/speed-to-lead-ebook-thanks`);
+  successUrl.searchParams.set("email", email);
+  successUrl.searchParams.set("value", String(PRICE_USD));
 
   let nowRes;
   try {
@@ -47,16 +58,11 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // TEMP TEST PRICE — was 19, dropped to 10 for a real end-to-end
-        // checkout test ($1 hit most coins' ~$10 minimum payment on
-        // NOWPayments). MUST be changed back to 19 before real customers
-        // use this page.
-        price_amount: 10,
+        price_amount: PRICE_USD,
         price_currency: "usd",
         order_id: orderId,
         order_description: "Speed-to-Lead Ebook",
-        ipn_callback_url: `${origin}/api/nowpayments-ipn`,
-        success_url: `${origin}/speed-to-lead-ebook?paid=1`,
+        success_url: successUrl.toString(),
         cancel_url: `${origin}/speed-to-lead-ebook`,
       }),
     });

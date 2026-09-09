@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<!-- Escape the NOWPayments widget iframe if this page loads inside it,
+     instead of showing the confirmation nested inside the small payment
+     widget. Runs as early as possible, before any real content paints. -->
+<script>(function(){try{if(window.self!==window.top){window.top.location=window.location.href;}}catch(e){}})();</script>
+<title>You're in | DamirBuilds</title>
+<meta name="description" content="Payment confirmed. Your Speed-to-Lead workflow download is on its way.">
+<link rel="canonical" href="https://damirbuilds.com/speed-to-lead-ebook-thanks">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="You're in | DamirBuilds">
+<meta property="og:url" content="https://damirbuilds.com/speed-to-lead-ebook-thanks">
+<meta property="og:site_name" content="damirbuilds">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  :root{
+    --eb-bg:#F5F7F1;
+    --eb-bg-raise:#ECEFE5;
+    --eb-surface:#FFFFFF;
+    --eb-panel:#FBFCF9;
+    --eb-border:#D7DCCB;
+    --eb-border-soft:#E5E8DC;
+    --eb-text:#1B2117;
+    --eb-text-dim:#4B5443;
+    --eb-text-faint:#7C8672;
+    --eb-accent:#0F7A3D;
+    --eb-accent-rgb:15,122,61;
+    --eb-accent-soft:#15974A;
+    --eb-accent-ink:#FFFFFF;
+    --eb-go:#3E7A50;
+    --eb-warn:#B8452E;
+    --eb-font-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --eb-font-sans:'IBM Plex Sans', -apple-system, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --eb-bg:#12160E;
+      --eb-bg-raise:#181D13;
+      --eb-surface:#1D2317;
+      --eb-panel:#0C0F09;
+      --eb-border:#2D3524;
+      --eb-border-soft:#232A1C;
+      --eb-text:#EAEFE3;
+      --eb-text-dim:#B7C1A9;
+      --eb-text-faint:#7E8A70;
+      --eb-accent:#22C55E;
+      --eb-accent-rgb:34,197,94;
+      --eb-accent-soft:#86EFAC;
+      --eb-accent-ink:#052E14;
+      --eb-go:#7FBF8F;
+      --eb-warn:#E2745A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --eb-bg:#12160E;
+    --eb-bg-raise:#181D13;
+    --eb-surface:#1D2317;
+    --eb-panel:#0C0F09;
+    --eb-border:#2D3524;
+    --eb-border-soft:#232A1C;
+    --eb-text:#EAEFE3;
+    --eb-text-dim:#B7C1A9;
+    --eb-text-faint:#7E8A70;
+    --eb-accent:#22C55E;
+    --eb-accent-rgb:34,197,94;
+    --eb-accent-soft:#86EFAC;
+    --eb-accent-ink:#052E14;
+    --eb-go:#7FBF8F;
+    --eb-warn:#E2745A;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--eb-bg);
+    color:var(--eb-text);
+    font-family:var(--eb-font-sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--eb-accent); color:var(--eb-accent-ink);}
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.035;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap, .topbar, footer{ position:relative; z-index:2; }
+  .wrap{ max-width:640px; margin:0 auto; padding:0 24px; }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 24px;
+    border-bottom:1px solid var(--eb-border-soft);
+    font-family:var(--eb-font-mono);
+    font-size:13px;
+  }
+  .topbar .brand{color:var(--eb-text); font-weight:600;}
+  .topbar .brand span{color:var(--eb-accent);}
+  .topbar-right{display:flex; align-items:center; gap:10px;}
+
+  main{ flex:1; display:flex; align-items:center; }
+
+  .confirm-card{
+    width:100%;
+    padding:64px 0;
+    text-align:left;
+  }
+  .confirm-icon{
+    width:52px; height:52px; margin-bottom:20px;
+    border-radius:50%;
+    background:rgba(127,191,143,0.14);
+    color:var(--eb-go);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .confirm-icon svg{ width:24px; height:24px; }
+  .eyebrow{
+    font-family:var(--eb-font-mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    color:var(--eb-text-faint);
+    margin:0 0 14px;
+  }
+  h1{
+    text-wrap:balance;
+    margin:0 0 14px;
+    font-size:clamp(26px,4vw,34px);
+  }
+  p{margin:0 0 14px; color:var(--eb-text-dim); max-width:52ch;}
+  p:last-of-type{margin-bottom:0;}
+  p strong{color:var(--eb-text); font-weight:700;}
+
+  .confirm-detail{
+    margin-top:28px;
+    padding:16px 18px;
+    background:var(--eb-panel);
+    border:1px solid var(--eb-border);
+    border-radius:8px;
+    font-family:var(--eb-font-mono);
+    font-size:13px;
+    color:var(--eb-text-dim);
+  }
+  .confirm-detail span{ color:var(--eb-text); }
+
+  .confirm-actions{
+    margin-top:32px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--eb-accent);
+    color:var(--eb-accent-ink);
+    font-family:var(--eb-font-mono);
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:6px;
+    border:1px solid transparent;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover, .btn-primary:focus-visible{ background:var(--eb-accent-soft); }
+  .btn-secondary{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--eb-text-dim);
+    font-family:var(--eb-font-mono);
+    font-size:13.5px;
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:6px;
+    border:1px solid var(--eb-border);
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-secondary:hover, .btn-secondary:focus-visible{ border-color:var(--eb-accent); color:var(--eb-text); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+<div style="width:100%;">
+  <div class="topbar">
+    <div class="brand">Damir<span>Builds</span></div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
+        <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="confirm-card">
+      <div class="confirm-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10.5l3.5 3.5L16 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="eyebrow">// payment confirmed</p>
+      <h1>You're in.</h1>
+      <p>Thanks for grabbing the Speed-to-Lead workflow. <strong>Check your inbox</strong> — the download and setup instructions are on their way to the email you paid with.</p>
+      <p>If nothing shows up in a few minutes, check spam first, then DM me and I'll sort it out directly.</p>
+      <div class="confirm-detail" id="confirmDetail" hidden>Confirmation sent to <span id="confirmEmail"></span></div>
+      <div class="confirm-actions">
+        <a class="btn-primary" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM me on X if anything's missing</a>
+        <a class="btn-secondary" href="/">Back to the site</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<site-footer></site-footer>
+
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var email = (params.get('email') || '').trim();
+  var value = parseFloat(params.get('value'));
+  if(!isFinite(value) || value <= 0){ value = 19; }
+
+  if(email){
+    var detail = document.getElementById('confirmDetail');
+    var emailSpan = document.getElementById('confirmEmail');
+    if(detail && emailSpan){
+      emailSpan.textContent = email;
+      detail.hidden = false;
+    }
+  }
+
+  // Fire once per landing — guards against the tag re-firing on a
+  // theme-toggle re-render or an accidental page refresh inflating the
+  // purchase count.
+  var FIRED_KEY = 'stl_purchase_fired';
+  var alreadyFired = false;
+  try{ alreadyFired = sessionStorage.getItem(FIRED_KEY) === '1'; }catch(e){}
+
+  if(!alreadyFired){
+    if(typeof twq === 'function'){
+      twq('event', 'tw-reor2-rf3t8', {
+        value: value,
+        currency: 'USD',
+        email_address: email || undefined
+      });
+    }
+    if(typeof gtag === 'function'){
+      gtag('event', 'purchase', {
+        value: value,
+        currency: 'USD',
+        transaction_id: (Date.now().toString(36))
+      });
+    }
+    try{ sessionStorage.setItem(FIRED_KEY, '1'); }catch(e){}
+  }
+})();
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>
