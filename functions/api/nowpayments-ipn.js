@@ -27,7 +27,11 @@
 //   X_ACCESS_TOKEN_SECRET      — that handle's "Access Token Secret"
 
 const PIXEL_ID = "reor2";
-const X_EVENT_ID = "tw-reor2-rf3rq";
+// A dedicated Purchase-type event — NOT the same event ID as the
+// client-side Lead event (tw-reor2-rf3rq) fired from speed-to-lead-ebook.html
+// when someone reaches the payment step. Keeping these separate is what
+// lets X Ads report Leads and actual Purchases as distinct conversions.
+const X_EVENT_ID = "tw-reor2-rf3t8";
 const GA4_MEASUREMENT_ID = "G-PQP82JKXY1";
 
 export async function onRequestPost(context) {
