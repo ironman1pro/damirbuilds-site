@@ -13,12 +13,18 @@
 //
 // Requires these environment variables in Cloudflare Pages project
 // settings (Settings → Environment variables):
-//   NOWPAYMENTS_IPN_SECRET   — NOWPayments dashboard, Payment settings
-//   X_ADS_ACCESS_TOKEN       — X Developer Console user access token,
-//                              generated for an account with AD_MANAGER
-//                              or ACCOUNT_ADMIN access on your ads account
-//   GA4_API_SECRET           — GA4 Admin → Data Streams → your web stream
-//                              → Measurement Protocol API secrets → Create
+//   NOWPAYMENTS_IPN_SECRET    — NOWPayments dashboard, Payment settings
+//   GA4_API_SECRET            — GA4 Admin → Data Streams → your web stream
+//                               → Measurement Protocol API secrets → Create
+//
+// X's Ads Conversion API is an older-style API and requires full OAuth 1.0a
+// request signing, not a single bearer token — so four separate values are
+// needed, all from the X Developer Console app tied to a handle with
+// AD_MANAGER or ACCOUNT_ADMIN access on your ads account:
+//   X_API_KEY                 — the app's "API Key" (consumer key)
+//   X_API_SECRET               — the app's "API Key Secret" (consumer secret)
+//   X_ACCESS_TOKEN             — that handle's "Access Token"
+//   X_ACCESS_TOKEN_SECRET      — that handle's "Access Token Secret"
 
 const PIXEL_ID = "reor2";
 const X_EVENT_ID = "tw-reor2-rf3rq";
@@ -66,13 +72,21 @@ export async function onRequestPost(context) {
 
   const results = { x: null, ga4: null };
 
-  if (email && env.X_ADS_ACCESS_TOKEN) {
+  const hasXCreds =
+    env.X_API_KEY && env.X_API_SECRET && env.X_ACCESS_TOKEN && env.X_ACCESS_TOKEN_SECRET;
+
+  if (email && hasXCreds) {
     results.x = await fireXConversion({
       email,
       value,
       conversionId,
       conversionTime,
-      accessToken: env.X_ADS_ACCESS_TOKEN,
+      creds: {
+        apiKey: env.X_API_KEY,
+        apiSecret: env.X_API_SECRET,
+        accessToken: env.X_ACCESS_TOKEN,
+        accessTokenSecret: env.X_ACCESS_TOKEN_SECRET,
+      },
     });
   }
 
@@ -90,13 +104,15 @@ export async function onRequestPost(context) {
   });
 }
 
-async function fireXConversion({ email, value, conversionId, conversionTime, accessToken }) {
+async function fireXConversion({ email, value, conversionId, conversionTime, creds }) {
   const hashedEmail = await sha256Hex(email.trim().toLowerCase());
+  const url = `https://ads-api.x.com/12/measurement/conversions/${PIXEL_ID}`;
   try {
-    const res = await fetch(`https://ads-api.x.com/12/measurement/conversions/${PIXEL_ID}`, {
+    const authHeader = await buildOAuth1Header({ method: "POST", url, creds });
+    const res = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: authHeader,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -116,6 +132,67 @@ async function fireXConversion({ email, value, conversionId, conversionTime, acc
   } catch (e) {
     return { ok: false, error: String(e) };
   }
+}
+
+// X's Ads API is OAuth 1.0a — the signature only covers the URL and the
+// OAuth params themselves (this endpoint has no query params and a JSON,
+// not form-encoded, body, so the body isn't part of the signature base
+// string — that's standard for JSON-bodied OAuth 1.0a requests).
+async function buildOAuth1Header({ method, url, creds }) {
+  const oauthParams = {
+    oauth_consumer_key: creds.apiKey,
+    oauth_nonce: randomHex(32),
+    oauth_signature_method: "HMAC-SHA1",
+    oauth_timestamp: String(Math.floor(Date.now() / 1000)),
+    oauth_token: creds.accessToken,
+    oauth_version: "1.0",
+  };
+
+  const sortedKeys = Object.keys(oauthParams).sort();
+  const paramString = sortedKeys
+    .map((k) => `${pctEncode(k)}=${pctEncode(oauthParams[k])}`)
+    .join("&");
+
+  const baseString = [method.toUpperCase(), pctEncode(url), pctEncode(paramString)].join("&");
+  const signingKey = `${pctEncode(creds.apiSecret)}&${pctEncode(creds.accessTokenSecret)}`;
+  const signature = await hmacSha1Base64(baseString, signingKey);
+
+  const headerParams = { ...oauthParams, oauth_signature: signature };
+  return (
+    "OAuth " +
+    Object.keys(headerParams)
+      .sort()
+      .map((k) => `${pctEncode(k)}="${pctEncode(headerParams[k])}"`)
+      .join(", ")
+  );
+}
+
+function pctEncode(str) {
+  return encodeURIComponent(str).replace(
+    /[!*'()]/g,
+    (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase()
+  );
+}
+
+function randomHex(len) {
+  const bytes = new Uint8Array(Math.ceil(len / 2));
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .slice(0, len);
+}
+
+async function hmacSha1Base64(message, secret) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-1" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(message));
+  return btoa(String.fromCharCode(...new Uint8Array(sig)));
 }
 
 async function fireGa4Purchase({ value, conversionId, apiSecret }) {
