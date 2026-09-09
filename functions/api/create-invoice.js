@@ -19,10 +19,7 @@
 // Cloudflare Pages project settings (Settings → Environment variables).
 // Get the key from your NOWPayments dashboard: Payment settings → API keys.
 
-// TEMP: bumped down from 19 for a one-off live redirect/tracking test.
-// Revert to 19 right after — see the reminder in the commit that changes
-// this back.
-const PRICE_USD = 10;
+const PRICE_USD = 19;
 
 export async function onRequestPost(context) {
   const { request, env } = context;
