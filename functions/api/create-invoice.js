@@ -47,10 +47,11 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // TEMP TEST PRICE — was 19, dropped to 1 for a real end-to-end
-        // checkout test. MUST be changed back to 19 before real customers
+        // TEMP TEST PRICE — was 19, dropped to 10 for a real end-to-end
+        // checkout test ($1 hit most coins' ~$10 minimum payment on
+        // NOWPayments). MUST be changed back to 19 before real customers
         // use this page.
-        price_amount: 1,
+        price_amount: 10,
         price_currency: "usd",
         order_id: orderId,
         order_description: "Speed-to-Lead Ebook",
