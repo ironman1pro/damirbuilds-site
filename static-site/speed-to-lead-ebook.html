@@ -166,6 +166,7 @@
 
   p{margin:0 0 14px; color:var(--eb-text-dim); max-width:60ch;}
   p:last-child{margin-bottom:0;}
+  p strong, li strong, .cap strong{color:var(--eb-text); font-weight:700;}
 
   /* ---------- top bar ---------- */
   .topbar{
@@ -415,6 +416,63 @@
     color:var(--eb-text-faint);
     margin-top:10px;
   }
+
+  /* ---------- setup process ---------- */
+  .process-list{
+    counter-reset:step;
+    margin-top:8px;
+  }
+  .process-step{
+    position:relative;
+    display:grid;
+    grid-template-columns:36px 1fr;
+    gap:14px;
+    padding:20px 0;
+    border-top:1px solid var(--eb-border-soft);
+  }
+  .process-step:first-of-type{border-top:none; padding-top:0;}
+  .process-step .num{
+    counter-increment:step;
+    width:36px; height:36px;
+    border-radius:50%;
+    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-accent) 100%, white 14%), var(--eb-accent) 55%);
+    color:var(--eb-accent-ink);
+    font-family:var(--eb-font-mono);
+    font-weight:700;
+    font-size:14.5px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 14px -6px rgba(var(--eb-accent-rgb),0.5);
+  }
+  .process-step .num::before{ content:counter(step); }
+  .process-step h3{
+    font-family:var(--eb-font-mono);
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--eb-text);
+    margin-bottom:6px;
+  }
+  .process-step p{font-size:14.5px; margin-bottom:0;}
+  .process-step .step-link{
+    display:inline-block;
+    margin-top:8px;
+    font-family:var(--eb-font-mono);
+    font-size:13px;
+    font-weight:600;
+    color:var(--eb-accent);
+    text-decoration:none;
+    border-bottom:1px solid rgba(var(--eb-accent-rgb),0.4);
+  }
+  .process-step .step-link:hover{ border-color:var(--eb-accent); }
+  .process-note{
+    margin-top:24px;
+    padding:14px 16px;
+    border:1px solid var(--eb-border);
+    border-radius:8px;
+    background:var(--eb-panel);
+    font-size:13.5px;
+    color:var(--eb-text-dim);
+  }
+  .process-note strong{ color:var(--eb-text); }
 
   /* ---------- inside grid ---------- */
   .inside-item{
@@ -705,7 +763,7 @@
   <section class="hero">
     <p class="eyebrow">// real build, not a course</p>
     <h1>The exact n8n workflow I use to respond to every lead in under 10 seconds</h1>
-    <p class="sub">Steal my actual workflow. Copy, paste, deploy. No modules, no theory. Just the thing that works.</p>
+    <p class="sub">Steal my actual workflow. <strong>Copy, paste, deploy.</strong> No modules, no theory. Just the thing that works.</p>
 
     <div class="price-row">
       <span class="amount">$19</span>
@@ -743,12 +801,12 @@
     <p class="eyebrow">// what actually happens</p>
     <div class="problem-lines">
       <p>A lead comes in. You're in a meeting, or asleep, or just slow to check your phone.</p>
-      <p>Two hours later you reply. They've already booked with whoever answered first.</p>
-      <p>Speed isn't a nice-to-have here. It's the whole game.</p>
+      <p>Two hours later you reply. <strong>They've already booked with whoever answered first.</strong></p>
+      <p>Speed isn't a nice-to-have here. <strong>It's the whole game.</strong></p>
     </div>
     <div class="stat-block">
       <div class="num">21×</div>
-      <div class="cap">more likely to qualify a lead when you respond in the first 5 minutes instead of the first 30</div>
+      <div class="cap">more likely to qualify a lead when you respond in the <strong>first 5 minutes</strong> instead of the first 30</div>
     </div>
     <p class="stat-source">Source: Lead Response Management study, published in Harvard Business Review, 2011</p>
   </section>
@@ -759,7 +817,7 @@
 
     <div class="inside-item">
       <h3>01. The exact node sequence</h3>
-      <p>Every node, in order, with the settings that actually matter, not just a "here's the general idea" diagram.</p>
+      <p>Every node, in order, with <strong>the settings that actually matter</strong>, not just a "here's the general idea" diagram.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">workflow.json · 14 nodes</span></div>
         <div class="mock-inner">
@@ -774,7 +832,7 @@
 
     <div class="inside-item">
       <h3>02. The AI prompt that parses incoming leads</h3>
-      <p>The exact prompt, word for word, that turns a messy form submission into a scored, structured lead.</p>
+      <p>The exact prompt, <strong>word for word</strong>, that turns a messy form submission into a scored, structured lead.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">parse-lead.prompt.txt</span></div>
         <div class="mock-inner">
@@ -787,7 +845,7 @@
 
     <div class="inside-item">
       <h3>03. The auto-reply template that books calls</h3>
-      <p>The message that goes out in seconds, and the calendar-link logic behind it.</p>
+      <p>The message that <strong>goes out in seconds</strong>, and the calendar-link logic behind it.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">thread</span></div>
         <div class="mock-inner">
@@ -800,7 +858,7 @@
 
     <div class="inside-item">
       <h3>04. The edge cases that break it (and the fixes)</h3>
-      <p>What actually went wrong once this was live, and exactly what I changed to fix each one.</p>
+      <p>What actually went wrong once this was live, and <strong>exactly what I changed to fix each one</strong>.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">known-issues.log</span></div>
         <div class="mock-inner">
@@ -816,12 +874,61 @@
     </div>
   </section>
 
+  <section class="process">
+    <p class="eyebrow">// getting it running</p>
+    <h2 style="font-family:var(--eb-font-mono); font-size:20px; font-weight:600; margin-bottom:6px;">From download to live in about 10 minutes</h2>
+    <p style="margin-top:10px; margin-bottom:0;">No dev work. <strong>No rebuilding anything from scratch.</strong> Four steps and it's running on your account.</p>
+
+    <div class="process-list">
+      <div class="process-step">
+        <div class="num"></div>
+        <div>
+          <h3>Download your workflow files</h3>
+          <p>Everything's in the ebook download: the n8n workflow file, the prompt, the templates. <strong>One zip, ready to go.</strong></p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="num"></div>
+        <div>
+          <h3>Upload with a single click</h3>
+          <p>n8n has a built-in import. Drop the file in and <strong>the entire node sequence appears on your canvas already wired up</strong>, no manual rebuilding.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="num"></div>
+        <div>
+          <h3>Swap in your own URLs</h3>
+          <p>The workflow ships with placeholder URLs where your webhook, calendar link, and API endpoints go. <strong>The ebook shows you exactly where each one comes from and how to grab it</strong>, step by step, so it's follow-along, not guesswork.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="num"></div>
+        <div>
+          <h3>Stuck on something? I've got you</h3>
+          <p>If a node breaks or a step doesn't match your setup, <strong>you're not on your own</strong>. DM me and I'll help you get it running.</p>
+          <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" class="step-link">DM me on X &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-note">
+      <strong>Heads up:</strong> the walkthrough and DM support are both included, no separate purchase, no upsell. You get the full setup path with the $19.
+    </div>
+
+    <div class="cta-mid-wrap">
+      <a href="#buy" class="cta-mid">Get the full workflow for $19 &rarr;</a>
+    </div>
+  </section>
+
   <section class="why">
     <p class="eyebrow">// why this exists</p>
     <div class="why-block">
       <p>I run DamirBuilds. I build AI workflow automations for a living, mostly lead-gen and follow-up systems for other businesses.</p>
-      <p>This particular workflow started as something I hacked together for my own leads, because I was losing deals to my own slowness, not to my own product.</p>
-      <p>Once it worked, people kept asking how I'd built it. I got tired of explaining it over DMs, so I wrote it down instead: every node, every prompt, every place it broke and what I changed to fix it. This is that document. I'm not building a course around it. I'm just handing you the build.</p>
+      <p>This particular workflow started as something I hacked together for my own leads, because <strong>I was losing deals to my own slowness, not to my own product.</strong></p>
+      <p>Once it worked, people kept asking how I'd built it. I got tired of explaining it over DMs, so I wrote it down instead: every node, every prompt, every place it broke and what I changed to fix it. This is that document. <strong>I'm not building a course around it. I'm just handing you the build.</strong></p>
     </div>
     <p class="why-sign">Damir, DamirBuilds</p>
 
@@ -835,22 +942,22 @@
 
     <div class="faq-item">
       <p class="faq-q">Do I need to know how to code?</p>
-      <p class="faq-a">No. You need an n8n account (the free tier works) and the ability to copy nodes and paste in API keys. If you can follow a recipe, you can set this up.</p>
+      <p class="faq-a">No. You need an n8n account (<strong>the free tier works</strong>) and the ability to copy nodes and paste in API keys. If you can follow a recipe, you can set this up.</p>
     </div>
 
     <div class="faq-item">
       <p class="faq-q">What if I don't use n8n yet?</p>
-      <p class="faq-a">n8n is a free, open-source tool for connecting apps and automating steps between them, similar to Zapier but you control the logic. The ebook walks you through getting an account running before you touch the actual workflow.</p>
+      <p class="faq-a">n8n is a <strong>free, open-source tool</strong> for connecting apps and automating steps between them, similar to Zapier but you control the logic. The ebook walks you through getting an account running before you touch the actual workflow.</p>
     </div>
 
     <div class="faq-item">
       <p class="faq-q">How do I pay with crypto if I've never done it?</p>
-      <p class="faq-a">The checkout link walks you through it: send from an exchange like Coinbase or Kraken, or a wallet if you already have one. Confirmation takes a few minutes, then the download unlocks automatically. Never done it and it feels like a wall? DM me and I'll sort you out another way.</p>
+      <p class="faq-a">The checkout link walks you through it: send from an exchange like Coinbase or Kraken, or a wallet if you already have one. Confirmation takes a few minutes, then <strong>the download unlocks automatically</strong>. Never done it and it feels like a wall? DM me and I'll sort you out another way.</p>
     </div>
 
     <div class="faq-item">
       <p class="faq-q">What if it doesn't work for my business?</p>
-      <p class="faq-a">The edge-cases section exists because this broke on me more than once before it got stable. Most "it doesn't work for my case" problems are already covered there. If yours isn't, DM me and I'll help you sort it.</p>
+      <p class="faq-a">The edge-cases section exists because this broke on me more than once before it got stable. Most "it doesn't work for my case" problems are <strong>already covered there</strong>. If yours isn't, DM me and I'll help you sort it.</p>
     </div>
   </section>
 
@@ -871,7 +978,7 @@
         </div>
       </div>
 
-      <form id="checkoutForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+      <form id="checkoutForm" action="https://formspree.io/f/xzebkydz" method="POST" novalidate>
         <input type="hidden" name="_subject" value="New Speed-to-Lead ebook signup">
         <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
