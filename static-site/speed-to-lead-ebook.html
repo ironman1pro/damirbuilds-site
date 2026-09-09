@@ -1155,6 +1155,25 @@
   async function captureLeadOnArrival(){
     if(leadSent) return;
     leadSent = true;
+    // Fire the X Ads "Lead" conversion event the moment someone reaches
+    // this step — same pattern as get-started.html, fired regardless of
+    // whether the Formspree call below succeeds, since the ad conversion
+    // should count based on the user's action, not our own backend.
+    if(typeof twq === 'function'){
+      const emailField = document.getElementById('email');
+      twq('event', 'tw-reor2-rf3rq', {
+        value: 19,
+        currency: 'USD',
+        email_address: emailField ? emailField.value : undefined
+      });
+    }
+    // Same moment, mirrored as a GA4 conversion event.
+    if(typeof gtag === 'function'){
+      gtag('event', 'generate_lead', {
+        value: 19,
+        currency: 'USD'
+      });
+    }
     leadNote.textContent = 'Saving your info…';
     leadNote.className = 'lead-note visible';
     const ok = await sendLead('New Speed-to-Lead ebook signup: reached payment step');
