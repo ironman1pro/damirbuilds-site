@@ -205,7 +205,14 @@
   }
   .flow-line.is-filled::after{ height:100%; }
 
-  /* ---------- VIDEO DEMO ---------- */
+  /* ---------- LIVE WORKFLOW ANIMATION ----------
+     Was a placeholder "click to play" box wired up to a video file that
+     was never recorded. Replaced with a live, looping animation instead
+     of leaving a dead video embed on a real page: a text thread on the
+     left (customer message in, personalized reply out) synced to a
+     workflow execution log on the right (steps checking off, timer
+     counting up), so visitors see the actual shape of what happens
+     without needing a real screen recording to exist yet. */
   .demo{
     padding:0 0 88px;
   }
@@ -222,40 +229,110 @@
       var(--panel);
   }
   @media (max-width:640px){
-    .demo-frame{ aspect-ratio:4/3; }
+    .demo-frame{ aspect-ratio:auto; }
   }
-  .demo-frame video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .demo-play{
+  .demo-live{
     position:absolute;
     inset:0;
-    display:flex;
+    display:grid;
+    grid-template-columns:1fr 1px 1.3fr;
     align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    gap:14px;
-    cursor:pointer;
-    background:transparent;
+    gap:32px;
+    padding:32px 40px;
   }
-  .play-circle{
-    width:64px;
-    height:64px;
-    border-radius:50%;
-    background:var(--text);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:transform .15s ease;
+  .demo-live-chat{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+  .demo-live-label{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted-2);
+    margin-bottom:6px;
   }
-  .demo-play:hover .play-circle{ transform:scale(1.06); }
-  .play-circle svg{ margin-left:3px; }
-  .demo-play span{
+  .demo-chat-bubble{
+    max-width:90%;
+    border-radius:12px;
+    padding:10px 14px;
     font-size:14px;
+    line-height:1.45;
+    min-height:38px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .demo-chat-bubble.is-in{ opacity:1; transform:none; }
+  .demo-chat-bubble--in{
+    align-self:flex-start;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-bottom-left-radius:3px;
+    color:var(--body-text);
+  }
+  .demo-chat-bubble--out{
+    align-self:flex-end;
+    background:rgba(var(--hot-rgb),0.14);
+    border:1px solid rgba(var(--hot-rgb),0.35);
+    border-bottom-right-radius:3px;
+    color:var(--text);
+  }
+  .demo-live-divider{ width:1px; height:74%; background:var(--line); justify-self:center; }
+  .demo-live-workflow{ min-width:0; }
+  .demo-live-bar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding-bottom:12px;
+    margin-bottom:16px;
+    border-bottom:1px solid var(--line);
+  }
+  .demo-live-dot{ width:7px; height:7px; border-radius:50%; background:var(--line); }
+  .demo-live-file{ margin-left:8px; font-size:12.5px; color:var(--muted); font-family:monospace; }
+  .demo-live-timer{
+    margin-left:auto;
+    font-size:12px;
+    color:var(--hot);
+    background:rgba(var(--hot-rgb),0.12);
+    border:1px solid rgba(var(--hot-rgb),0.3);
+    border-radius:4px;
+    padding:2px 8px;
+    font-variant-numeric:tabular-nums;
+    font-family:monospace;
+  }
+  .demo-live-log{ display:flex; flex-direction:column; gap:13px; }
+  .demo-live-step{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13.5px;
     color:var(--muted);
+    opacity:.45;
+    transition:opacity .3s ease, color .3s ease;
+  }
+  .demo-live-step.is-done{ opacity:1; color:var(--text); }
+  .demo-live-check{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    flex-shrink:0;
+    border:1.5px solid var(--line);
+    position:relative;
+    transition:border-color .3s ease, background .3s ease;
+  }
+  .demo-live-step.is-done .demo-live-check{ background:var(--hot); border-color:var(--hot); }
+  .demo-live-step.is-done .demo-live-check::after{
+    content:"";
+    position:absolute;
+    left:4.5px;
+    top:2px;
+    width:4px;
+    height:8px;
+    border:solid var(--bg);
+    border-width:0 1.6px 1.6px 0;
+    transform:rotate(40deg);
+  }
+  @media (max-width:640px){
+    .demo-live{ grid-template-columns:1fr; grid-template-rows:auto auto; gap:22px; padding:24px 22px; position:static; }
+    .demo-frame{ padding:4px 0; }
+    .demo-live-divider{ display:none; }
   }
   .demo-caption{
     margin-top:14px;
@@ -594,20 +671,29 @@
 <section class="demo" style="border-top:none; padding-top:0;">
   <div class="wrap">
     <div class="demo-frame">
-      <!--
-        Replace this block with your real demo video.
-        Simplest option: swap the button below for
-        <video src="your-video.mp4" controls autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-        Or embed a YouTube/Loom iframe in its place.
-      -->
-      <button class="demo-play" onclick="this.parentElement.innerHTML='<video src=&quot;YOUR-VIDEO-URL.mp4&quot; controls autoplay style=&quot;width:100%;height:100%;object-fit:cover;&quot;></video>'">
-        <div class="play-circle">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--bg)"><path d="M4 2.5v15l14-7.5-14-7.5z"/></svg>
+      <div class="demo-live" aria-hidden="true">
+        <div class="demo-live-chat">
+          <div class="demo-live-label">A lead texts in</div>
+          <div class="demo-chat-bubble demo-chat-bubble--in" id="demoIn"><span id="demoInText"></span></div>
+          <div class="demo-chat-bubble demo-chat-bubble--out" id="demoOut"><span id="demoOutText"></span></div>
         </div>
-        <span>Watch a lead get replied to in real time</span>
-      </button>
+        <div class="demo-live-divider"></div>
+        <div class="demo-live-workflow">
+          <div class="demo-live-bar">
+            <span class="demo-live-dot"></span><span class="demo-live-dot"></span><span class="demo-live-dot"></span>
+            <span class="demo-live-file">speed-to-lead.workflow.json</span>
+            <span class="demo-live-timer" id="demoTimer">0.0s</span>
+          </div>
+          <div class="demo-live-log">
+            <div class="demo-live-step" data-step="0"><span class="demo-live-check"></span>New lead via webhook</div>
+            <div class="demo-live-step" data-step="1"><span class="demo-live-check"></span>AI parses & scores</div>
+            <div class="demo-live-step" data-step="2"><span class="demo-live-check"></span>Personalized reply drafted</div>
+            <div class="demo-live-step" data-step="3"><span class="demo-live-check"></span>Sent, synced to CRM</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="demo-caption">Actual workflow, actual response. 60 seconds, unedited.</p>
+    <p class="demo-caption">A simulation of the actual workflow — same steps, same sequence, running on every real lead.</p>
   </div>
 </section>
 
@@ -886,6 +972,85 @@
       .then(function(){ i++; runCycle(); });
   }
   runCycle();
+})();
+
+(function(){
+  var inBubble = document.getElementById('demoIn');
+  var outBubble = document.getElementById('demoOut');
+  var inText = document.getElementById('demoInText');
+  var outText = document.getElementById('demoOutText');
+  var timerEl = document.getElementById('demoTimer');
+  var steps = document.querySelectorAll('.demo-live-step');
+  if(!inBubble || !outBubble || !timerEl) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var scenarios = [
+    { lead: 'Do you have anything under $2k?', reply: "We've got a couple options right in that range. Want the closest match?" },
+    { lead: 'What’s included in the starter package?', reply: 'Onboarding, setup, and one live call. Want the full breakdown?' },
+    { lead: 'Just looking around for now', reply: "Totally fine, I'll leave the details here. Anything you're curious about?" }
+  ];
+
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+  function typeInto(el, text, speed){
+    return new Promise(function(resolve){
+      if(reduceMotion){ el.textContent = text; resolve(); return; }
+      el.textContent = '';
+      var i = 0;
+      var id = setInterval(function(){
+        el.textContent += text.charAt(i);
+        i++;
+        if(i >= text.length){ clearInterval(id); resolve(); }
+      }, speed);
+    });
+  }
+
+  function markStep(idx){
+    steps.forEach(function(s){
+      if(parseInt(s.getAttribute('data-step'), 10) <= idx){ s.classList.add('is-done'); }
+    });
+  }
+
+  var timerInterval = null;
+  function startTimer(){
+    var start = Date.now();
+    timerInterval = setInterval(function(){
+      timerEl.textContent = ((Date.now() - start) / 1000).toFixed(1) + 's';
+    }, 100);
+  }
+  function stopTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
+
+  function resetAll(){
+    inBubble.classList.remove('is-in');
+    outBubble.classList.remove('is-in');
+    inText.textContent = '';
+    outText.textContent = '';
+    steps.forEach(function(s){ s.classList.remove('is-done'); });
+    timerEl.textContent = '0.0s';
+    stopTimer();
+  }
+
+  var j = 0;
+  function runDemoCycle(){
+    var s = scenarios[j % scenarios.length];
+    resetAll();
+    startTimer();
+
+    wait(reduceMotion ? 200 : 500)
+      .then(function(){ markStep(0); return wait(reduceMotion ? 150 : 400); })
+      .then(function(){ inBubble.classList.add('is-in'); return typeInto(inText, s.lead, 26); })
+      .then(function(){ return wait(reduceMotion ? 150 : 350); })
+      .then(function(){ markStep(1); return wait(reduceMotion ? 150 : 500); })
+      .then(function(){
+        markStep(2);
+        outBubble.classList.add('is-in');
+        return typeInto(outText, s.reply, 15);
+      })
+      .then(function(){ markStep(3); stopTimer(); return wait(reduceMotion ? 1200 : 2600); })
+      .then(function(){ j++; runDemoCycle(); });
+  }
+  runDemoCycle();
 })();
 
   document.querySelectorAll('.faq-item').forEach(item => {
