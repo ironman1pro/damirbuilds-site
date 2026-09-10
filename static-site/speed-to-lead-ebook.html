@@ -899,11 +899,11 @@
   .exit-popup{
     position:relative;
     width:100%;
-    max-width:420px;
+    max-width:500px;
     background:var(--eb-surface);
     border:1px solid rgba(var(--eb-accent-rgb),0.4);
-    border-radius:14px;
-    padding:34px 28px 28px;
+    border-radius:16px;
+    padding:44px 40px 36px;
     text-align:center;
     box-shadow:
       0 32px 64px -20px rgba(0,0,0,0.6),
@@ -915,15 +915,15 @@
   .exit-popup-overlay.show .exit-popup{ transform:translateY(0) scale(1); }
   .exit-popup-badge{
     position:absolute;
-    top:-14px; left:-10px;
+    top:-16px; left:-12px;
     background:var(--eb-warn);
     color:#FFFFFF;
     font-family:var(--eb-font-mono);
     font-weight:700;
-    font-size:12px;
+    font-size:13.5px;
     letter-spacing:.03em;
-    padding:6px 12px;
-    border-radius:5px;
+    padding:7px 14px;
+    border-radius:6px;
     transform:rotate(-6deg);
     box-shadow:0 8px 18px -6px rgba(0,0,0,0.5);
   }
@@ -945,51 +945,53 @@
   .exit-popup .eyebrow{ justify-content:center; margin-bottom:2px; color:var(--eb-warn); font-weight:700; }
   .exit-popup h3{
     font-family:var(--eb-font-mono);
-    font-size:26px;
+    font-size:32px;
     font-weight:700;
     letter-spacing:-0.01em;
-    margin-top:4px;
+    margin-top:6px;
   }
   .exit-popup h3 .hl{ color:var(--eb-accent); }
   .exit-popup p.exit-copy{
-    font-size:14.5px;
+    font-size:16px;
     color:var(--eb-text-dim);
-    margin-top:10px;
-    line-height:1.5;
+    margin-top:12px;
+    line-height:1.55;
   }
   .exit-popup .exit-price-row{
-    display:flex; align-items:center; justify-content:center; gap:12px;
-    margin-top:18px;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    margin-top:22px;
     background:rgba(var(--eb-accent-rgb),0.1);
     border:1px dashed rgba(var(--eb-accent-rgb),0.45);
-    border-radius:8px;
-    padding:12px 10px;
+    border-radius:10px;
+    padding:16px 12px;
   }
   .exit-popup .exit-price-row .was{
     font-family:var(--eb-font-mono);
-    font-size:16px;
+    font-size:18px;
     color:var(--eb-text-faint);
     text-decoration:line-through;
   }
   .exit-popup .exit-price-row .now{
     font-family:var(--eb-font-mono);
-    font-size:34px;
+    font-size:42px;
     font-weight:700;
     color:var(--eb-accent);
     text-shadow:0 0 24px rgba(var(--eb-accent-rgb),0.5);
   }
   .exit-popup .exit-price-row .save{
     font-family:var(--eb-font-mono);
-    font-size:11.5px;
+    font-size:13px;
     font-weight:700;
     color:var(--eb-accent-btn-ink);
     background:var(--eb-accent-btn);
-    padding:3px 7px;
-    border-radius:4px;
+    padding:4px 8px;
+    border-radius:5px;
     letter-spacing:.02em;
   }
   .exit-popup .cta-btn{
-    margin-top:20px;
+    margin-top:24px;
+    font-size:17.5px;
+    padding:17px 20px;
     animation:exitPulse 1.8s ease-in-out infinite;
   }
   .exit-popup .cta-btn:hover{ animation-play-state:paused; }
@@ -1009,14 +1011,14 @@
   }
   .exit-popup-urgency{
     font-family:var(--eb-font-mono);
-    font-size:11.5px;
+    font-size:12px;
     color:var(--eb-text-faint);
-    margin-top:10px;
+    margin-top:12px;
   }
   .exit-popup-state{ display:none; }
   .exit-popup-state.active{ display:block; }
   .exit-popup-badge.hide{ display:none; }
-  .exit-popup-bye{ font-size:36px; margin-top:6px; }
+  .exit-popup-bye{ font-size:42px; margin-top:6px; }
   @media (prefers-reduced-motion: reduce){
     .exit-popup .cta-btn{ animation:none; }
   }
@@ -1392,7 +1394,7 @@
 
     <div class="exit-popup-state active" id="exitPopupOffer">
       <p class="eyebrow">// before you go</p>
-      <h3 id="exitPopupHeading">Yo, <span class="hl">wait!</span></h3>
+      <h3 id="exitPopupHeading">Yo, <span class="hl">Wait!</span></h3>
       <p class="exit-copy">Take $5 off right now. Same workflow, same file, just cheaper because you almost left.</p>
       <div class="exit-price-row">
         <span class="was">$19</span>
@@ -1407,7 +1409,7 @@
       <p class="exit-popup-bye">😭</p>
       <h3>Don't leave.</h3>
       <p class="exit-copy">Fine, keep the full $19 price then. But at least follow along on X so it's not goodbye forever.</p>
-      <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" class="cta-btn" style="width:100%;">Follow @damirbuilds on X</a>
+      <a href="https://x.com/intent/follow?screen_name=damirbuilds" target="_blank" rel="noopener" class="cta-btn" style="width:100%;">Follow @damirbuilds on X</a>
     </div>
   </div>
 </div>
