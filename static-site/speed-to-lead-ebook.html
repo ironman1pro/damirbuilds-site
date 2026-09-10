@@ -883,6 +883,83 @@
     section{padding:72px 0;}
     .hero{padding-top:56px;}
   }
+
+  /* ---------- exit-intent popup ---------- */
+  .exit-popup-overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.55);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .22s ease;
+  }
+  .exit-popup-overlay.show{ opacity:1; pointer-events:auto; }
+  .exit-popup{
+    position:relative;
+    width:100%;
+    max-width:420px;
+    background:var(--eb-surface);
+    border:1px solid var(--eb-border);
+    border-radius:12px;
+    padding:32px 28px 28px;
+    text-align:center;
+    box-shadow:0 32px 64px -20px rgba(0,0,0,0.55);
+    transform:translateY(14px) scale(.98);
+    transition:transform .25s ease;
+  }
+  .exit-popup-overlay.show .exit-popup{ transform:translateY(0) scale(1); }
+  .exit-popup-close{
+    position:absolute;
+    top:12px; right:12px;
+    width:30px; height:30px;
+    border-radius:50%;
+    border:1px solid var(--eb-border);
+    background:var(--eb-panel);
+    color:var(--eb-text-faint);
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .exit-popup-close:hover{ color:var(--eb-text); border-color:var(--eb-text-faint); }
+  .exit-popup .eyebrow{ justify-content:center; margin-bottom:2px; }
+  .exit-popup h3{
+    font-family:var(--eb-font-mono);
+    font-size:23px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-top:4px;
+  }
+  .exit-popup h3 .hl{ color:var(--eb-accent); }
+  .exit-popup p.exit-copy{
+    font-size:14.5px;
+    color:var(--eb-text-dim);
+    margin-top:10px;
+    line-height:1.5;
+  }
+  .exit-popup .exit-price-row{
+    display:flex; align-items:baseline; justify-content:center; gap:8px;
+    margin-top:16px;
+  }
+  .exit-popup .exit-price-row .was{
+    font-family:var(--eb-font-mono);
+    font-size:15px;
+    color:var(--eb-text-faint);
+    text-decoration:line-through;
+  }
+  .exit-popup .exit-price-row .now{
+    font-family:var(--eb-font-mono);
+    font-size:28px;
+    font-weight:700;
+    color:var(--eb-accent);
+  }
+  .exit-popup .cta-btn{ margin-top:18px; }
+  .exit-popup-state{ display:none; }
+  .exit-popup-state.active{ display:block; }
+  .exit-popup-bye{ font-size:32px; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -893,7 +970,7 @@
 <div class="topbar">
   <div class="brand">Damir<span>Builds</span></div>
   <div class="topbar-right">
-    <div class="price-chip">$19 · one-time</div>
+    <div class="price-chip"><span class="js-price">$19</span> · one-time</div>
     <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
       <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
       <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
@@ -909,11 +986,11 @@
     <p class="sub">Steal my actual workflow. <strong>Copy, paste, deploy.</strong> No modules, no theory. Just the thing that works.</p>
 
     <div class="price-row">
-      <span class="amount">$19</span>
+      <span class="amount js-price">$19</span>
       <span class="note">· one payment, nothing recurring</span>
     </div>
 
-    <a href="#buy" class="cta-btn">Get the Workflow for $19</a>
+    <a href="#buy" class="cta-btn">Get the Workflow for <span class="js-price">$19</span></a>
     <p class="cta-trust">Instant download after payment confirms</p>
 
     <div class="highlights-row">
@@ -1061,7 +1138,7 @@
     </div>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Get the full workflow for $19 &rarr;</a>
+      <a href="#buy" class="cta-mid">Get the full workflow for <span class="js-price">$19</span> &rarr;</a>
     </div>
   </section>
 
@@ -1106,11 +1183,11 @@
     </div>
 
     <div class="process-note">
-      <strong>Heads up:</strong> the walkthrough and DM support are both included, no separate purchase, no upsell. You get the full setup path with the $19.
+      <strong>Heads up:</strong> the walkthrough and DM support are both included, no separate purchase, no upsell. You get the full setup path with the <span class="js-price">$19</span>.
     </div>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Get the full workflow for $19 &rarr;</a>
+      <a href="#buy" class="cta-mid">Get the full workflow for <span class="js-price">$19</span> &rarr;</a>
     </div>
   </section>
 
@@ -1124,7 +1201,7 @@
     <p class="why-sign">Damir, DamirBuilds</p>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Get the full workflow for $19 &rarr;</a>
+      <a href="#buy" class="cta-mid">Get the full workflow for <span class="js-price">$19</span> &rarr;</a>
     </div>
   </section>
 
@@ -1154,7 +1231,7 @@
 
   <section class="final" id="buy">
     <p class="eyebrow reveal">// get it</p>
-    <h2 class="reveal">The exact workflow. <span class="hl">$19</span>. Ten seconds to a reply.</h2>
+    <h2 class="reveal">The exact workflow. <span class="hl js-price">$19</span>. Ten seconds to a reply.</h2>
 
     <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:6px;">
       <span class="highlight-pill"><span class="dot"></span>Instant download on confirm</span>
@@ -1209,7 +1286,7 @@
 
         <div class="form-step" data-step="2">
           <h3>Payment</h3>
-          <p class="step-intro">$19, one time. Crypto checkout only.</p>
+          <p class="step-intro"><span class="js-price">$19</span>, one time. Crypto checkout only.</p>
           <p class="lead-note" id="leadNote"></p>
 
           <div class="checkout-trust">
@@ -1245,7 +1322,31 @@
 </main>
 
 <div class="mobile-cta" id="mobileCta">
-  <a class="cta-btn" href="#buy" style="margin-top:0;">Get the Workflow for $19</a>
+  <a class="cta-btn" href="#buy" style="margin-top:0;">Get the Workflow for <span class="js-price">$19</span></a>
+</div>
+
+<div class="exit-popup-overlay" id="exitPopupOverlay" role="dialog" aria-modal="true" aria-labelledby="exitPopupHeading">
+  <div class="exit-popup">
+    <button type="button" class="exit-popup-close" id="exitPopupClose" aria-label="Close">✕</button>
+
+    <div class="exit-popup-state active" id="exitPopupOffer">
+      <p class="eyebrow">// before you go</p>
+      <h3 id="exitPopupHeading">Yo, <span class="hl">wait!</span></h3>
+      <p class="exit-copy">Take $5 off right now. Same workflow, same file, just cheaper because you almost left.</p>
+      <div class="exit-price-row">
+        <span class="was">$19</span>
+        <span class="now">$14</span>
+      </div>
+      <button type="button" class="cta-btn" id="exitPopupClaim" style="width:100%;">Get the Workflow for $14</button>
+    </div>
+
+    <div class="exit-popup-state" id="exitPopupBye">
+      <p class="exit-popup-bye">😭</p>
+      <h3>Don't leave.</h3>
+      <p class="exit-copy">Fine, keep the full $19 price then. But at least follow along on X so it's not goodbye forever.</p>
+      <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" class="cta-btn" style="width:100%;">Follow @damirbuilds on X</a>
+    </div>
+  </div>
 </div>
 
 <site-footer></site-footer>
@@ -1261,6 +1362,12 @@
   const STATIC_IID = '5265919384';
   let NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=' + STATIC_IID;
   let leadSent = false;
+  // Set to true only by the exit-intent popup's "claim" button. The actual
+  // $14 price is enforced server-side in create-invoice.js — this flag just
+  // tells that endpoint the buyer earned the discount; it's never trusted
+  // as the price itself.
+  let discountActive = false;
+  window.__ebookDiscountActive = function(){ return discountActive; };
 
   // By default the widget/links point at the static, shared invoice — this
   // is what stays in place if the per-buyer invoice call below fails, so
@@ -1273,7 +1380,7 @@
       const res = await fetch('/api/create-invoice', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({ email: email, discount: discountActive ? 'exit14' : undefined })
       });
       if(!res.ok) return;
       const data = await res.json();
@@ -1365,10 +1472,11 @@
     // this step — same pattern as get-started.html, fired regardless of
     // whether the Formspree call below succeeds, since the ad conversion
     // should count based on the user's action, not our own backend.
+    const conversionValue = discountActive ? 14 : 19;
     if(typeof twq === 'function'){
       const emailField = document.getElementById('email');
       twq('event', 'tw-reor2-rf3tc', {
-        value: 19,
+        value: conversionValue,
         currency: 'USD',
         email_address: emailField ? emailField.value : undefined
       });
@@ -1376,7 +1484,7 @@
     // Same moment, mirrored as a GA4 conversion event.
     if(typeof gtag === 'function'){
       gtag('event', 'generate_lead', {
-        value: 19,
+        value: conversionValue,
         currency: 'USD'
       });
     }
@@ -1503,6 +1611,75 @@
       });
     }, { threshold: 0.5 });
     statObserver.observe(statEl);
+  })();
+
+  // Exit-intent discount popup — desktop only, shown once per visit. Fires
+  // when the mouse leaves out the top of the viewport (classic "heading for
+  // the tab bar" gesture). Claiming the discount updates every visible
+  // price on the page and carries the discount flag through to checkout.
+  (function(){
+    const overlay = document.getElementById('exitPopupOverlay');
+    const closeBtn = document.getElementById('exitPopupClose');
+    const claimBtn = document.getElementById('exitPopupClaim');
+    const offerState = document.getElementById('exitPopupOffer');
+    const byeState = document.getElementById('exitPopupBye');
+    if(!overlay || !closeBtn || !claimBtn || !offerState || !byeState) return;
+
+    // Skip entirely on touch/coarse-pointer devices — there's no reliable
+    // "leaving the page" gesture on mobile, and a popup there would just
+    // be an annoying interruption instead of a save.
+    const isDesktop = window.matchMedia('(min-width: 900px) and (pointer: fine)').matches;
+    if(!isDesktop) return;
+
+    const SHOWN_KEY = 'ebookExitPopupShown_v1';
+    let alreadyShown = false;
+    try{ alreadyShown = sessionStorage.getItem(SHOWN_KEY) === '1'; }catch(e){}
+    if(alreadyShown) return;
+
+    function markShown(){
+      alreadyShown = true;
+      try{ sessionStorage.setItem(SHOWN_KEY, '1'); }catch(e){}
+    }
+
+    function openPopup(){
+      if(alreadyShown) return;
+      markShown();
+      overlay.classList.add('show');
+      document.removeEventListener('mouseleave', onMouseLeave);
+    }
+    function closePopup(){
+      overlay.classList.remove('show');
+    }
+
+    function onMouseLeave(e){
+      if(e.clientY <= 0) openPopup();
+    }
+    document.addEventListener('mouseleave', onMouseLeave);
+
+    closeBtn.addEventListener('click', () => {
+      if(offerState.classList.contains('active')){
+        // First close from the offer = the "funny sting" state, not a
+        // full dismiss, so it still gets a beat of attention.
+        offerState.classList.remove('active');
+        byeState.classList.add('active');
+      } else {
+        closePopup();
+      }
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if(e.target === overlay) closePopup();
+    });
+
+    claimBtn.addEventListener('click', () => {
+      discountActive = true;
+      document.querySelectorAll('.js-price').forEach(el => {
+        el.textContent = el.textContent.replace('19', '14');
+      });
+      closePopup();
+      const buySection = document.getElementById('buy');
+      if(buySection) buySection.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
   })();
 })();
 </script>
