@@ -69,6 +69,77 @@ export default defineType({
       type: 'blockContent',
     }),
     defineField({
+      name: 'funnelStage',
+      title: 'Funnel stage',
+      description: 'Where this post sits in the funnel. Controls which internal links and CTA get shown on the frontend.',
+      type: 'string',
+      options: {
+        layout: 'radio',
+        list: [
+          {title: 'TOFU — Awareness', value: 'TOFU'},
+          {title: 'MOFU — Consideration', value: 'MOFU'},
+          {title: 'BOFU — Decision', value: 'BOFU'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'recommendedNextStep',
+      title: 'Recommended next step',
+      description: 'The one explicit "go deeper" link — the next post to push the reader toward (TOFU → its MOFU post, MOFU → its BOFU post). Rendered as a prominent "Read next" card, separate from Related posts below.',
+      type: 'reference',
+      to: [{type: 'post'}],
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (!value || !value._ref) return true
+          const currentId = (context.document?._id || '').replace(/^drafts\./, '')
+          const refId = value._ref.replace(/^drafts\./, '')
+          if (currentId && currentId === refId) {
+            return 'A post can’t be its own recommended next step.'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'relatedPosts',
+      title: 'Related posts',
+      description: 'Up to 3 sideways/related posts, shown in a smaller related-content block. Remember the max-3-4-links-per-post rule when combined with Recommended next step.',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'post'}]}],
+      validation: (Rule) =>
+        Rule.max(3).custom((refs, context) => {
+          if (!refs || !refs.length) return true
+          const currentId = (context.document?._id || '').replace(/^drafts\./, '')
+          const selfRef = refs.find((r) => r && r._ref && r._ref.replace(/^drafts\./, '') === currentId)
+          if (selfRef) return 'A post can’t list itself in Related posts.'
+          const refIds = refs.filter((r) => r && r._ref).map((r) => r._ref)
+          const hasDuplicates = new Set(refIds).size !== refIds.length
+          if (hasDuplicates) return 'Related posts contains a duplicate reference.'
+          return true
+        }),
+    }),
+    defineField({
+      name: 'linkedOffer',
+      title: 'Linked offer',
+      description: 'For BOFU posts: which product/offer page this post pushes toward with a direct CTA button. These are fixed marketing pages, not Sanity documents, so pick from the list rather than referencing one.',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Speed-to-Lead automation', value: 'speed-to-lead'},
+          {title: 'X Content Publisher automation', value: 'x-content-publisher'},
+          {title: 'Speed-to-Lead Ebook ($19)', value: 'ebook'},
+        ],
+      },
+      hidden: ({document}) => document?.funnelStage !== 'BOFU',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.funnelStage === 'BOFU' && !value) {
+            return 'BOFU posts should have a linked offer so the CTA has somewhere to send the reader.'
+          }
+          return true
+        }).warning(),
+    }),
+    defineField({
       name: 'faqs',
       title: 'FAQs',
       description: 'Optional. Adds a Frequently Asked Questions section to the post, and generates FAQPage structured data for Google/AI answer engines.',
