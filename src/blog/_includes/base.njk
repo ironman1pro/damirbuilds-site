@@ -362,6 +362,88 @@
   .post-nav-item.next{ text-align:right; }
   .post-nav-label{ font-size:12.5px; color:var(--muted-2); margin-bottom:6px; }
   .post-nav-title{ font-size:15px; font-weight:600; color:var(--text); }
+
+  /* ---------- funnel-aware linking: read-next / related / CTA ---------- */
+
+  /* "Read next" — the one explicit recommendedNextStep link. Deliberately
+     heavier than the related-posts grid below (border in the accent
+     color, bigger type) since this is the one link on the page we
+     actually want most readers to take. */
+  .read-next{
+    display:block;
+    border:1px solid rgba(var(--hot-rgb), 0.4);
+    background:var(--panel);
+    border-radius:14px;
+    padding:26px 28px;
+    margin:48px 0 0;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .read-next:hover, .read-next:focus-visible{
+    border-color:var(--hot);
+    transform:translateY(-2px);
+    outline:none;
+  }
+  .read-next-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--hot);
+    margin-bottom:10px;
+  }
+  .read-next-title{ font-family:'Space Grotesk', sans-serif; font-size:20px; font-weight:600; color:var(--text); line-height:1.35; }
+  .read-next-excerpt{ font-size:14.5px; color:var(--muted); margin-top:8px; max-width:60ch; }
+  .read-next-arrow{ display:inline-block; margin-left:4px; transition:transform .15s ease; }
+  .read-next:hover .read-next-arrow{ transform:translateX(3px); }
+
+  /* Related posts — intentionally smaller/quieter than read-next, plain
+     text links rather than full cards so it doesn't compete for attention. */
+  .related-posts{ margin:32px 0 0; }
+  .related-posts-label{ font-size:12.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted-2); margin-bottom:14px; }
+  .related-posts-list{ display:flex; flex-direction:column; gap:2px; }
+  .related-posts-item{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    color:var(--text);
+    font-size:15px;
+    font-weight:500;
+    transition:color .15s ease;
+  }
+  .related-posts-item:last-child{ border-bottom:none; }
+  .related-posts-item:hover, .related-posts-item:focus-visible{ color:var(--hot); outline:none; }
+  .related-posts-item .arrow{ flex-shrink:0; color:var(--muted-2); }
+
+  /* Funnel-stage CTA. Shares .post-cta's card chrome (defined above) —
+     these rules only add the parts that differ between TOFU/MOFU/BOFU. */
+  .cta-newsletter-form{ position:relative; display:flex; gap:10px; max-width:420px; flex-wrap:wrap; }
+  .cta-newsletter-form input[type="email"]{
+    flex:1 1 220px;
+    min-width:0;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+    font-family:inherit;
+    font-size:14.5px;
+    color:var(--text);
+  }
+  .cta-newsletter-form input[type="email"]:focus-visible{ outline:2px solid var(--hot); outline-offset:1px; }
+  .cta-newsletter-form button{ flex-shrink:0; }
+  .cta-newsletter-form button[disabled]{ opacity:0.6; cursor:default; }
+  .cta-newsletter-note{ position:relative; font-size:12.5px; color:var(--muted-2); margin-top:10px; }
+  .cta-newsletter-status{ position:relative; font-size:13.5px; margin-top:10px; display:none; }
+  .cta-newsletter-status.show{ display:block; }
+  .cta-newsletter-status.is-ok{ color:var(--hot); }
+  .cta-newsletter-status.is-error{ color:var(--muted); }
+  .cta-offer-mention{ position:relative; font-size:14px; color:var(--muted); margin-top:14px; }
+  .cta-offer-mention a{ color:var(--hot); border-bottom:1px solid rgba(var(--hot-rgb),0.4); }
+  .cta-offer-mention a:hover{ border-color:var(--hot); }
 </style>
 </head>
 <body>
@@ -431,6 +513,25 @@
   </section>
   {% endif %}
 
+  {% if post.recommendedNextStep %}
+  <a class="read-next" href="/blog/{{ post.recommendedNextStep.slug }}/">
+    <span class="read-next-label">Read next</span>
+    <div class="read-next-title">{{ post.recommendedNextStep.title }}<span class="read-next-arrow">→</span></div>
+    {% if post.recommendedNextStep.excerpt %}<p class="read-next-excerpt">{{ post.recommendedNextStep.excerpt }}</p>{% endif %}
+  </a>
+  {% endif %}
+
+  {% if post.relatedPosts.length %}
+  <nav class="related-posts" aria-label="Related posts">
+    <div class="related-posts-label">Related</div>
+    <div class="related-posts-list">
+      {% for related in post.relatedPosts %}
+      <a class="related-posts-item" href="/blog/{{ related.slug }}/"><span class="arrow">→</span> {{ related.title }}</a>
+      {% endfor %}
+    </div>
+  </nav>
+  {% endif %}
+
   <div class="post-author">
     <img class="post-author-photo" src="/damir-avatar.webp" width="56" height="56" alt="Portrait of Damir" loading="lazy" decoding="async">
     <div>
@@ -440,12 +541,38 @@
     </div>
   </div>
 
+  {% if post.funnelStage == 'BOFU' and post.linkedOfferData %}
   <div class="post-cta">
     <span class="post-cta-eyebrow">Let's build</span>
-    <h3>Stop losing leads to slow follow-up.</h3>
-    <p>I'll build the exact automation your business needs, speed-to-lead, routing, or reactivation, and get it running in days, not months.</p>
-    <a class="btn-primary" href="/contact.html">Get an automation built →</a>
+    <h3>Ready to put this to work?</h3>
+    <p>This is exactly the kind of thing I build for businesses like yours, speed-to-lead, content, or reactivation, running in days, not months.</p>
+    <a class="btn-primary" href="{{ post.linkedOfferData.url }}">{{ post.linkedOfferData.label }} →</a>
   </div>
+  {% elif post.funnelStage == 'MOFU' %}
+  <div class="post-cta">
+    <span class="post-cta-eyebrow">Stay in the loop</span>
+    <h3>Get the next one in your inbox.</h3>
+    <p>One email when I publish something new, no fluff, no daily noise.</p>
+    <form class="cta-newsletter-form" data-newsletter-form action="/api/subscribe" method="POST">
+      <input type="email" name="email" placeholder="you@company.com" required aria-label="Email address">
+      <button class="btn-primary" type="submit">Subscribe</button>
+    </form>
+    <p class="cta-newsletter-status" aria-live="polite"></p>
+    <p class="cta-offer-mention">Want the full build now instead? <a href="/speed-to-lead-ebook">Grab the $19 ebook →</a></p>
+  </div>
+  {% else %}
+  <div class="post-cta">
+    <span class="post-cta-eyebrow">Stay in the loop</span>
+    <h3>Get the next one in your inbox.</h3>
+    <p>One email when I publish something new, no fluff, no daily noise.</p>
+    <form class="cta-newsletter-form" data-newsletter-form action="/api/subscribe" method="POST">
+      <input type="email" name="email" placeholder="you@company.com" required aria-label="Email address">
+      <button class="btn-primary" type="submit">Subscribe</button>
+    </form>
+    <p class="cta-newsletter-status" aria-live="polite"></p>
+    <p class="cta-newsletter-note">No spam. Unsubscribe whenever.</p>
+  </div>
+  {% endif %}
 </div>
 {% else %}
 <div class="wrap">{{ content | safe }}</div>
@@ -471,6 +598,51 @@
         a.style.maxHeight = a.scrollHeight + 'px';
         q.setAttribute('aria-expanded', 'true');
       }
+    });
+  });
+
+  document.querySelectorAll('[data-newsletter-form]').forEach(function(form){
+    var status = form.parentElement.querySelector('.cta-newsletter-status');
+    var button = form.querySelector('button[type="submit"]');
+    var input = form.querySelector('input[type="email"]');
+
+    function setStatus(text, kind){
+      if(!status) return;
+      status.textContent = text;
+      status.className = 'cta-newsletter-status show' + (kind ? ' is-' + kind : '');
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var email = input ? input.value.trim() : '';
+      if(!email) return;
+
+      button.disabled = true;
+      var originalLabel = button.textContent;
+      button.textContent = 'Subscribing…';
+      setStatus('', '');
+
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+        .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(data){ return { ok: res.ok, data: data }; }); })
+        .then(function(result){
+          if(result.ok && result.data && result.data.ok){
+            setStatus(result.data.message || "✓ You're in — check your inbox.", 'ok');
+            form.reset();
+          } else {
+            setStatus((result.data && result.data.message) || "Something went wrong. Mind trying again, or DM me on X?", 'error');
+          }
+        })
+        .catch(function(){
+          setStatus("Couldn't reach the server. Mind trying again, or DM me on X?", 'error');
+        })
+        .finally(function(){
+          button.disabled = false;
+          button.textContent = originalLabel;
+        });
     });
   });
 </script>
