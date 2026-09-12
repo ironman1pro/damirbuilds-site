@@ -543,34 +543,34 @@
 
   {% if post.funnelStage == 'BOFU' and post.linkedOfferData %}
   <div class="post-cta">
-    <span class="post-cta-eyebrow">Let's build</span>
-    <h3>Ready to put this to work?</h3>
-    <p>This is exactly the kind of thing I build for businesses like yours, speed-to-lead, content, or reactivation, running in days, not months.</p>
-    <a class="btn-primary" href="{{ post.linkedOfferData.url }}">{{ post.linkedOfferData.label }} →</a>
+    <span class="post-cta-eyebrow">Work with me</span>
+    <h3>Let's build your automation</h3>
+    <p>This is exactly the kind of thing I build for businesses like yours, running in days, not months.</p>
+    <a class="btn-primary" href="{{ post.linkedOfferData.url }}">Get started →</a>
   </div>
   {% elif post.funnelStage == 'MOFU' %}
   <div class="post-cta">
     <span class="post-cta-eyebrow">Stay in the loop</span>
-    <h3>Get the next one in your inbox.</h3>
-    <p>One email when I publish something new, no fluff, no daily noise.</p>
+    <h3>Stay updated with the latest posts</h3>
+    <p>Most recent posts land directly in your inbox, no spam.</p>
     <form class="cta-newsletter-form" data-newsletter-form action="/api/subscribe" method="POST">
       <input type="email" name="email" placeholder="you@company.com" required aria-label="Email address">
       <button class="btn-primary" type="submit">Subscribe</button>
     </form>
     <p class="cta-newsletter-status" aria-live="polite"></p>
-    <p class="cta-offer-mention">Want the full build now instead? <a href="/speed-to-lead-ebook">Grab the $19 ebook →</a></p>
+    <p class="cta-offer-mention">Want this handled for you instead? <a href="/contact">Let's talk →</a></p>
   </div>
   {% else %}
   <div class="post-cta">
     <span class="post-cta-eyebrow">Stay in the loop</span>
-    <h3>Get the next one in your inbox.</h3>
-    <p>One email when I publish something new, no fluff, no daily noise.</p>
+    <h3>Stay updated with the latest posts</h3>
+    <p>Most recent posts land directly in your inbox, no spam.</p>
     <form class="cta-newsletter-form" data-newsletter-form action="/api/subscribe" method="POST">
       <input type="email" name="email" placeholder="you@company.com" required aria-label="Email address">
       <button class="btn-primary" type="submit">Subscribe</button>
     </form>
     <p class="cta-newsletter-status" aria-live="polite"></p>
-    <p class="cta-newsletter-note">No spam. Unsubscribe whenever.</p>
+    <p class="cta-newsletter-note">Unsubscribe whenever.</p>
   </div>
   {% endif %}
 </div>
