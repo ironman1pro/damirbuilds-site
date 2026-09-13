@@ -37,17 +37,7 @@
             '<a href="/speed-to-lead.html">Speed-to-Lead System</a>' +
           '</div>' +
         '</div>' +
-        '<div class="dropdown">' +
-          '<button class="pill dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">' +
-            'Industries' +
-            '<span class="caret" aria-hidden="true"></span>' +
-          '</button>' +
-          '<div class="dropdown-menu">' +
-            '<a href="/industries.html#roofing">Roofing <span class="soon-tag">Soon</span></a>' +
-            '<a href="/industries.html#solar">Solar <span class="soon-tag">Soon</span></a>' +
-            '<a href="/industries.html#hvac">HVAC <span class="soon-tag">Soon</span></a>' +
-          '</div>' +
-        '</div>' +
+        '<a class="pill" href="/industries.html">Industries</a>' +
         '<a class="pill" href="/blog">Blog</a>' +
         '<a class="pill" href="/contact.html">Contact</a>' +
         '<a class="nav-cta" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM on X</a>' +

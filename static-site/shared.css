@@ -458,40 +458,74 @@ html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
 /* ---------- FOOTER ---------- */
 footer{
   border-top:1px solid var(--line);
-  padding:32px 0;
+  padding:52px 0 24px;
 }
-footer .wrap{
+.wrap.footer-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr;
+  gap:32px;
+  padding-bottom:32px;
+  align-items:start;
+}
+@media (max-width:700px){
+  .wrap.footer-grid{ grid-template-columns:1fr; gap:30px; }
+}
+.footer-brand .logo{ font-size:17px; }
+.footer-brand p{
+  margin:12px 0 10px;
+  font-size:13.5px;
+  color:var(--muted);
+  max-width:32ch;
+  line-height:1.5;
+}
+.footer-brand .footer-email{
+  font-size:13.5px;
+  color:var(--muted);
+  transition:color .15s ease;
+}
+.footer-brand .footer-email:hover, .footer-brand .footer-email:focus-visible{
+  color:var(--hot);
+  outline:none;
+}
+.footer-col-title{
+  display:block;
+  font-size:11.5px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--muted-2);
+  margin-bottom:14px;
+}
+.footer-col a{
+  display:block;
+  font-size:13.5px;
+  color:var(--muted);
+  padding:6px 0;
+  transition:color .15s ease;
+}
+.footer-col a:hover, .footer-col a:focus-visible{
+  color:var(--hot);
+  outline:none;
+}
+.footer-bottom{
+  border-top:1px solid var(--line);
+  padding-top:20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
   gap:12px;
 }
-footer p{
-  font-size:13.5px;
+.footer-bottom p{
+  font-size:12.5px;
   color:var(--muted-2);
 }
-.footer-links{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-}
-.footer-email{
-  font-size:13.5px;
-  color:var(--muted);
-  transition:color .15s ease;
-}
-.footer-email:hover, .footer-email:focus-visible{
-  color:var(--hot);
-  outline:none;
-}
-.footer-link{
-  font-size:13.5px;
+.footer-bottom .footer-link{
+  font-size:12.5px;
   color:var(--muted-2);
   transition:color .15s ease;
 }
-.footer-link:hover, .footer-link:focus-visible{
+.footer-bottom .footer-link:hover, .footer-bottom .footer-link:focus-visible{
   color:var(--hot);
   outline:none;
 }
