@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Industries | DamirBuilds</title>
+<meta name="description" content="AI automations built for home service businesses — roofing, solar, and HVAC. Speed-to-lead, lead routing, and follow-up systems tuned for how these industries actually sell.">
+<link rel="canonical" href="https://damirbuilds.com/industries">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Industries | DamirBuilds">
+<meta property="og:description" content="AI automations built for home service businesses — roofing, solar, and HVAC.">
+<meta property="og:url" content="https://damirbuilds.com/industries">
+<meta property="og:site_name" content="damirbuilds">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://damirbuilds.com/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Industries | DamirBuilds">
+<meta name="twitter:description" content="AI automations built for home service businesses — roofing, solar, and HVAC.">
+<meta name="twitter:image" content="https://damirbuilds.com/logo.png">
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "CollectionPage", "name": "Industries | DamirBuilds", "url": "https://damirbuilds.com/industries" }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- HERO ---------- */
+  .industries-hero{
+    padding:64px 0 12px;
+  }
+  h1.industries-headline{
+    font-size:clamp(30px, 4.2vw, 46px);
+    max-width:16ch;
+  }
+  .industries-sub{
+    margin-top:18px;
+    font-size:17px;
+    color:var(--muted);
+    max-width:56ch;
+  }
+
+  /* ---------- GRID ---------- */
+  .industries-grid{
+    flex:1;
+    padding:40px 0 72px;
+  }
+  .industries-cards{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+  }
+  @media (max-width:900px){
+    .industries-cards{ grid-template-columns:1fr; }
+  }
+
+  .industry-card{
+    position:relative;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:30px 26px 26px;
+    overflow:hidden;
+    transition:border-color .18s ease, transform .18s ease;
+  }
+  .industry-card:hover{
+    border-color:rgba(var(--hot-rgb),0.4);
+    transform:translateY(-3px);
+  }
+  .industry-card::before{
+    content:'';
+    position:absolute;
+    top:-50%; right:-30%;
+    width:70%; height:70%;
+    background:radial-gradient(circle, rgba(var(--hot-rgb),0.12), transparent 70%);
+    pointer-events:none;
+  }
+
+  .industry-badge{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:var(--hot);
+    background:rgba(var(--hot-rgb),0.1);
+    border:1px solid rgba(var(--hot-rgb),0.3);
+    border-radius:999px;
+    padding:5px 12px;
+    margin-bottom:20px;
+  }
+  .industry-badge-dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--hot);
+    animation:pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:.35; }
+  }
+
+  .industry-icon{
+    position:relative;
+    width:52px;
+    height:52px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--hot);
+    margin-bottom:18px;
+  }
+  .industry-icon svg{ width:24px; height:24px; }
+
+  .industry-card h2{
+    position:relative;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:21px;
+    color:var(--text);
+    margin-bottom:8px;
+  }
+  .industry-card p{
+    position:relative;
+    font-size:14.5px;
+    color:var(--muted);
+    line-height:1.55;
+  }
+
+  .industries-note{
+    margin-top:36px;
+    font-size:13.5px;
+    color:var(--muted-2);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<site-nav></site-nav>
+
+<main id="main">
+  <div class="wrap industries-hero">
+    <span class="eyebrow">Built for the trades</span>
+    <h1 class="industries-headline">Automations tuned for how home service businesses actually sell.</h1>
+    <p class="industries-sub">Every industry loses leads a little differently. Roofers lose them to slow callbacks after a storm, solar loses them to long, multi-touch decision cycles, HVAC loses them to after-hours emergencies nobody answers. Here's who I'm building dedicated systems for first.</p>
+  </div>
+
+  <section class="industries-grid">
+    <div class="wrap">
+      <div class="industries-cards">
+
+        <div class="industry-card">
+          <span class="industry-badge"><span class="industry-badge-dot"></span>Coming soon</span>
+          <div class="industry-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12L12 4l9 8"/>
+              <path d="M6 10.5V20h5v-5h2v5h5v-9.5"/>
+            </svg>
+          </div>
+          <h2>Roofing</h2>
+          <p>Storm-season lead spikes, fast callbacks, and follow-up that doesn't let inspection requests go cold overnight.</p>
+        </div>
+
+        <div class="industry-card">
+          <span class="industry-badge"><span class="industry-badge-dot"></span>Coming soon</span>
+          <div class="industry-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3.2"/>
+              <path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.55 1.55M7.15 16.85l-1.55 1.55M18.4 18.4l-1.55-1.55M7.15 7.15L5.6 5.6"/>
+            </svg>
+          </div>
+          <h2>Solar</h2>
+          <p>Long consideration windows and multiple touchpoints, kept warm automatically instead of relying on manual follow-up.</p>
+        </div>
+
+        <div class="industry-card">
+          <span class="industry-badge"><span class="industry-badge-dot"></span>Coming soon</span>
+          <div class="industry-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v3.2M12 17.8V21M4.2 7.5l2.8 1.6M17 14.9l2.8 1.6M4.2 16.5l2.8-1.6M17 9.1l2.8-1.6"/>
+              <circle cx="12" cy="12" r="4.5"/>
+            </svg>
+          </div>
+          <h2>HVAC</h2>
+          <p>After-hours emergency calls and seasonal surges, routed and answered the moment they come in, day or night.</p>
+        </div>
+
+      </div>
+
+      <p class="industries-note">Don't see your industry yet? <a href="/contact" style="color:var(--hot);">Reach out</a> — I'm building these out one at a time.</p>
+    </div>
+  </section>
+</main>
+
+<site-footer></site-footer>
+
+<script src="site-nav.js" defer></script>
+
+</body>
+</html>

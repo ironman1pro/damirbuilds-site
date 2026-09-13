@@ -22,6 +22,7 @@ const STATIC_ROUTES = [
   { url: "/speed-to-lead", changefreq: "monthly", priority: "0.8" },
   { url: "/x-content-publisher", changefreq: "monthly", priority: "0.7" },
   { url: "/contact", changefreq: "monthly", priority: "0.5" },
+  { url: "/industries", changefreq: "monthly", priority: "0.6" },
   { url: "/blog/", changefreq: "daily", priority: "0.9" }
 ];
 

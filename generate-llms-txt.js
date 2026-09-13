@@ -49,6 +49,7 @@ Damir builds focused, revenue-first automations for small and mid-sized business
 - [Speed-to-Lead System](${SITE_URL}/speed-to-lead.html): The core service — instant lead response, routing, and reactivation.
 - [X Content Publisher](${SITE_URL}/x-content-publisher.html): A custom automation that auto-publishes X posts from a spreadsheet, no third-party scheduler.
 - [Contact](${SITE_URL}/contact.html): Get in touch to start a project.
+- [Industries](${SITE_URL}/industries.html): Home service industries Damir builds dedicated automations for — roofing, solar, and HVAC.
 - [Blog](${SITE_URL}/blog/): Practical writing on lead response, automation, and what moves revenue.
 
 ## Blog posts
