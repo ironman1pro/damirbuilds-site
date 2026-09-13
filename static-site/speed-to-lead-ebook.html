@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>Speed-to-Lead Ebook | DamirBuilds</title>
 <meta name="description" content="The exact n8n workflow I use to respond to every lead in under 10 seconds. The node sequence, the AI prompt, the auto-reply template, and the edge cases. $19, one time.">
 <link rel="canonical" href="https://damirbuilds.com/speed-to-lead-ebook">
@@ -155,6 +155,15 @@
     font-family:var(--eb-font-sans);
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
+    /* shared.css sets overflow-y:auto on body (alongside overflow-x:hidden
+       to block horizontal scroll), which makes body a second CSS "scroll
+       container" distinct from the one that actually scrolls (html). A
+       sticky-positioned descendant then computes its stuck position
+       against body's own box instead of the real viewport scroll and
+       never appears to stick. html still clips horizontal overflow for
+       the whole page, so releasing body's own overflow here is safe and
+       just removes the duplicate scroll container, page-local only. */
+    overflow:visible;
   }
   img{max-width:100%;}
   ::selection{background:var(--eb-accent); color:var(--eb-accent-ink);}
@@ -221,10 +230,14 @@
 
   /* ---------- top bar ---------- */
   .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:18px 24px;
+    background:var(--eb-bg);
     border-bottom:1px solid var(--eb-border-soft);
     font-family:var(--eb-font-mono);
     font-size:13px;
@@ -1178,39 +1191,103 @@
   }
 
   /* ---------- what you get (2-card summary) ---------- */
-  .get-grid{ display:grid; gap:18px; margin-top:6px; }
-  @media (min-width:700px){ .get-grid{ grid-template-columns:1fr 1fr; } }
+  .get-grid{
+    position:relative;
+    display:grid;
+    gap:34px;
+    margin-top:10px;
+  }
+  @media (min-width:700px){ .get-grid{ grid-template-columns:1fr 1fr; gap:18px; } }
+  /* A literal "+" between the two cards on desktop: reinforces "these two
+     files are the whole product" better than a plain grid gap does. */
+  .get-plus{
+    display:none;
+  }
+  @media (min-width:700px){
+    .get-plus{
+      display:flex; align-items:center; justify-content:center;
+      position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      width:38px; height:38px;
+      border-radius:50%;
+      background:var(--eb-bg);
+      border:1.5px solid var(--eb-border);
+      color:var(--eb-text-faint);
+      font-family:var(--eb-font-mono);
+      font-weight:700;
+      font-size:17px;
+      z-index:1;
+    }
+  }
   .get-card{
     position:relative;
+    overflow:hidden;
     border:1px solid var(--eb-border-soft);
     border-radius:16px;
     background:linear-gradient(160deg, color-mix(in srgb, var(--eb-panel) 100%, white 2%), var(--eb-panel));
     padding:30px 26px 28px;
     transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
   }
+  /* Thin green-to-gold strip echoes the checkout card further down, so the
+     two "this is the real product" moments on the page read as one visual
+     system instead of two unrelated card styles. */
+  .get-card::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--eb-accent), var(--eb-accent2));
+    opacity:.7;
+  }
   .get-card:hover{
     border-color:var(--eb-accent);
-    transform:translateY(-4px);
-    box-shadow:0 24px 48px -24px rgba(var(--eb-accent-rgb),0.4);
+    transform:translateY(-6px);
+    box-shadow:0 28px 52px -22px rgba(var(--eb-accent-rgb),0.45);
+  }
+  .get-card:hover .get-icon{
+    transform:scale(1.08) rotate(-4deg);
+    border-color:var(--eb-accent);
   }
   .get-card .item-num{
-    position:absolute; top:26px; right:26px;
+    position:absolute; top:28px; right:26px;
     font-family:var(--eb-font-mono); font-weight:700; font-size:13px;
     color:var(--eb-accent2);
   }
   .get-icon{
-    width:52px; height:52px; border-radius:14px;
-    background:rgba(var(--eb-accent-rgb),0.12); color:var(--eb-accent);
+    width:56px; height:56px; border-radius:14px;
+    background:linear-gradient(155deg, rgba(var(--eb-accent-rgb),0.18), rgba(var(--eb-accent-rgb),0.06));
+    color:var(--eb-accent);
     border:1px solid rgba(var(--eb-accent-rgb),0.3);
+    box-shadow:0 10px 24px -12px rgba(var(--eb-accent-rgb),0.5);
     display:flex; align-items:center; justify-content:center;
-    margin-bottom:18px;
+    margin-bottom:16px;
+    transition:transform .25s ease, border-color .2s ease;
   }
-  .get-icon svg{ width:25px; height:25px; }
+  .get-icon svg{ width:26px; height:26px; }
   .get-card h3{
     font-family:var(--eb-font-mono); font-weight:600; font-size:18px;
-    color:var(--eb-text); margin-bottom:8px;
+    color:var(--eb-text); margin-bottom:10px;
+  }
+  .get-filetag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:14px;
+    font-family:var(--eb-font-mono);
+    font-size:11px;
+    color:var(--eb-text-faint);
+    background:var(--eb-bg-raise);
+    border:1px solid var(--eb-border-soft);
+    border-radius:5px;
+    padding:4px 9px;
   }
   .get-card p{ font-size:15.5px; line-height:1.6; margin-bottom:0; }
+  .get-together{
+    margin-top:22px;
+    text-align:center;
+    font-family:var(--eb-font-mono);
+    font-size:12.5px;
+    color:var(--eb-text-faint);
+  }
+  .get-together strong{ color:var(--eb-accent); }
 
   /* ---------- live demo ---------- */
   /* Two device-style cards side by side (stacked on mobile): a fake lead
@@ -1706,7 +1783,7 @@
   <div class="brand">Damir<span>Builds</span></div>
   <div class="topbar-right">
     <a href="#buy" class="topbar-cta">Get The Workflow &rarr;</a>
-    <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+    <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
       <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
       <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
     </button>
@@ -1883,19 +1960,24 @@
     <p class="reveal" style="margin-top:10px; margin-bottom:24px;">No course platform, no video modules to sit through. Just the thing itself, and the guide that gets it running.</p>
 
     <div class="get-grid reveal">
+      <div class="get-plus" aria-hidden="true">+</div>
       <div class="get-card">
         <span class="item-num">01.</span>
         <div class="get-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="5" cy="5" r="2.2"/><circle cx="15" cy="5" r="2.2"/><circle cx="10" cy="15" r="2.2"/><path d="M6.8 6.3 8.7 13.2M13.2 6.3 11.3 13.2M7.2 5h5.6"/></svg></div>
         <h3>The workflow file</h3>
+        <span class="get-filetag">📄 speed-to-lead.workflow.json</span>
         <p>The actual <strong>n8n workflow, ready to import</strong>: every node, every setting, already wired up. Not a diagram of one, the real file.</p>
       </div>
       <div class="get-card">
         <span class="item-num">02.</span>
         <div class="get-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 5.5c-1.4-1-3.4-1.5-5.5-1.5v10c2.1 0 4.1.5 5.5 1.5m0-10c1.4-1 3.4-1.5 5.5-1.5v10c-2.1 0-4.1.5-5.5 1.5m0-10v10" stroke-linejoin="round"/></svg></div>
         <h3>The setup guide</h3>
+        <span class="get-filetag">📘 setup-guide.pdf</span>
         <p>A step-by-step ebook that walks you through <strong>install, your own URLs, and the edge cases</strong>, so you're never guessing what a step means.</p>
       </div>
     </div>
+
+    <p class="get-together reveal">Together: <strong>everything</strong> to go from zero to live in about 10 minutes.</p>
   </section>
 
   <section class="inside bleed band dotgrid">
@@ -2016,7 +2098,7 @@
     </div>
 
     <div class="process-note">
-      <strong>Prefer not to touch it yourself?</strong> The $19 gets you the full build, the walkthrough, and DM support for questions. If you'd rather I just build it in your account for you, <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" style="color:var(--eb-accent); font-weight:600;">I offer that too: DM me for pricing</a>.
+      <strong>Prefer not to touch it yourself?</strong> This build gets you the full setup, the walkthrough, and DM support for questions. If you'd rather I just build it in your account for you, <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" style="color:var(--eb-accent); font-weight:600;">I offer that too: DM me for pricing</a>.
     </div>
 
     <div class="cta-mid-wrap">
