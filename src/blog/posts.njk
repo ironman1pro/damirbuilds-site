@@ -10,24 +10,3 @@ eleventyComputed:
   description: "{{ post.seoDescription }}"
 ---
 {{ post.bodyHTML | safe }}
-
-{% set prevPost = posts[pagination.pageNumber - 1] %}
-{% set nextPost = posts[pagination.pageNumber + 1] %}
-{% if prevPost or nextPost %}
-<nav class="post-nav" aria-label="More posts">
-  {% if prevPost %}
-  <a class="post-nav-item prev" href="/blog/{{ prevPost.slug }}/">
-    <div class="post-nav-label">← Previous</div>
-    <div class="post-nav-title">{{ prevPost.title }}</div>
-  </a>
-  {% else %}
-  <span></span>
-  {% endif %}
-  {% if nextPost %}
-  <a class="post-nav-item next" href="/blog/{{ nextPost.slug }}/">
-    <div class="post-nav-label">Next →</div>
-    <div class="post-nav-title">{{ nextPost.title }}</div>
-  </a>
-  {% endif %}
-</nav>
-{% endif %}
