@@ -86,7 +86,7 @@
     {
       "@type": "Question",
       "name": {{ faq.question | dump | safe }},
-      "acceptedAnswer": { "@type": "Answer", "text": {{ faq.answer | dump | safe }} }
+      "acceptedAnswer": { "@type": "Answer", "text": {{ faq.answerText | dump | safe }} }
     }{% if not loop.last %},{% endif %}
     {% endfor %}
   ]
@@ -305,6 +305,8 @@
   .faq-item.open .faq-icon{ transform:rotate(45deg); color:var(--hot); }
   .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
   .faq-a p{ color:var(--muted); font-size:15px; padding-bottom:18px; }
+  .faq-a-body a{ color:var(--hot); border-bottom:1px solid rgba(var(--hot-rgb),0.4); transition:border-color .15s ease; overflow-wrap:break-word; }
+  .faq-a-body a:hover{ border-color:var(--hot); }
 
   .post-author{
     display:flex;
@@ -506,7 +508,7 @@
         </button>
       </h3>
       <div class="faq-a" id="faq-a-{{ loop.index }}" role="region" aria-labelledby="faq-q-{{ loop.index }}">
-        <p>{{ faq.answer }}</p>
+        <div class="faq-a-body">{{ faq.answerHTML | safe }}</div>
       </div>
     </div>
     {% endfor %}

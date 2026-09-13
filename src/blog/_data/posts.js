@@ -135,9 +135,33 @@ module.exports = async function () {
     // BOFU post somehow has no offer set or an unrecognized value.
     const linkedOfferData = post.linkedOffer ? OFFERS[post.linkedOffer] || null : null;
 
+    // FAQ answers are Portable Text (so a word or phrase inside an answer
+    // can link out — to a service page, another post, wherever) rather
+    // than a plain string. Render each answer to HTML for the on-page FAQ
+    // block, and separately flatten it to plain text for the FAQPage
+    // JSON-LD "text" field, since schema.org expects that as plain text,
+    // not markup.
+    const faqs = (post.faqs || []).map(faq => ({
+      question: faq.question,
+      answerHTML: faq.answer
+        ? toHTML(faq.answer, {
+            components: {
+              marks: {
+                link: ({ children, value }) =>
+                  `<a href="${escapeAttr(value.href)}" target="_blank" rel="noopener">${children}</a>`
+              }
+            }
+          })
+        : "",
+      answerText: faq.answer
+        ? faq.answer.map(block => extractText(block)).join(" ")
+        : ""
+    }));
+
     return {
       ...post,
       linkedOfferData,
+      faqs,
       bodyHTML,
       wordCount,
       readingTime,

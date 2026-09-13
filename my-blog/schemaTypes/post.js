@@ -149,7 +149,42 @@ export default defineType({
           type: 'object',
           fields: [
             {name: 'question', type: 'string', title: 'Question'},
-            {name: 'answer', type: 'text', title: 'Answer'},
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              description: 'Select any word or phrase and use the link icon in the toolbar to link it to another page or post.',
+              type: 'array',
+              of: [
+                {
+                  type: 'block',
+                  styles: [{title: 'Normal', value: 'normal'}],
+                  lists: [],
+                  marks: {
+                    decorators: [
+                      {title: 'Bold', value: 'strong'},
+                      {title: 'Italic', value: 'em'},
+                    ],
+                    annotations: [
+                      {
+                        name: 'link',
+                        type: 'object',
+                        title: 'Link',
+                        fields: [
+                          {
+                            name: 'href',
+                            type: 'url',
+                            title: 'URL',
+                            validation: (Rule) =>
+                              Rule.uri({scheme: ['http', 'https', 'mailto']}),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                },
+              ],
+              validation: (Rule) => Rule.required(),
+            }),
           ],
         },
       ],
