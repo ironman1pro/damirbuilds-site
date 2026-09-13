@@ -128,6 +128,7 @@ export default defineType({
           {title: 'Speed-to-Lead automation', value: 'speed-to-lead'},
           {title: 'X Content Publisher automation', value: 'x-content-publisher'},
           {title: 'Speed-to-Lead Ebook ($19)', value: 'ebook'},
+          {title: 'Contact page', value: 'contact'},
         ],
       },
       hidden: ({document}) => document?.funnelStage !== 'BOFU',

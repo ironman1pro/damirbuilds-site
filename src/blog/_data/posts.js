@@ -18,9 +18,10 @@ const SITE_SUFFIX = "damirbuilds";
 // truth for the URL. Add a new offer here first if you ever add one in
 // the schema's options.list.
 const OFFERS = {
-  "speed-to-lead": { url: "/speed-to-lead", label: "See the Speed-to-Lead automation" },
+  "speed-to-lead": { url: "https://damirbuilds.com/contact", label: "See the Speed-to-Lead automation" },
   "x-content-publisher": { url: "/x-content-publisher", label: "See the X Content Publisher automation" },
-  "ebook": { url: "/speed-to-lead-ebook", label: "Get the $19 ebook" }
+  "ebook": { url: "/speed-to-lead-ebook", label: "Get the $19 ebook" },
+  "contact": { url: "/contact.html", label: "Get in touch" }
 };
 
 module.exports = async function () {
