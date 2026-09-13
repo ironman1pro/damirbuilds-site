@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <title>Speed-to-Lead Ebook | DamirBuilds</title>
 <meta name="description" content="The exact n8n workflow I use to respond to every lead in under 10 seconds. The node sequence, the AI prompt, the auto-reply template, and the edge cases. $19, one time.">
 <link rel="canonical" href="https://damirbuilds.com/speed-to-lead-ebook">
@@ -1783,7 +1783,7 @@
   <div class="brand">Damir<span>Builds</span></div>
   <div class="topbar-right">
     <a href="#buy" class="topbar-cta">Get The Workflow &rarr;</a>
-    <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+    <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
       <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
       <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
     </button>
