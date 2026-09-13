@@ -135,28 +135,35 @@ module.exports = async function () {
     // BOFU post somehow has no offer set or an unrecognized value.
     const linkedOfferData = post.linkedOffer ? OFFERS[post.linkedOffer] || null : null;
 
-    // FAQ answers are Portable Text (so a word or phrase inside an answer
-    // can link out — to a service page, another post, wherever) rather
-    // than a plain string. Render each answer to HTML for the on-page FAQ
-    // block, and separately flatten it to plain text for the FAQPage
-    // JSON-LD "text" field, since schema.org expects that as plain text,
-    // not markup.
-    const faqs = (post.faqs || []).map(faq => ({
-      question: faq.question,
-      answerHTML: faq.answer
-        ? toHTML(faq.answer, {
-            components: {
-              marks: {
-                link: ({ children, value }) =>
-                  `<a href="${escapeAttr(value.href)}" target="_blank" rel="noopener">${children}</a>`
+    // FAQ answers are Portable Text now (so a word or phrase inside an
+    // answer can link out — to a service page, another post, wherever)
+    // rather than a plain string. Render each answer to HTML for the
+    // on-page FAQ block, and separately flatten it to plain text for the
+    // FAQPage JSON-LD "text" field, since schema.org expects that as plain
+    // text, not markup.
+    //
+    // Older posts saved before this schema change still have `answer` as
+    // a plain string until someone re-opens and re-saves them in Studio —
+    // handle both shapes so a build never breaks on old data.
+    const faqs = (post.faqs || []).map(faq => {
+      const isPortableText = Array.isArray(faq.answer);
+      return {
+        question: faq.question,
+        answerHTML: isPortableText
+          ? toHTML(faq.answer, {
+              components: {
+                marks: {
+                  link: ({ children, value }) =>
+                    `<a href="${escapeAttr(value.href)}" target="_blank" rel="noopener">${children}</a>`
+                }
               }
-            }
-          })
-        : "",
-      answerText: faq.answer
-        ? faq.answer.map(block => extractText(block)).join(" ")
-        : ""
-    }));
+            })
+          : `<p>${escapeAttr(faq.answer || "")}</p>`,
+        answerText: isPortableText
+          ? faq.answer.map(block => extractText(block)).join(" ")
+          : (faq.answer || "")
+      };
+    });
 
     return {
       ...post,
