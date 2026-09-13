@@ -35,10 +35,10 @@
           '</button>' +
           '<div class="dropdown-menu">' +
             '<a href="/speed-to-lead.html">Speed-to-Lead System</a>' +
+            '<a href="/industries.html">Industries <span class="soon-tag">Soon</span></a>' +
           '</div>' +
         '</div>' +
         '<a class="pill" href="/blog">Blog</a>' +
-        '<a class="pill" href="/industries.html">Industries</a>' +
         '<a class="pill" href="/contact.html">Contact</a>' +
         '<a class="nav-cta" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM on X</a>' +
         '<button class="theme-toggle theme-toggle--desktop" type="button" aria-label="Switch to light mode">' + THEME_TOGGLE_SVGS + '</button>' +

@@ -314,7 +314,10 @@ html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
   transform:translateY(0);
 }
 .dropdown-menu a{
-  display:block;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
   padding:9px 12px;
   border-radius:6px;
   font-size:14px;
@@ -324,6 +327,17 @@ html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
 .dropdown-menu a:hover, .dropdown-menu a:focus-visible{
   background:rgba(var(--hot-rgb),0.1);
   color:var(--hot);
+}
+.soon-tag{
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:var(--muted-2);
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:2px 7px;
 }
 
 /* ---------- MOBILE NAV ----------
