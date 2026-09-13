@@ -515,6 +515,25 @@
   </section>
   {% endif %}
 
+  {% if post.prevPost or post.nextPost %}
+  <nav class="post-nav" aria-label="Post navigation">
+    {% if post.prevPost %}
+    <a class="post-nav-item prev" href="/blog/{{ post.prevPost.slug }}/">
+      <div class="post-nav-label">← Previous</div>
+      <div class="post-nav-title">{{ post.prevPost.title }}</div>
+    </a>
+    {% else %}
+    <span></span>
+    {% endif %}
+    {% if post.nextPost %}
+    <a class="post-nav-item next" href="/blog/{{ post.nextPost.slug }}/">
+      <div class="post-nav-label">Next →</div>
+      <div class="post-nav-title">{{ post.nextPost.title }}</div>
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+
   {% if post.recommendedNextStep %}
   <a class="read-next" href="/blog/{{ post.recommendedNextStep.slug }}/">
     <span class="read-next-label">Read next</span>

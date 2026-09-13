@@ -50,7 +50,19 @@ module.exports = async function () {
     } | order(publishedAt desc)
   `);
 
-  return posts.map(post => {
+  return posts.map((post, index) => {
+    // Previous/next post navigation, computed here instead of hand-typed
+    // per post: `posts` is already ordered newest-first (see the query's
+    // `order(publishedAt desc)` above), so the item right after this one
+    // in that array is the OLDER post ("Previous") and the item right
+    // before it is the NEWER one ("Next") — standard blog reading order.
+    const prevPost = posts[index + 1]
+      ? { title: posts[index + 1].title, slug: posts[index + 1].slug }
+      : null;
+    const nextPost = posts[index - 1]
+      ? { title: posts[index - 1].title, slug: posts[index - 1].slug }
+      : null;
+
     // Table-of-contents: collect h2/h3 headings as they're rendered so
     // base.njk can build an "On this page" list without re-parsing HTML.
     const headings = [];
@@ -169,6 +181,8 @@ module.exports = async function () {
       ...post,
       linkedOfferData,
       faqs,
+      prevPost,
+      nextPost,
       bodyHTML,
       wordCount,
       readingTime,
