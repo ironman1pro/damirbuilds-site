@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>Speed-to-Lead Ebook | DamirBuilds</title>
 <meta name="description" content="The exact n8n workflow I use to respond to every lead in under 10 seconds. The node sequence, the AI prompt, the auto-reply template, and the edge cases. $19, one time.">
 <link rel="canonical" href="https://damirbuilds.com/speed-to-lead-ebook">
@@ -75,6 +75,13 @@
     --eb-accent-btn:#22C55E;
     --eb-accent-btn-rgb:34,197,94;
     --eb-accent-btn-ink:#0A0D10;
+    /* Second accent, used sparingly (list numerals, the price glow, the
+       pull-quote mark) so the page reads as a two-tone palette instead of
+       one color repeated on every element — the single biggest lever for
+       "premium" over "monochrome template". Kept warm/amber on purpose so
+       it sits opposite the green on the wheel rather than fighting it. */
+    --eb-accent2:#C99A3E;
+    --eb-accent2-rgb:201,154,62;
     --eb-font-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --eb-font-sans:'IBM Plex Sans', -apple-system, 'Segoe UI', sans-serif;
   }
@@ -96,6 +103,8 @@
       --eb-accent-ink:#052E14;
       --eb-go:#7FBF8F;
       --eb-warn:#E2745A;
+      --eb-accent2:#E0B24C;
+      --eb-accent2-rgb:224,178,76;
     }
   }
   :root[data-theme="dark"]{
@@ -114,6 +123,8 @@
     --eb-accent-ink:#052E14;
     --eb-go:#7FBF8F;
     --eb-warn:#E2745A;
+    --eb-accent2:#E0B24C;
+    --eb-accent2-rgb:224,178,76;
   }
 
   *{box-sizing:border-box;}
@@ -172,10 +183,23 @@
   }
 
   section{
+    position:relative;
     padding:56px 0;
-    border-bottom:1px solid var(--eb-border-soft);
   }
-  section:last-of-type{border-bottom:none;}
+  section::after{
+    content:"";
+    position:absolute;
+    left:50%; right:0; bottom:0;
+    width:min(560px, 90%);
+    transform:translateX(-50%);
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--eb-border-soft) 20%, var(--eb-border-soft) 80%, transparent);
+  }
+  section:last-of-type::after{ display:none; }
+  /* .hero already defines its own ::after (the corner glow) further down
+     with a class selector, which beats this generic section::after
+     divider on specificity — so the hero keeps its glow instead of
+     getting a divider line, with no extra override needed here. */
 
   p{margin:0 0 14px; color:var(--eb-text-dim); max-width:60ch;}
   p:last-child{margin-bottom:0;}
@@ -194,44 +218,145 @@
   .topbar .brand{color:var(--eb-text); font-weight:600;}
   .topbar .brand span{color:var(--eb-accent);}
   .topbar-right{display:flex; align-items:center; gap:10px;}
-  .topbar .price-chip{
-    color:var(--eb-text-dim);
-    border:1px solid var(--eb-border);
-    border-radius:3px;
-    padding:4px 10px;
+  .topbar-cta{
+    display:inline-flex;
+    align-items:center;
+    font-family:var(--eb-font-mono);
+    font-weight:600;
+    font-size:12.5px;
+    color:var(--eb-accent-btn-ink);
+    background:var(--eb-accent-btn);
+    border-radius:5px;
+    padding:7px 13px;
+    text-decoration:none;
+    transition:filter .15s ease, transform .15s ease;
   }
+  .topbar-cta:hover{ filter:brightness(1.05); transform:translateY(-1px); }
+  @media (max-width:420px){ .topbar-cta{ font-size:11.5px; padding:6px 10px; } }
 
-  /* ---------- hero ---------- */
-  /* No overflow:hidden here — clipping it produced a hard-edged box
-     around the blurred glow instead of a soft fade (the blur got cut
-     off exactly at the section's own boundary). Left unclipped, the
-     glow just fades to fully transparent on its own before it reaches
-     any edge, and the page background is the same color past the hero
-     anyway, so there's nothing for it to bleed onto visibly. */
-  .hero{ position:relative; padding-top:44px; padding-bottom:40px; }
+  /* ---------- hero (full-bleed, breaks out of the 640px .wrap) ---------- */
+  .hero{
+    position:relative;
+    width:100vw;
+    left:50%;
+    margin-left:-50vw;
+    padding:52px 24px 48px;
+    overflow:hidden;
+    border-bottom:1px solid var(--eb-border-soft);
+  }
   .hero::before{
     content:"";
     position:absolute;
-    top:-220px; right:-160px;
-    width:520px; height:520px;
-    background:radial-gradient(circle, rgba(var(--eb-accent-rgb),0.15), transparent 60%);
-    filter:blur(50px);
+    top:-260px; right:-180px;
+    width:620px; height:620px;
+    background:radial-gradient(circle, rgba(var(--eb-accent-rgb),0.2), transparent 60%);
+    filter:blur(60px);
     pointer-events:none;
     z-index:0;
   }
-  .hero > *{ position:relative; z-index:1; }
+  .hero::after{
+    content:"";
+    position:absolute;
+    bottom:-220px; left:-220px;
+    width:480px; height:480px;
+    background:radial-gradient(circle, rgba(var(--eb-accent-rgb),0.12), transparent 65%);
+    filter:blur(70px);
+    pointer-events:none;
+    z-index:0;
+  }
+  /* Faint moving gradient wash behind everything — the "high-end product
+     page" cue that a static radial glow can't give on its own. Extremely
+     subtle (opacity kept low in the gradient stops themselves) so it never
+     fights with the text on top of it. */
+  .hero-mesh{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(600px circle at 20% 20%, rgba(var(--eb-accent-rgb),0.08), transparent 55%),
+      radial-gradient(500px circle at 85% 75%, rgba(var(--eb-accent-rgb),0.07), transparent 55%);
+    animation:heroMeshDrift 16s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion:reduce){ .hero-mesh{ animation:none; } }
+  @keyframes heroMeshDrift{
+    0%, 100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-2%, 2%) scale(1.05); }
+  }
+  .hero-inner{
+    position:relative;
+    z-index:1;
+    max-width:1120px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:44px;
+    align-items:center;
+  }
+  @media (min-width:900px){
+    .hero-inner{ grid-template-columns:1.05fr 0.95fr; gap:56px; }
+  }
+  .hero-copy .sub{ max-width:52ch; }
   .hero h1{
     font-family:var(--eb-font-mono);
-    font-size:clamp(26px, 6.4vw, 38px);
+    font-size:clamp(30px, 4.4vw, 46px);
     font-weight:600;
-    line-height:1.22;
-    letter-spacing:-0.01em;
+    line-height:1.16;
+    letter-spacing:-0.015em;
+  }
+  .hero h1 .hl{
+    background:linear-gradient(90deg, var(--eb-accent), var(--eb-accent-soft));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
   }
   .hero .sub{
     font-size:16.5px;
     color:var(--eb-text-dim);
     margin-top:16px;
-    max-width:50ch;
+  }
+  @media (min-width:900px){ .hero{ padding:76px 24px 64px; } }
+
+  /* ---------- reusable full-bleed wide container ----------
+     Same break-out trick as .hero: lets a section use a wider stage than
+     the 640px reading column everything else sits in, without touching
+     the shared .wrap markup. .bleed-inner carries its own max-width. */
+  .bleed{
+    width:100vw;
+    position:relative;
+    left:50%;
+    margin-left:-50vw;
+    padding-left:24px;
+    padding-right:24px;
+    box-sizing:border-box;
+  }
+  .bleed-inner{ max-width:980px; margin:0 auto; }
+  /* Alternating full-width tint band + a faint dot-grid texture on the
+     wide sections — this is what breaks up the page's one long stretch
+     of identical near-black background. .band sections get a slightly
+     raised fill; .dotgrid adds the texture (kept at ~4% opacity so it
+     never competes with the copy on top of it). */
+  .band{ background:var(--eb-bg-raise); }
+  .dotgrid{ position:relative; }
+  .dotgrid::before{
+    content:"";
+    position:absolute; inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:.5;
+    background-image:radial-gradient(rgba(var(--eb-accent-rgb),0.16) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 85%);
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 85%);
+  }
+  .dotgrid > .bleed-inner{ position:relative; z-index:1; }
+  /* Same raised-tint idea as .band, but for sections that stay inside the
+     640px .wrap (why / final) rather than full-bleed — paints a full
+     viewport-width band behind the narrow column instead of just tinting
+     the column itself, so the banding still reads edge-to-edge. */
+  .full-band::before{
+    content:"";
+    position:absolute; top:0; bottom:0;
+    left:50%; width:100vw; margin-left:-50vw;
+    background:var(--eb-bg-raise);
+    z-index:-1;
   }
   .price-row{
     display:flex;
@@ -243,7 +368,87 @@
   .price-row .amount{font-size:26px; font-weight:700; color:var(--eb-accent);}
   .price-row .note{font-size:13px; color:var(--eb-text-faint);}
 
+  .proof-line{
+    margin-top:18px;
+    font-size:13.5px;
+    color:var(--eb-text-dim);
+    max-width:46ch;
+    padding-left:14px;
+    border-left:2px solid var(--eb-accent);
+  }
+  .proof-line strong{
+    font-family:var(--eb-font-mono);
+    color:var(--eb-accent);
+    font-size:15px;
+  }
+  /* ---------- trust badges ---------- */
+  .trust-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:22px;
+  }
+  .trust-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--eb-font-mono);
+    font-size:11.5px;
+    color:var(--eb-text-dim);
+    background:var(--eb-panel);
+    border:1px solid var(--eb-border-soft);
+    border-radius:7px;
+    padding:7px 11px;
+  }
+
+  /* ---------- hero visual: radar-pulse signal ---------- */
+  .hero-visual{ position:relative; display:flex; align-items:center; justify-content:center; min-height:340px; }
+  .radar-field{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:420px; height:420px;
+    max-width:100%;
+    pointer-events:none;
+    z-index:0;
+  }
+  .radar-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1px solid rgba(var(--eb-accent-rgb),0.35);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .radar-ring{ animation:radarPulse 3.6s ease-out infinite; }
+    .radar-ring.r2{ animation-delay:1.2s; }
+    .radar-ring.r3{ animation-delay:2.4s; }
+    @keyframes radarPulse{
+      0%{ transform:scale(0.55); opacity:0; }
+      12%{ opacity:.6; }
+      100%{ transform:scale(1); opacity:0; }
+    }
+  }
+  .radar-sweep{
+    position:absolute; inset:0;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(var(--eb-accent-rgb),0.32), transparent 32%, transparent 100%);
+    opacity:.55;
+    -webkit-mask-image:radial-gradient(circle, black 62%, transparent 63%);
+    mask-image:radial-gradient(circle, black 62%, transparent 63%);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .radar-sweep{ animation:radarSpin 5.5s linear infinite; }
+    @keyframes radarSpin{ to{ transform:rotate(360deg); } }
+  }
+  .proof-source{
+    display:block;
+    margin-top:2px;
+    font-family:var(--eb-font-mono);
+    font-size:11px;
+    color:var(--eb-text-faint);
+  }
+
   .cta-btn{
+    position:relative;
     display:block;
     text-align:center;
     text-decoration:none;
@@ -257,10 +462,30 @@
     padding:15px 20px;
     margin-top:22px;
     cursor:pointer;
+    overflow:hidden;
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,0.28),
       0 10px 28px rgba(var(--eb-accent-btn-rgb), 0.32);
     transition:transform .15s ease, filter .12s ease, box-shadow .15s ease;
+  }
+  /* A slow diagonal sheen sweeping across the primary button — cheap
+     motion that keeps the one button we most want clicked from ever
+     sitting still on the page. */
+  .cta-btn::after{
+    content:"";
+    position:absolute;
+    top:0; left:-60%;
+    width:45%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform:skewX(-18deg);
+    pointer-events:none;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .cta-btn::after{ animation:ctaSheen 4.5s ease-in-out infinite; }
+    @keyframes ctaSheen{
+      0%, 40%{ left:-60%; }
+      65%, 100%{ left:130%; }
+    }
   }
   .cta-btn:hover{
     filter:brightness(1.04);
@@ -318,14 +543,23 @@
 
   /* ---------- terminal / workflow canvas mock ---------- */
   .device{
-    margin-top:32px;
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:360px;
     border:1px solid var(--eb-border);
     border-radius:10px;
     background:linear-gradient(180deg, var(--eb-surface), var(--eb-panel) 40%);
     overflow:hidden;
     box-shadow:
       0 1px 0 rgba(255,255,255,0.04) inset,
-      0 24px 48px -12px rgba(0,0,0,0.45);
+      0 30px 60px -14px rgba(0,0,0,0.55),
+      0 0 80px -20px rgba(var(--eb-accent-rgb),0.35);
+  }
+  .hero .device{ margin-top:0; }
+  @media (prefers-reduced-motion:no-preference){
+    .hero .device{ animation:deviceFloat 6s ease-in-out infinite; }
+    @keyframes deviceFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
   }
   .device-bar{
     display:flex;
@@ -348,6 +582,14 @@
     overflow:hidden;
   }
   .canvas svg{position:absolute; inset:0; width:100%; height:100%;}
+  @media (prefers-reduced-motion:no-preference){
+    /* Path now runs all the way down to the "Call booked" node instead of
+       stopping short at "Your reply goes out" — duration and the dash
+       offset are scaled up to match the longer path so the pulse still
+       travels it at the same visual speed instead of suddenly rushing. */
+    .flow-pulse{ animation:flowPulse 3.3s linear infinite; filter:drop-shadow(0 0 4px rgba(var(--eb-accent-rgb),0.8)); }
+    @keyframes flowPulse{ to{ stroke-dashoffset:-286; } }
+  }
   .node-col{
     position:relative;
     z-index:1;
@@ -407,64 +649,109 @@
     max-width:52ch;
   }
   .stat-block{
+    position:relative;
     margin-top:30px;
     display:flex;
-    align-items:flex-start;
-    gap:18px;
-    border-left:2px solid var(--eb-accent);
-    padding-left:18px;
+    align-items:center;
+    gap:22px;
+    border:1px solid var(--eb-border);
+    background:linear-gradient(135deg, rgba(var(--eb-accent-rgb),0.08), var(--eb-panel) 60%);
+    border-radius:14px;
+    padding:22px 24px;
+    overflow:hidden;
+  }
+  .stat-block::before{
+    content:"";
+    position:absolute; top:50%; left:-40px;
+    width:160px; height:160px;
+    transform:translateY(-50%);
+    background:radial-gradient(circle, rgba(var(--eb-accent-rgb),0.25), transparent 70%);
+    filter:blur(20px);
+    pointer-events:none;
   }
   .stat-block .num{
+    position:relative;
     font-family:var(--eb-font-mono);
-    font-size:52px;
+    font-size:56px;
     font-weight:700;
     color:var(--eb-accent);
     line-height:1;
-    text-shadow:0 0 24px rgba(var(--eb-accent-rgb),0.35);
+    text-shadow:0 0 28px rgba(var(--eb-accent-rgb),0.45);
+    flex-shrink:0;
   }
-  .stat-block .cap{font-size:14.5px; color:var(--eb-text-dim); max-width:34ch; padding-top:6px;}
+  .stat-block .cap{ position:relative; font-size:15.5px; line-height:1.55; color:var(--eb-text-dim); max-width:34ch; }
   .stat-source{
     font-family:var(--eb-font-mono);
     font-size:11.5px;
     color:var(--eb-text-faint);
-    margin-top:10px;
+    margin-top:12px;
   }
 
   /* ---------- setup process ---------- */
+  /* Was a plain divider-line list — the one section left looking like a
+     terms-of-service page next to the card language everywhere else on
+     the page. Each step is now its own hover card, same family as
+     .flow-card / .inside-item, with the numbered badge sitting on a
+     connector line that runs through the gaps between cards (hidden
+     behind each card's own background where it overlaps). */
   .process-list{
     counter-reset:step;
-    margin-top:8px;
+    margin-top:20px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .process-list::before{
+    content:"";
+    position:absolute;
+    top:40px; bottom:40px; left:40px;
+    width:2px;
+    background:linear-gradient(var(--eb-border), var(--eb-border) 100%);
+    z-index:0;
   }
   .process-step{
     position:relative;
+    z-index:1;
     display:grid;
-    grid-template-columns:36px 1fr;
-    gap:14px;
-    padding:20px 0;
-    border-top:1px solid var(--eb-border-soft);
+    grid-template-columns:40px 1fr;
+    gap:16px;
+    align-items:start;
+    padding:22px 22px 22px 20px;
+    border:1px solid var(--eb-border-soft);
+    border-radius:14px;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--eb-panel) 100%, white 2%), var(--eb-panel));
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
   }
-  .process-step:first-of-type{border-top:none; padding-top:0;}
+  .process-step:hover{
+    border-color:var(--eb-accent);
+    transform:translateY(-3px);
+    box-shadow:0 20px 40px -20px rgba(var(--eb-accent-rgb),0.4);
+  }
   .process-step .num{
+    position:relative;
+    z-index:1;
     counter-increment:step;
-    width:36px; height:36px;
+    width:40px; height:40px;
     border-radius:50%;
     background:linear-gradient(180deg, color-mix(in srgb, var(--eb-accent) 100%, white 14%), var(--eb-accent) 55%);
     color:var(--eb-accent-ink);
     font-family:var(--eb-font-mono);
     font-weight:700;
-    font-size:14.5px;
+    font-size:15px;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 6px 14px -6px rgba(var(--eb-accent-rgb),0.5);
+    flex-shrink:0;
+    box-shadow:0 6px 14px -6px rgba(var(--eb-accent-rgb),0.5), 0 0 0 4px var(--eb-panel);
   }
   .process-step .num::before{ content:counter(step); }
   .process-step h3{
     font-family:var(--eb-font-mono);
-    font-size:15.5px;
+    font-size:17px;
     font-weight:600;
     color:var(--eb-text);
     margin-bottom:6px;
   }
-  .process-step p{font-size:14.5px; margin-bottom:0;}
+  .process-step p{font-size:15.5px; line-height:1.6; margin-bottom:0;}
   .process-step .step-link{
     display:inline-block;
     margin-top:8px;
@@ -476,32 +763,32 @@
     border-bottom:1px solid rgba(var(--eb-accent-rgb),0.4);
   }
   .process-step .step-link:hover{ border-color:var(--eb-accent); }
+  /* Gold left-edge instead of a flat gray box: this note is where the
+     done-for-you upsell first appears, and the gold ties it visually to
+     the same accent used for the price later on the page — "this is a
+     distinct offer" instead of just another line of body copy. */
   .process-note{
     margin-top:24px;
-    padding:14px 16px;
+    padding:16px 18px;
     border:1px solid var(--eb-border);
+    border-left:3px solid var(--eb-accent2);
     border-radius:8px;
-    background:var(--eb-panel);
-    font-size:13.5px;
+    background:linear-gradient(90deg, rgba(var(--eb-accent2-rgb),0.07), var(--eb-panel) 40%);
+    font-size:14.5px;
+    line-height:1.6;
     color:var(--eb-text-dim);
   }
   .process-note strong{ color:var(--eb-text); }
 
   /* ---------- inside grid ---------- */
-  .inside-item{
-    display:grid;
-    gap:14px;
-    padding:22px 0;
-    border-top:1px solid var(--eb-border-soft);
-  }
-  .inside-item:first-of-type{border-top:none; padding-top:0;}
   .inside-item h3{
     font-family:var(--eb-font-mono);
-    font-size:15.5px;
+    font-size:17px;
     font-weight:600;
     color:var(--eb-text);
   }
-  .inside-item p{font-size:14.5px;}
+  .item-num{ color:var(--eb-accent2); }
+  .inside-item p{font-size:15.5px; line-height:1.6;}
   .mock-panel{
     border:1px solid var(--eb-border);
     border-radius:8px;
@@ -552,7 +839,43 @@
   .log-line .fix{color:var(--eb-go);}
 
   /* ---------- why ---------- */
+  /* Every other section on the page by this point has settled into a
+     bordered-card visual language (hero device, flow-card, inside-item,
+     stat-block, process-note) — "why" was the one holdout still sitting
+     as bare paragraphs on the band background, which made it read as an
+     afterthought. Giving it the same card treatment, with the gold
+     left-edge from .process-note carried through, makes it land as a
+     pull-quote instead of loose copy. */
+  .why-block{
+    position:relative;
+    margin-top:22px;
+    padding:34px 28px 30px 40px;
+    border:1px solid var(--eb-border);
+    border-left:3px solid var(--eb-accent2);
+    border-radius:16px;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--eb-panel) 100%, white 2%), var(--eb-panel));
+    box-shadow:0 24px 48px -28px rgba(0,0,0,0.55);
+  }
   .why-block p{font-size:15.5px; color:var(--eb-text);}
+  .why-mark{
+    position:absolute; top:-8px; left:18px;
+    font-family:var(--eb-font-mono);
+    font-size:72px;
+    line-height:1;
+    color:rgba(var(--eb-accent2-rgb),0.45);
+    pointer-events:none;
+    user-select:none;
+  }
+  /* Price gets its own warm gradient instead of the brand-green .hl, so
+     the number that actually matters on the page doesn't blend into
+     every other green highlight around it. */
+  .price-hl{
+    background:linear-gradient(90deg, var(--eb-accent2), #F2D48C);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 30px rgba(var(--eb-accent2-rgb),0.3);
+  }
   .why-sign{
     font-family:var(--eb-font-mono);
     font-size:13px;
@@ -590,14 +913,36 @@
 
   /* ---------- CHECKOUT (embedded get-started flow) ---------- */
   .checkout-card{
+    position:relative;
     margin-top:26px;
-    border:1px solid var(--eb-border);
-    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-surface) 100%, white 3%), var(--eb-surface));
-    border-radius:10px;
-    padding:26px 24px;
-    box-shadow:0 28px 56px -20px rgba(0,0,0,0.5);
+    border:1px solid rgba(var(--eb-accent2-rgb),0.3);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-surface) 100%, white 4%), var(--eb-surface));
+    border-radius:16px;
+    padding:32px 26px 26px;
+    overflow:hidden;
+    box-shadow:
+      0 32px 64px -22px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(var(--eb-accent2-rgb),0.06) inset,
+      0 0 100px -30px rgba(var(--eb-accent2-rgb),0.4);
   }
-  @media (max-width:480px){ .checkout-card{ padding:22px 18px; } }
+  /* A green-to-gold strip across the top ties the card to both accent
+     colors at once — green for "go do the thing," gold for "this is the
+     $19 you're paying for" — so the card itself reads as the offer. */
+  .checkout-card::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:4px;
+    background:linear-gradient(90deg, var(--eb-accent), var(--eb-accent2));
+  }
+  .checkout-badge{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    margin:0 0 22px;
+    font-family:var(--eb-font-mono);
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    color:var(--eb-accent2);
+  }
+  @media (max-width:480px){ .checkout-card{ padding:26px 18px 22px; } }
 
   .stepper{
     display:flex;
@@ -620,8 +965,8 @@
     transition:border-color .2s ease, background .2s ease, color .2s ease;
   }
   .step-label{ font-family:var(--eb-font-mono); font-size:11px; color:var(--eb-text-faint); white-space:nowrap; }
-  .step-node.active .step-circle{ border-color:var(--eb-accent); background:rgba(255,158,44,0.14); color:var(--eb-accent); }
-  .step-node.active .step-label{ color:var(--eb-text); }
+  .step-node.active .step-circle{ border-color:var(--eb-accent); background:rgba(var(--eb-accent-rgb),0.14); color:var(--eb-accent); box-shadow:0 0 0 4px rgba(var(--eb-accent-rgb),0.14), 0 0 18px rgba(var(--eb-accent-rgb),0.4); transform:scale(1.06); }
+  .step-node.active .step-label{ color:var(--eb-text); font-weight:600; }
   .step-node.done .step-circle{ border-color:var(--eb-accent); background:var(--eb-accent); color:var(--eb-accent-ink); }
   .step-connector{ flex:1; height:1.5px; max-width:56px; background:var(--eb-border); margin:0 6px 18px; transition:background .2s ease; }
   .step-connector.done{ background:var(--eb-accent); }
@@ -653,7 +998,7 @@
     transition:border-color .15s ease;
   }
   .field input::placeholder{ color:var(--eb-text-faint); }
-  .field input:focus{ outline:none; border-color:var(--eb-accent); }
+  .field input:focus{ outline:none; border-color:var(--eb-accent); box-shadow:0 0 0 3px rgba(var(--eb-accent-rgb),0.16); }
   .field-error{ font-size:12px; color:var(--eb-warn); margin-top:6px; display:none; font-family:var(--eb-font-mono); }
   .field.invalid input{ border-color:var(--eb-warn); }
   .field.invalid .field-error{ display:block; }
@@ -679,11 +1024,17 @@
   .lead-note.is-error{ color:var(--eb-text-faint); }
 
   .checkout-trust{
-    display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:center;
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
     margin:0 0 18px;
+  }
+  .checkout-trust span{
+    border:1px solid var(--eb-border-soft);
+    background:var(--eb-bg-raise);
+    border-radius:999px;
+    padding:6px 12px;
     font-family:var(--eb-font-mono);
     font-size:11.5px;
-    color:var(--eb-text-faint);
+    color:var(--eb-text-dim);
   }
 
   .pay-embed-wrap{
@@ -718,6 +1069,223 @@
     color:var(--eb-text-dim);
   }
   .stay-note strong{ color:var(--eb-text); }
+
+  /* ---------- done-for-you callout (below the CTA) ---------- */
+  .dfy-callout{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-top:22px;
+    border:1px solid rgba(var(--eb-accent2-rgb),0.28);
+    background:linear-gradient(120deg, rgba(var(--eb-accent2-rgb),0.08), var(--eb-panel) 55%);
+    border-radius:12px;
+    padding:18px 20px;
+  }
+  .dfy-callout-text strong{
+    display:block;
+    font-family:var(--eb-font-mono);
+    font-size:14.5px;
+    color:var(--eb-text);
+    margin-bottom:4px;
+  }
+  .dfy-callout-text p{ font-size:13.5px; color:var(--eb-text-dim); margin:0; max-width:46ch; }
+  .dfy-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+    font-family:var(--eb-font-mono);
+    font-weight:600;
+    font-size:13px;
+    color:var(--eb-accent2);
+    background:rgba(var(--eb-accent2-rgb),0.1);
+    border:1px solid rgba(var(--eb-accent2-rgb),0.45);
+    border-radius:7px;
+    padding:11px 16px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .dfy-btn:hover{ background:rgba(var(--eb-accent2-rgb),0.18); border-color:var(--eb-accent2); transform:translateY(-1px); }
+  .dfy-btn svg{ width:15px; height:15px; flex-shrink:0; }
+  @media (max-width:560px){
+    .dfy-callout{ flex-direction:column; align-items:stretch; text-align:center; }
+    .dfy-callout-text p{ max-width:none; }
+    .dfy-btn{ justify-content:center; }
+  }
+
+  /* ---------- what you get (2-card summary) ---------- */
+  .get-grid{ display:grid; gap:18px; margin-top:6px; }
+  @media (min-width:700px){ .get-grid{ grid-template-columns:1fr 1fr; } }
+  .get-card{
+    position:relative;
+    border:1px solid var(--eb-border-soft);
+    border-radius:16px;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--eb-panel) 100%, white 2%), var(--eb-panel));
+    padding:30px 26px 28px;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .get-card:hover{
+    border-color:var(--eb-accent);
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px -24px rgba(var(--eb-accent-rgb),0.4);
+  }
+  .get-card .item-num{
+    position:absolute; top:26px; right:26px;
+    font-family:var(--eb-font-mono); font-weight:700; font-size:13px;
+    color:var(--eb-accent2);
+  }
+  .get-icon{
+    width:52px; height:52px; border-radius:14px;
+    background:rgba(var(--eb-accent-rgb),0.12); color:var(--eb-accent);
+    border:1px solid rgba(var(--eb-accent-rgb),0.3);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:18px;
+  }
+  .get-icon svg{ width:25px; height:25px; }
+  .get-card h3{
+    font-family:var(--eb-font-mono); font-weight:600; font-size:18px;
+    color:var(--eb-text); margin-bottom:8px;
+  }
+  .get-card p{ font-size:15.5px; line-height:1.6; margin-bottom:0; }
+
+  /* ---------- live demo ---------- */
+  /* Two device-style cards side by side (stacked on mobile): a fake lead
+     form that "types" itself out, and the AI's reply, which fades in and
+     then highlights — one at a time — the exact words in the reply that
+     came from what was typed on the left. Runs once automatically the
+     first time it scrolls into view (like the stat counter elsewhere on
+     the page), and can be replayed on demand via the button underneath,
+     so it never turns into an endless distracting loop. */
+  .demo-stage{
+    display:grid;
+    gap:18px;
+    margin-top:8px;
+    align-items:stretch;
+  }
+  .demo-arrow{
+    display:flex; align-items:center; justify-content:center;
+    color:var(--eb-text-faint);
+    transform:rotate(90deg);
+  }
+  .demo-arrow svg{ width:22px; height:22px; }
+  @media (min-width:760px){
+    .demo-stage{ grid-template-columns:1fr auto 1fr; }
+    .demo-arrow{ transform:none; }
+  }
+  .demo-card{
+    border:1px solid var(--eb-border);
+    border-radius:12px;
+    background:linear-gradient(180deg, var(--eb-surface), var(--eb-panel) 40%);
+    overflow:hidden;
+    box-shadow:0 24px 48px -22px rgba(0,0,0,0.5);
+    display:flex;
+    flex-direction:column;
+  }
+  .demo-card .device-bar{ flex-shrink:0; }
+  .demo-form-body{ padding:22px 20px; display:flex; flex-direction:column; gap:18px; flex:1; }
+  .demo-field label{
+    display:block;
+    font-family:var(--eb-font-mono); font-size:11.5px; letter-spacing:.03em;
+    color:var(--eb-text-faint); margin-bottom:7px;
+  }
+  .demo-input{
+    min-height:18px;
+    border-bottom:1px solid var(--eb-border);
+    padding-bottom:8px;
+    font-family:var(--eb-font-mono);
+    font-size:13.5px;
+    color:var(--eb-text);
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .demo-input-lg{ min-height:38px; }
+  .demo-caret{
+    display:inline-block;
+    width:2px; height:1em;
+    background:var(--eb-accent);
+    vertical-align:-2px;
+    margin-left:1px;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .demo-caret.blink{ animation:caretBlink .9s steps(1) infinite; }
+    @keyframes caretBlink{ 50%{ opacity:0; } }
+  }
+  .demo-submit-btn{
+    align-self:flex-start;
+    margin-top:2px;
+    font-family:var(--eb-font-mono); font-weight:600; font-size:13px;
+    color:var(--eb-accent-btn-ink);
+    background:var(--eb-accent-btn);
+    border-radius:6px;
+    padding:9px 18px;
+    transition:transform .12s ease, box-shadow .12s ease;
+    box-shadow:0 8px 18px -6px rgba(var(--eb-accent-btn-rgb),0.4);
+  }
+  .demo-submit-btn.is-pressed{ transform:scale(.94); box-shadow:0 2px 8px -2px rgba(var(--eb-accent-btn-rgb),0.4); }
+  .demo-reply-body{ padding:22px 20px; display:flex; flex-direction:column; justify-content:center; gap:14px; flex:1; min-height:168px; }
+  .demo-status{
+    display:flex; align-items:center; gap:9px;
+    font-family:var(--eb-font-mono); font-size:12.5px; color:var(--eb-text-faint);
+    transition:opacity .3s ease;
+  }
+  .demo-status-dots{ display:inline-flex; gap:3px; }
+  .demo-status-dots span{
+    width:4px; height:4px; border-radius:50%;
+    background:var(--eb-text-faint);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .demo-status-dots span{ animation:dotBounce 1.1s ease-in-out infinite; }
+    .demo-status-dots span:nth-child(2){ animation-delay:.15s; }
+    .demo-status-dots span:nth-child(3){ animation-delay:.3s; }
+    @keyframes dotBounce{ 0%,60%,100%{ opacity:.3; transform:translateY(0); } 30%{ opacity:1; transform:translateY(-2px); } }
+  }
+  .demo-reply-text{
+    font-size:15px;
+    line-height:1.65;
+    color:var(--eb-text);
+    margin:0;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .demo-reply-text.is-shown{ opacity:1; transform:none; }
+  .demo-reply-text mark{
+    background:rgba(var(--eb-accent-rgb),0);
+    color:var(--eb-text);
+    font-weight:600;
+    border-radius:4px;
+    padding:1px 4px;
+    margin:0 -4px;
+    transition:background .45s ease, color .45s ease;
+  }
+  .demo-reply-text mark.is-hi{
+    background:rgba(var(--eb-accent-rgb),0.22);
+    color:var(--eb-accent);
+  }
+  .demo-link{ color:var(--eb-text-dim); text-decoration:underline; text-underline-offset:2px; }
+  .demo-stamp{
+    font-family:var(--eb-font-mono); font-size:12.5px; color:var(--eb-go);
+    opacity:0; transition:opacity .4s ease;
+  }
+  .demo-stamp.is-shown{ opacity:1; }
+  .demo-replay{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    margin:22px auto 0;
+    width:fit-content;
+    font-family:var(--eb-font-mono); font-weight:600; font-size:13px;
+    color:var(--eb-text-dim);
+    background:none;
+    border:1px solid var(--eb-border);
+    border-radius:7px;
+    padding:9px 16px;
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .demo-replay:hover{ border-color:var(--eb-accent); color:var(--eb-accent); }
+  .demo-replay svg{ width:14px; height:14px; }
 
   /* ---------- scroll reveal ---------- */
   @media (prefers-reduced-motion:no-preference){
@@ -769,39 +1337,48 @@
      connected sequence via the icon + vertical connector. */
   .flow-track{ display:flex; flex-direction:column; margin-top:8px; }
   .flow-card{
+    position:relative;
     display:flex;
     align-items:flex-start;
     gap:16px;
     border:1px solid var(--eb-border);
-    background:var(--eb-surface);
-    border-radius:12px;
-    padding:20px 22px;
+    background:linear-gradient(180deg, color-mix(in srgb, var(--eb-surface) 100%, white 3%), var(--eb-surface));
+    border-radius:14px;
+    padding:22px;
     text-align:left;
     transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
   }
   .flow-card:hover{
     border-color:var(--eb-accent);
-    transform:translateX(3px);
-    box-shadow:0 18px 36px -20px rgba(var(--eb-accent-rgb),0.4);
+    transform:translateY(-4px);
+    box-shadow:0 20px 40px -20px rgba(var(--eb-accent-rgb),0.45);
+  }
+  .flow-card-num{
+    position:absolute; top:14px; right:16px;
+    font-family:var(--eb-font-mono); font-size:13px; font-weight:700;
+    color:var(--eb-accent2);
+    text-shadow:0 0 14px rgba(var(--eb-accent2-rgb),0.35);
   }
   .flow-card-icon{
-    width:42px; height:42px; border-radius:10px;
+    width:44px; height:44px; border-radius:11px;
     background:rgba(var(--eb-accent-rgb),0.12); color:var(--eb-accent);
+    border:1px solid rgba(var(--eb-accent-rgb),0.3);
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    box-shadow:0 0 0 rgba(var(--eb-accent-rgb),0.4);
   }
-  .flow-card-icon svg{ width:20px; height:20px; }
+  .flow-card-icon svg{ width:21px; height:21px; }
   .flow-card h3{
-    font-family:var(--eb-font-mono); font-weight:600; font-size:15px;
+    font-family:var(--eb-font-mono); font-weight:600; font-size:16.5px;
     color:var(--eb-text); margin-bottom:6px;
+    /* Room for the absolutely-positioned 01/02/03 badge in the corner —
+       without this, on the stacked mobile layout (where the heading runs
+       the full card width instead of a narrow desktop column) long
+       headings like "You get a reply, under 10s" collide with it. */
+    padding-right:30px;
   }
-  .flow-card p{ font-size:14px; margin-bottom:0; }
+  .flow-card p{ font-size:15px; line-height:1.6; margin-bottom:0; }
   .flow-connector{
-    flex-shrink:0; position:relative; width:2px; height:20px;
-    /* Centered exactly under the 42px icon: 1px card border + 22px
-       padding + half the icon width (21px) = 44px, minus half the
-       connector's own 2px width. Also overlaps 1px into each card
-       above/below so the line reads as continuous through the stack
-       instead of floating disconnected in the gap. */
+    flex-shrink:0; position:relative; width:2px; height:26px;
     margin:-1px 0 -1px 43px;
     background:var(--eb-border);
   }
@@ -815,6 +1392,30 @@
     .flow-dot.stage-2{ animation:ebFlowY2 4.2s ease-in-out infinite; }
     @keyframes ebFlowY1{ 0%{top:0%;opacity:0;} 4%{opacity:1;} 39%{top:100%;opacity:1;} 43%{top:100%;opacity:0;} 100%{top:100%;opacity:0;} }
     @keyframes ebFlowY2{ 0%,50%{top:0%;opacity:0;} 54%{opacity:1;} 89%{top:100%;opacity:1;} 93%{top:100%;opacity:0;} 100%{top:100%;opacity:0;} }
+    .flow-card-icon{ animation:iconGlow 4.2s ease-in-out infinite; }
+    .flow-track .flow-card:nth-child(3) .flow-card-icon{ animation-delay:.6s; }
+    .flow-track .flow-card:nth-child(5) .flow-card-icon{ animation-delay:1.2s; }
+    @keyframes iconGlow{
+      0%, 78%, 100%{ box-shadow:0 0 0 rgba(var(--eb-accent-rgb),0); }
+      15%{ box-shadow:0 0 18px rgba(var(--eb-accent-rgb),0.55); }
+    }
+  }
+
+  /* Desktop: three cards side by side with a horizontal connector running
+     through them instead of stacked with a vertical one — the wider
+     .bleed-inner stage this section now sits in gives them room to
+     actually breathe as a row instead of being squeezed into 640px. */
+  @media (min-width:860px){
+    .flow-track{ flex-direction:row; align-items:stretch; }
+    .flow-card{ flex:1; flex-direction:column; }
+    .flow-connector{ width:auto; flex:0 0 40px; height:2px; margin:34px 0 0; align-self:flex-start; }
+    .flow-dot{ top:50%; left:0; }
+    @media (prefers-reduced-motion:no-preference){
+      .flow-dot.stage-1{ animation-name:ebFlowX1; }
+      .flow-dot.stage-2{ animation-name:ebFlowX2; }
+      @keyframes ebFlowX1{ 0%{left:0%;opacity:0;} 4%{opacity:1;} 39%{left:100%;opacity:1;} 43%{left:100%;opacity:0;} 100%{left:100%;opacity:0;} }
+      @keyframes ebFlowX2{ 0%,50%{left:0%;opacity:0;} 54%{opacity:1;} 89%{left:100%;opacity:1;} 93%{left:100%;opacity:0;} 100%{left:100%;opacity:0;} }
+    }
   }
 
   /* ---------- node pulse (hero device) ---------- */
@@ -832,16 +1433,43 @@
   }
 
   /* ---------- inside items as hover cards ---------- */
+  .inside-grid{ display:grid; gap:16px; }
+  @media (min-width:860px){ .inside-grid{ grid-template-columns:1fr 1fr; } }
   .inside-item{
-    display:grid;
+    display:flex;
+    flex-direction:column;
     gap:14px;
     border:1px solid var(--eb-border-soft);
-    background:var(--eb-panel);
-    border-radius:12px;
-    padding:24px 22px;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--eb-panel) 100%, white 2%), var(--eb-panel));
+    border-radius:14px;
+    /* More top than side/bottom padding on purpose — a bold heading sitting
+       right under the border read as cramped at 24px all round even though
+       the number was technically even; extra room above it is what
+       actually reads as "breathing room" next to the 24px sides. */
+    padding:38px 24px 26px;
     margin-top:16px;
     transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
   }
+  /* The four cards hold very different amounts of mock content (a 5-line
+     code block vs. a 3-line log vs. two chat bubbles), so with a plain
+     top-aligned layout the taller cards' panels hugged the top and left a
+     mismatched slab of empty space at the bottom of each shorter card —
+     that's the "inconsistent padding" look. Making the panel a flex child
+     that fills the rest of the card, then centering its own content
+     inside itself, makes every card's panel reach the same bottom edge
+     regardless of how much text it holds. */
+  .inside-item .mock-panel{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+  }
+  .inside-item .mock-inner{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  @media (min-width:860px){ .inside-item{ margin-top:0; } }
   .inside-item:first-of-type{ margin-top:0; }
   .inside-item:hover{
     border-color:var(--eb-accent);
@@ -850,6 +1478,8 @@
   }
 
   /* ---------- FAQ accordion ---------- */
+  .faq-item{ transition:background .2s ease; border-radius:8px; }
+  .faq-item.open{ background:rgba(var(--eb-accent-rgb),0.045); }
   .faq-q-btn{
     width:100%;
     text-align:left;
@@ -860,22 +1490,25 @@
     align-items:center;
     justify-content:space-between;
     gap:16px;
-    padding:18px 0;
+    padding:18px 14px;
+    margin:0 -14px;
     font-family:var(--eb-font-mono);
-    font-size:14.5px;
+    font-size:15.5px;
     font-weight:600;
     color:var(--eb-text);
+    transition:color .15s ease;
   }
+  .faq-q-btn:hover{ color:var(--eb-accent); }
   .faq-q-btn .icon{
     font-size:19px;
     line-height:1;
     color:var(--eb-text-faint);
-    transition:transform .2s ease, color .2s ease;
+    transition:transform .25s cubic-bezier(.2,.9,.3,1.3), color .2s ease;
     flex-shrink:0;
   }
   .faq-item.open .faq-q-btn .icon{ transform:rotate(45deg); color:var(--eb-accent); }
-  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
-  .faq-a p{ font-size:14.5px; padding-bottom:18px; margin:0; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; padding:0 14px; }
+  .faq-a p{ font-size:15.5px; line-height:1.6; padding-bottom:18px; margin:0; }
 
   /* ---------- animated stat number ---------- */
   .stat-block .num{ font-variant-numeric:tabular-nums; }
@@ -914,20 +1547,6 @@
     transition:transform .28s cubic-bezier(.2,.9,.3,1.3);
   }
   .exit-popup-overlay.show .exit-popup{ transform:translateY(0) scale(1); }
-  .exit-popup-badge{
-    position:absolute;
-    top:-16px; left:-12px;
-    background:var(--eb-warn);
-    color:#FFFFFF;
-    font-family:var(--eb-font-mono);
-    font-weight:700;
-    font-size:13.5px;
-    letter-spacing:.03em;
-    padding:7px 14px;
-    border-radius:6px;
-    transform:rotate(-6deg);
-    box-shadow:0 8px 18px -6px rgba(0,0,0,0.5);
-  }
   .exit-popup-close{
     position:absolute;
     top:12px; right:12px;
@@ -943,10 +1562,10 @@
     transition:color .15s ease, border-color .15s ease;
   }
   .exit-popup-close:hover{ color:var(--eb-text); border-color:var(--eb-text-faint); }
-  .exit-popup .eyebrow{ justify-content:center; margin-bottom:2px; color:var(--eb-warn); font-weight:700; }
+  .exit-popup .eyebrow{ justify-content:center; margin-bottom:2px; color:var(--eb-accent2); font-weight:700; }
   .exit-popup h3{
     font-family:var(--eb-font-mono);
-    font-size:32px;
+    font-size:30px;
     font-weight:700;
     letter-spacing:-0.01em;
     margin-top:6px;
@@ -958,41 +1577,31 @@
     margin-top:12px;
     line-height:1.55;
   }
-  .exit-popup .exit-price-row{
-    display:flex; align-items:center; justify-content:center; gap:14px;
-    margin-top:22px;
-    background:rgba(var(--eb-accent-rgb),0.1);
-    border:1px dashed rgba(var(--eb-accent-rgb),0.45);
-    border-radius:10px;
-    padding:16px 12px;
-  }
-  .exit-popup .exit-price-row .was{
-    font-family:var(--eb-font-mono);
-    font-size:18px;
-    color:var(--eb-text-faint);
-    text-decoration:line-through;
-  }
-  .exit-popup .exit-price-row .now{
-    font-family:var(--eb-font-mono);
-    font-size:42px;
-    font-weight:700;
-    color:var(--eb-accent);
-    text-shadow:0 0 24px rgba(var(--eb-accent-rgb),0.5);
-  }
-  .exit-popup .exit-price-row .save{
-    font-family:var(--eb-font-mono);
-    font-size:13px;
-    font-weight:700;
-    color:var(--eb-accent-btn-ink);
-    background:var(--eb-accent-btn);
-    padding:4px 8px;
-    border-radius:5px;
-    letter-spacing:.02em;
-  }
-  .exit-popup .cta-btn{
+  .exit-signup-row{
+    display:flex;
+    gap:10px;
     margin-top:24px;
-    font-size:17.5px;
-    padding:17px 20px;
+  }
+  .exit-signup-row input[type="email"]{
+    flex:1;
+    min-width:0;
+    padding:14px 15px;
+    border-radius:7px;
+    border:1px solid var(--eb-border);
+    background:var(--eb-bg-raise);
+    color:var(--eb-text);
+    font-size:15px;
+    font-family:var(--eb-font-sans);
+    box-sizing:border-box;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .exit-signup-row input[type="email"]::placeholder{ color:var(--eb-text-faint); }
+  .exit-signup-row input[type="email"]:focus{ outline:none; border-color:var(--eb-accent); box-shadow:0 0 0 3px rgba(var(--eb-accent-rgb),0.16); }
+  .exit-popup .cta-btn{
+    margin-top:0;
+    flex-shrink:0;
+    font-size:15px;
+    padding:14px 20px;
     animation:exitPulse 1.8s ease-in-out infinite;
   }
   .exit-popup .cta-btn:hover{ animation-play-state:paused; }
@@ -1014,12 +1623,14 @@
     font-family:var(--eb-font-mono);
     font-size:12px;
     color:var(--eb-text-faint);
-    margin-top:12px;
+    margin-top:14px;
   }
   .exit-popup-state{ display:none; }
   .exit-popup-state.active{ display:block; }
-  .exit-popup-badge.hide{ display:none; }
   .exit-popup-bye{ font-size:42px; margin-top:6px; }
+  @media (max-width:480px){
+    .exit-signup-row{ flex-direction:column; }
+  }
   @media (prefers-reduced-motion: reduce){
     .exit-popup .cta-btn{ animation:none; }
   }
@@ -1033,7 +1644,7 @@
 <div class="topbar">
   <div class="brand">Damir<span>Builds</span></div>
   <div class="topbar-right">
-    <div class="price-chip"><span class="js-price">$19</span> · one-time</div>
+    <a href="#buy" class="topbar-cta">Get the workflow &rarr;</a>
     <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
       <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
       <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
@@ -1044,90 +1655,155 @@
 <div class="wrap">
 
   <section class="hero">
-    <p class="eyebrow">// real build, not a course</p>
-    <h1>The exact AI workflow I use to respond to every lead in <span class="hl">under 10 seconds</span></h1>
-    <p class="sub">Steal my actual workflow. <strong>Copy, paste, deploy.</strong> No modules, no theory. Just the thing that works.</p>
+    <div class="hero-mesh" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">// respond before they put their phone down</p>
+        <h1>Answer every lead in <span class="hl">under 10 seconds.</span> Automatically.</h1>
+        <p class="sub">This is the exact AI workflow that reads a new lead, writes a reply that actually sounds like you, and sends it while your competitor is still finishing their coffee. <strong>Copy it into your own account and it's live in about 10 minutes.</strong></p>
 
-    <div class="price-row">
-      <span class="amount js-price">$19</span>
-      <span class="note">· one payment, nothing recurring</span>
-    </div>
+        <a href="#buy" class="cta-btn">Show Me The Workflow</a>
+        <p class="cta-trust">Live in ~10 minutes · no code required</p>
 
-    <a href="#buy" class="cta-btn">Get the Workflow for <span class="js-price">$19</span></a>
-    <p class="cta-trust">Instant download after payment confirms</p>
+        <div class="proof-line">
+          <strong>21×</strong> more likely to qualify a lead when you reply in the first 5 minutes instead of the first 30 <span class="proof-source">— Lead Response Management study, Harvard Business Review</span>
+        </div>
 
-    <div class="highlights-row">
-      <span class="highlight-pill"><span class="dot"></span>Personalized, not templated</span>
-      <span class="highlight-pill"><span class="dot"></span>Live in ~10 minutes</span>
-      <span class="highlight-pill"><span class="dot"></span>Edge cases already fixed</span>
-    </div>
-
-    <div class="device" aria-hidden="true">
-      <div class="device-bar">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span class="filename">speed-to-lead.workflow.json</span>
+        <div class="trust-row">
+          <span class="trust-badge"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:14px;height:14px;"><rect x="4" y="9" width="12" height="8" rx="1.5"/><path d="M6.5 9V6a3.5 3.5 0 0 1 7 0v3"/></svg>Secure checkout</span>
+          <span class="trust-badge"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:14px;height:14px;"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg>Questions answered by DM</span>
+          <span class="trust-badge"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:14px;height:14px;"><path d="M4 10.5 8 14.5 16 5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>One payment, no subscription</span>
+        </div>
       </div>
-      <div class="canvas">
-        <div class="stopwatch">⏱ 8.6s</div>
-        <svg viewBox="0 0 300 220" preserveAspectRatio="none">
-          <path d="M40,26 L40,60" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
-          <path d="M40,60 L67,60 L67,94" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
-          <path d="M67,94 L94,94 L94,128" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
-          <path d="M94,128 L67,128 L67,162" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
-        </svg>
-        <div class="node-col">
-          <div class="node n1"><span class="tag">TRIGGER</span> New lead via webhook</div>
-          <div class="node n2"><span class="tag">AI</span> Parse &amp; score lead</div>
-          <div class="node n3"><span class="tag">ROUTE</span> Hot / warm / cold</div>
-          <div class="node n4"><span class="tag">SEND</span> Auto-reply dispatched</div>
-          <div class="node n5"><span class="tick">✓</span> Call booked</div>
+
+      <div class="hero-visual">
+        <div class="radar-field" aria-hidden="true">
+          <div class="radar-ring r1"></div>
+          <div class="radar-ring r2"></div>
+          <div class="radar-ring r3"></div>
+          <div class="radar-sweep"></div>
+        </div>
+        <div class="device" aria-hidden="true">
+          <div class="device-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="filename">speed-to-lead.workflow.json</span>
+          </div>
+          <div class="canvas">
+            <div class="stopwatch">⏱ 8.6s</div>
+            <svg viewBox="0 0 300 220" preserveAspectRatio="none">
+              <path d="M40,26 L40,60" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+              <path d="M40,60 L67,60 L67,94" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+              <path d="M67,94 L94,94 L94,128" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+              <path d="M94,128 L67,128 L67,162" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+              <path d="M67,162 L40,162 L40,196" stroke="var(--eb-border)" stroke-width="1.5" fill="none"/>
+              <path class="flow-pulse" d="M40,26 L40,60 L67,60 L67,94 L94,94 L94,128 L67,128 L67,162 L40,162 L40,196" stroke="var(--eb-accent)" stroke-width="2" fill="none" stroke-dasharray="6 280" stroke-linecap="round"/>
+            </svg>
+            <div class="node-col">
+              <div class="node n1"><span class="tag">TRIGGER</span> New lead comes in</div>
+              <div class="node n2"><span class="tag">AI</span> Reads &amp; scores it</div>
+              <div class="node n3"><span class="tag">ROUTE</span> Hot / warm / cold</div>
+              <div class="node n4"><span class="tag">SEND</span> Your reply goes out</div>
+              <div class="node n5"><span class="tick">✓</span> Call booked</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="how-it-works">
-    <p class="eyebrow reveal">// what it actually does</p>
-    <h2 class="section-h2 reveal">What happens when a lead comes in</h2>
-    <p class="reveal" style="margin-top:10px; margin-bottom:24px;">Not lead-gen theory, and <strong>not a canned autoresponder</strong>. This is the exact mechanism, running live on your own form.</p>
+  <section class="how-it-works bleed band dotgrid">
+    <div class="bleed-inner">
+      <p class="eyebrow reveal">// what it actually does</p>
+      <h2 class="section-h2 reveal">What happens when a lead comes in</h2>
+      <p class="reveal" style="margin-top:10px; margin-bottom:24px;">Not lead-gen theory, and <strong>not a canned autoresponder</strong>. This is the exact mechanism, running live on your own form.</p>
 
-    <div class="flow-track reveal">
-      <div class="flow-card">
-        <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 7h8M6 10h8M6 13h5" stroke-linecap="round"/></svg></div>
-        <div>
-          <h3>Lead fills out your form</h3>
-          <p>Name, email, whatever they typed. <strong>Captured the instant they hit submit.</strong></p>
+      <div class="flow-track reveal">
+        <div class="flow-card">
+          <span class="flow-card-num">01</span>
+          <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 7h8M6 10h8M6 13h5" stroke-linecap="round"/></svg></div>
+          <div>
+            <h3>The lead fills out your form</h3>
+            <p>Name, email, whatever they typed. <strong>Captured the instant they hit submit.</strong></p>
+          </div>
+        </div>
+
+        <div class="flow-connector"><div class="flow-dot stage-1"></div></div>
+
+        <div class="flow-card">
+          <span class="flow-card-num">02</span>
+          <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3.5c-4 0-7 3-7 6.5s3 6.5 7 6.5 7-3 7-6.5-3-6.5-7-6.5z"/><circle cx="7.2" cy="9.5" r=".9" fill="currentColor" stroke="none"/><circle cx="12.8" cy="9.5" r=".9" fill="currentColor" stroke="none"/></svg></div>
+          <div>
+            <h3>The AI reads it and <span class="hl">personalizes</span></h3>
+            <p>Not keyword-matching. <strong>It actually parses what they wrote</strong> and tailors the reply to it.</p>
+          </div>
+        </div>
+
+        <div class="flow-connector"><div class="flow-dot stage-2"></div></div>
+
+        <div class="flow-card">
+          <span class="flow-card-num">03</span>
+          <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg></div>
+          <div>
+            <h3>You get a reply, under 10s</h3>
+            <p>Written like a person would respond to <strong>that exact message</strong>. Booked before they've considered a competitor.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="live-demo bleed band dotgrid">
+    <div class="bleed-inner">
+      <p class="eyebrow reveal">// see it happen</p>
+      <h2 class="section-h2 reveal">Watch a real lead get a real reply</h2>
+      <p class="reveal" style="margin-top:10px; margin-bottom:8px;">Not a mockup. Everything <mark style="background:rgba(var(--eb-accent-rgb),0.2); color:var(--eb-accent); border-radius:4px; padding:1px 4px;">highlighted</mark> in the reply below came straight out of what the lead typed on the left.</p>
+
+      <div class="demo-stage reveal" id="demoStage">
+        <div class="demo-card">
+          <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">lead-form.html</span></div>
+          <div class="demo-form-body">
+            <div class="demo-field">
+              <label>Name</label>
+              <div class="demo-input" id="demoName"></div>
+            </div>
+            <div class="demo-field">
+              <label>What do you need?</label>
+              <div class="demo-input demo-input-lg" id="demoMsg"></div>
+            </div>
+            <div class="demo-submit-btn" id="demoSubmit">Send</div>
+          </div>
+        </div>
+
+        <div class="demo-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </div>
+
+        <div class="demo-card">
+          <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">auto-reply</span></div>
+          <div class="demo-reply-body">
+            <div class="demo-status" id="demoStatus">
+              <span class="demo-status-dots"><span></span><span></span><span></span></span>
+              <span id="demoStatusText">Waiting for a submission&hellip;</span>
+            </div>
+            <p class="demo-reply-text" id="demoReply">Hey <mark data-mark="1">Alex</mark> &mdash; yep, we handle <mark data-mark="2">team onboarding up to 25 people</mark>, and I can have you live before <mark data-mark="3">Friday</mark>. Grab a time here: <span class="demo-link">[calendar link]</span></p>
+            <div class="demo-stamp" id="demoStamp">&check; sent in <strong>6.2s</strong></div>
+          </div>
         </div>
       </div>
 
-      <div class="flow-connector"><div class="flow-dot stage-1"></div></div>
-
-      <div class="flow-card">
-        <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3.5c-4 0-7 3-7 6.5s3 6.5 7 6.5 7-3 7-6.5-3-6.5-7-6.5z"/><circle cx="7.2" cy="9.5" r=".9" fill="currentColor" stroke="none"/><circle cx="12.8" cy="9.5" r=".9" fill="currentColor" stroke="none"/></svg></div>
-        <div>
-          <h3>The AI reads it and <span class="hl">personalizes</span></h3>
-          <p>Not keyword-matching. <strong>It actually parses what they wrote</strong> and tailors the reply to it.</p>
-        </div>
-      </div>
-
-      <div class="flow-connector"><div class="flow-dot stage-2"></div></div>
-
-      <div class="flow-card">
-        <div class="flow-card-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg></div>
-        <div>
-          <h3>A personal reply, under 10s</h3>
-          <p>Written like a person would respond to <strong>that exact message</strong>. Booked before they've considered a competitor.</p>
-        </div>
-      </div>
+      <button type="button" class="demo-replay" id="demoReplay">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h11M11 5l5 5-5 5"/></svg>
+        See another example
+      </button>
     </div>
   </section>
 
   <section class="problem">
-    <p class="eyebrow reveal">// what actually happens</p>
+    <p class="eyebrow reveal">// what's actually costing you the deal</p>
     <div class="problem-lines reveal">
-      <p>A lead comes in. You're in a meeting, or asleep, or just slow to check your phone.</p>
-      <p>Two hours later you reply. <strong>They've already booked with whoever answered first.</strong></p>
-      <p>Speed isn't a nice-to-have here. <strong>It's the whole game.</strong></p>
+      <p>A lead comes in. You're mid-job, or asleep, or your phone's face-down on the counter.</p>
+      <p>Two hours later you reply. <strong>They've already booked with whoever answered first.</strong> Not the better business. The faster one.</p>
+      <p>Speed isn't a nice-to-have here. <strong>It's the whole game.</strong> This workflow is what removes you from it entirely — the reply goes out whether you're on a ladder, asleep, or in a meeting.</p>
     </div>
     <div class="stat-block reveal">
       <div class="num" id="statNum">0×</div>
@@ -1136,18 +1812,41 @@
     <p class="stat-source">Source: Lead Response Management study, published in Harvard Business Review</p>
   </section>
 
-  <section class="inside">
+  <section class="whatyouget">
+    <p class="eyebrow reveal">// what you get</p>
+    <h2 class="section-h2 reveal">Two files. That's the whole product.</h2>
+    <p class="reveal" style="margin-top:10px; margin-bottom:24px;">No course platform, no video modules to sit through — just the thing itself, and the guide that gets it running.</p>
+
+    <div class="get-grid reveal">
+      <div class="get-card">
+        <span class="item-num">01.</span>
+        <div class="get-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="5" cy="5" r="2.2"/><circle cx="15" cy="5" r="2.2"/><circle cx="10" cy="15" r="2.2"/><path d="M6.8 6.3 8.7 13.2M13.2 6.3 11.3 13.2M7.2 5h5.6"/></svg></div>
+        <h3>The workflow file</h3>
+        <p>The actual <strong>n8n workflow, ready to import</strong> — every node, every setting, already wired up. Not a diagram of one, the real file.</p>
+      </div>
+      <div class="get-card">
+        <span class="item-num">02.</span>
+        <div class="get-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 5.5c-1.4-1-3.4-1.5-5.5-1.5v10c2.1 0 4.1.5 5.5 1.5m0-10c1.4-1 3.4-1.5 5.5-1.5v10c-2.1 0-4.1.5-5.5 1.5m0-10v10" stroke-linejoin="round"/></svg></div>
+        <h3>The setup guide</h3>
+        <p>A step-by-step ebook that walks you through <strong>install, your own URLs, and the edge cases</strong> — so you're never guessing what a step means.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="inside bleed band dotgrid">
+    <div class="bleed-inner">
     <p class="eyebrow reveal">// what's actually inside</p>
     <h2 class="section-h2 reveal">Everything to copy this into your own account today</h2>
-    <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:8px;">
+    <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:22px;">
       <span class="highlight-pill"><span class="dot"></span>Exact node sequence</span>
       <span class="highlight-pill"><span class="dot"></span>Exact AI prompt</span>
       <span class="highlight-pill"><span class="dot"></span>Auto-reply template</span>
       <span class="highlight-pill"><span class="dot"></span>Edge-case fixes</span>
     </div>
 
+    <div class="inside-grid">
     <div class="inside-item reveal">
-      <h3>01. The exact node sequence</h3>
+      <h3><span class="item-num">01.</span> The exact node sequence</h3>
       <p>Every node, in order, with <strong>the settings that actually matter</strong>, not just a "here's the general idea" diagram.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">workflow.json · 14 nodes</span></div>
@@ -1162,7 +1861,7 @@
     </div>
 
     <div class="inside-item reveal">
-      <h3>02. The AI prompt that <span class="hl">personalizes</span> every reply</h3>
+      <h3><span class="item-num">02.</span> The AI prompt that <span class="hl">personalizes</span> every reply</h3>
       <p>The exact prompt, <strong>word for word</strong>, that reads what each lead actually wrote and crafts a <strong>personalized reply</strong> around it, not a generic template with their name pasted in.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">parse-lead.prompt.txt</span></div>
@@ -1175,7 +1874,7 @@
     </div>
 
     <div class="inside-item reveal">
-      <h3>03. The auto-reply template that books calls</h3>
+      <h3><span class="item-num">03.</span> The auto-reply template that books calls</h3>
       <p>The message that <strong>goes out in seconds</strong>, and the calendar-link logic behind it.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">thread</span></div>
@@ -1188,7 +1887,7 @@
     </div>
 
     <div class="inside-item reveal">
-      <h3>04. The edge cases that break it (and the fixes)</h3>
+      <h3><span class="item-num">04.</span> The edge cases that break it (and the fixes)</h3>
       <p>What actually went wrong once this was live, and <strong>exactly what I changed to fix each one</strong>.</p>
       <div class="mock-panel">
         <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="filename">known-issues.log</span></div>
@@ -1199,9 +1898,11 @@
         </div>
       </div>
     </div>
+    </div>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Get the full workflow for <span class="js-price">$19</span> &rarr;</a>
+      <a href="#buy" class="cta-mid">I want this in my account &rarr;</a>
+    </div>
     </div>
   </section>
 
@@ -1238,33 +1939,33 @@
       <div class="process-step">
         <div class="num"></div>
         <div>
-          <h3>Stuck on something? I've got you</h3>
-          <p>If a node breaks or a step doesn't match your setup, <strong>you're not on your own</strong>. DM me and I'll help you get it running.</p>
+          <h3>Questions along the way? Just ask</h3>
+          <p>The ebook walks you through every step. If something's genuinely unclear, <strong>DM me and I'll answer it</strong>.</p>
           <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" class="step-link">DM me on X &rarr;</a>
         </div>
       </div>
     </div>
 
     <div class="process-note">
-      <strong>Heads up:</strong> the walkthrough and DM support are both included, no separate purchase, no upsell. You get the full setup path with the <span class="js-price">$19</span>.
+      <strong>Prefer not to touch it yourself?</strong> The $19 gets you the full build, the walkthrough, and DM support for questions. If you'd rather I just build it in your account for you, <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" style="color:var(--eb-accent); font-weight:600;">I offer that too — DM me for pricing</a>.
     </div>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Get the full workflow for <span class="js-price">$19</span> &rarr;</a>
+      <a href="#buy" class="cta-mid">Let's get it running &rarr;</a>
     </div>
   </section>
 
-  <section class="why">
-    <p class="eyebrow reveal">// why this exists</p>
+  <section class="why full-band">
+    <p class="eyebrow reveal">// why this isn't a $999 course</p>
     <div class="why-block reveal">
-      <p>I run DamirBuilds. I build AI workflow automations for a living, mostly lead-gen and follow-up systems for other businesses.</p>
-      <p>This particular workflow started as something I hacked together for my own leads, because <strong>I was losing deals to my own slowness, not to my own product.</strong></p>
-      <p>Once it worked, people kept asking how I'd built it. I got tired of explaining it over DMs, so I wrote it down instead: every node, every prompt, every place it broke and what I changed to fix it. This is that document. <strong>I'm not building a course around it. I'm just handing you the build.</strong></p>
+      <span class="why-mark" aria-hidden="true">"</span>
+      <p>You're not getting a framework, a philosophy, or eight modules of theory. <strong>You're getting the actual, working build</strong> — the same node sequence, the same prompt, the same fixes, running live right now.</p>
+      <p>No fluff between you and the workflow. No "unlock module 2" gatekeeping. You open it, you follow the four steps, and it's answering your leads inside 10 minutes.</p>
+      <p>Have a question along the way? You're not stuck reading a forum thread. <strong>DM support is included</strong> — I built this and I'll answer it. And if you'd genuinely rather not touch the setup at all, I also offer a done-for-you option where I build it in your account.</p>
     </div>
-    <p class="why-sign">Damir, DamirBuilds</p>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Get the full workflow for <span class="js-price">$19</span> &rarr;</a>
+      <a href="#buy" class="cta-mid">Let's get it running &rarr;</a>
     </div>
   </section>
 
@@ -1292,17 +1993,18 @@
     </div>
   </section>
 
-  <section class="final" id="buy">
-    <p class="eyebrow reveal">// get it</p>
-    <h2 class="reveal">The exact workflow. <span class="hl js-price">$19</span>. Ten seconds to a reply.</h2>
+  <section class="final full-band" id="buy">
+    <p class="eyebrow reveal">// here's the actual offer</p>
+    <h2 class="reveal">Everything above, yours for <span class="price-hl js-price">$19</span>. One payment. Ten minutes to live.</h2>
 
     <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:6px;">
-      <span class="highlight-pill"><span class="dot"></span>Instant download on confirm</span>
-      <span class="highlight-pill"><span class="dot"></span>DM support included</span>
+      <span class="highlight-pill"><span class="dot"></span>Questions answered by DM</span>
+      <span class="highlight-pill"><span class="dot"></span>Done-for-you setup available</span>
       <span class="highlight-pill"><span class="dot"></span>One payment, yours for good</span>
     </div>
 
     <div class="checkout-card reveal">
+      <p class="checkout-badge">🔒 Encrypted checkout &middot; instant download on confirmation</p>
       <div class="stepper" aria-hidden="true">
         <div class="step-node active" data-step-node="1">
           <div class="step-circle">1</div>
@@ -1349,13 +2051,13 @@
 
         <div class="form-step" data-step="2">
           <h3>Payment</h3>
-          <p class="step-intro"><span class="js-price">$19</span>, one time. Crypto checkout only.</p>
+          <p class="step-intro"><span class="price-hl js-price">$19</span>, one time. Crypto checkout only.</p>
           <p class="lead-note" id="leadNote"></p>
 
           <div class="checkout-trust">
-            <span>⚡ Instant download</span>
             <span>🔒 Secure checkout</span>
             <span>✓ No subscription</span>
+            <span>💬 DM support included</span>
           </div>
 
           <div class="pay-embed-wrap">
@@ -1378,39 +2080,56 @@
       </form>
     </div>
 
-    <p class="cta-trust" style="margin-top:14px;">Instant download after payment confirms</p>
+    <div class="trust-row" style="justify-content:center; margin-top:18px; margin-bottom:0;">
+      <span class="trust-badge"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:14px;height:14px;"><rect x="4" y="9" width="12" height="8" rx="1.5"/><path d="M6.5 9V6a3.5 3.5 0 0 1 7 0v3"/></svg>Encrypted crypto checkout</span>
+      <span class="trust-badge"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:14px;height:14px;"><path d="M4 10.5 8 14.5 16 5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>No subscription, ever</span>
+      <span class="trust-badge"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:14px;height:14px;"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg>Stuck? DM me directly</span>
+    </div>
+
+    <p class="cta-trust" style="margin-top:14px;">Download link sent as soon as payment confirms</p>
+
+    <div class="dfy-callout reveal">
+      <div class="dfy-callout-text">
+        <strong>Want it fully done for you?</strong>
+        <p>Tell me what you're already using — CRM, forms, phone system, whatever — and I'll wire this workflow directly into your setup myself.</p>
+      </div>
+      <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" class="dfy-btn">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 14.5V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H9l-3.5 3v-3H5a2 2 0 0 1-2-2z"/></svg>
+        DM me for done-for-you pricing
+      </a>
+    </div>
   </section>
 
 </div>
 </main>
 
 <div class="mobile-cta" id="mobileCta">
-  <a class="cta-btn" href="#buy" style="margin-top:0;">Get the Workflow for <span class="js-price">$19</span></a>
+  <a class="cta-btn" href="#buy" style="margin-top:0;">Show Me The Workflow</a>
 </div>
 
 <div class="exit-popup-overlay" id="exitPopupOverlay" role="dialog" aria-modal="true" aria-labelledby="exitPopupHeading">
   <div class="exit-popup">
-    <span class="exit-popup-badge">SAVE $5</span>
     <button type="button" class="exit-popup-close" id="exitPopupClose" aria-label="Close">✕</button>
 
-    <div class="exit-popup-state active" id="exitPopupOffer">
+    <div class="exit-popup-state active" id="exitPopupSignup">
       <p class="eyebrow">// before you go</p>
-      <h3 id="exitPopupHeading">Yo, <span class="hl">Wait!</span></h3>
-      <p class="exit-copy">Take $5 off right now. Same workflow, same file, just cheaper because you almost left.</p>
-      <div class="exit-price-row">
-        <span class="was">$19</span>
-        <span class="now">$14</span>
-        <span class="save">−26%</span>
-      </div>
-      <button type="button" class="cta-btn" id="exitPopupClaim" style="width:100%;">Get the Workflow for $14</button>
-      <p class="exit-popup-urgency">This price disappears once you close this page</p>
+      <h3 id="exitPopupHeading">Get new workflows first</h3>
+      <p class="exit-copy">I publish new AI &amp; workflow automation breakdowns regularly — drop your email and I'll send them your way.</p>
+      <form id="exitSignupForm" action="https://formspree.io/f/xzebkydz" method="POST">
+        <input type="hidden" name="_subject" value="Newsletter signup (exit popup)">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="exit-signup-row">
+          <input type="email" name="Email" id="exitEmail" placeholder="you@email.com" autocomplete="email" required>
+          <button type="submit" class="cta-btn" id="exitSignupSubmit">Notify me</button>
+        </div>
+      </form>
+      <p class="exit-popup-urgency">No spam, just new workflows as I ship them. Unsubscribe anytime.</p>
     </div>
 
-    <div class="exit-popup-state" id="exitPopupBye">
-      <p class="exit-popup-bye">😭</p>
-      <h3>Don't leave.</h3>
-      <p class="exit-copy">Fine, keep the full $19 price then. But at least follow along on X so it's not goodbye forever.</p>
-      <a href="https://x.com/intent/follow?screen_name=damirbuilds" target="_blank" rel="noopener" class="cta-btn" style="width:100%;">Follow @damirbuilds on X</a>
+    <div class="exit-popup-state" id="exitPopupThanks">
+      <p class="exit-popup-bye">✓</p>
+      <h3>You're in.</h3>
+      <p class="exit-copy">I'll email you the next one as soon as it's out.</p>
     </div>
   </div>
 </div>
@@ -1679,18 +2398,168 @@
     statObserver.observe(statEl);
   })();
 
-  // Exit-intent discount popup — desktop only, shown once per visit. Fires
-  // when the mouse leaves out the top of the viewport (classic "heading for
-  // the tab bar" gesture). Claiming the discount updates every visible
-  // price on the page and carries the discount flag through to checkout.
+  // Live demo: types a name and message into the fake lead form, "submits"
+  // it, then reveals the AI's reply and highlights — one at a time — the
+  // exact words in that reply that came from what was just typed. Runs
+  // once automatically the first time the section scrolls into view; the
+  // "Watch it again" button re-runs it on demand so it never has to loop
+  // forever in the background. Anyone with reduced-motion preferences skips
+  // straight to the finished state instead of watching text type out.
+  (function(){
+    const stage = document.getElementById('demoStage');
+    if(!stage) return;
+    const nameEl = document.getElementById('demoName');
+    const msgEl = document.getElementById('demoMsg');
+    const submitBtn = document.getElementById('demoSubmit');
+    const statusEl = document.getElementById('demoStatus');
+    const statusText = document.getElementById('demoStatusText');
+    const replyEl = document.getElementById('demoReply');
+    const stampEl = document.getElementById('demoStamp');
+    const replayBtn = document.getElementById('demoReplay');
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Three distinct lead scenarios so "see another example" actually shows
+    // something new each time, not the same reply replayed. Each reply's
+    // <mark> phrases are pulled straight from that example's own message,
+    // same as the original — the highlighting has to stay honest per example.
+    const EXAMPLES = [
+      {
+        name: 'Alex Rivera',
+        msg: 'Do you handle 10-person team onboarding? Need it live by Friday.',
+        reply: 'Hey <mark data-mark="1">Alex</mark> &mdash; yep, we handle <mark data-mark="2">team onboarding up to 25 people</mark>, and I can have you live before <mark data-mark="3">Friday</mark>. Grab a time here: <span class="demo-link">[calendar link]</span>'
+      },
+      {
+        name: 'Priya Nair',
+        msg: 'Just a 3-person shop — is this overkill, or does it scale down?',
+        reply: 'Hey <mark data-mark="1">Priya</mark> &mdash; not overkill at all, it scales down to <mark data-mark="2">3-person shops</mark> with zero setup changes, and most solo teams are live within <mark data-mark="3">a day</mark>. Grab a time here: <span class="demo-link">[calendar link]</span>'
+      },
+      {
+        name: 'Marcus Webb',
+        msg: 'We’re already on HubSpot — can this plug into our CRM, and how fast could we launch?',
+        reply: 'Hey <mark data-mark="1">Marcus</mark> &mdash; yes, it plugs straight into <mark data-mark="2">HubSpot</mark>, no migration needed, and we can have you launched by <mark data-mark="3">next week</mark>. Grab a time here: <span class="demo-link">[calendar link]</span>'
+      }
+    ];
+    let exampleIndex = 0;
+    let marks = Array.from(replyEl.querySelectorAll('mark'));
+    let running = false;
+    let timers = [];
+    const wait = (fn, ms) => { timers.push(setTimeout(fn, ms)); };
+    const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
+
+    function loadExample(ex){
+      replyEl.innerHTML = ex.reply;
+      marks = Array.from(replyEl.querySelectorAll('mark'));
+    }
+
+    function resetVisual(ex){
+      nameEl.textContent = '';
+      msgEl.textContent = '';
+      submitBtn.classList.remove('is-pressed');
+      statusEl.style.opacity = '1';
+      statusText.textContent = 'Waiting for a submission…';
+      replyEl.classList.remove('is-shown');
+      stampEl.classList.remove('is-shown');
+      loadExample(ex);
+    }
+
+    function typeInto(el, text, speed, onDone){
+      const caret = document.createElement('span');
+      caret.className = 'demo-caret blink';
+      el.textContent = '';
+      el.appendChild(caret);
+      let i = 0;
+      (function step(){
+        if(i < text.length){
+          caret.insertAdjacentText('beforebegin', text[i]);
+          i++;
+          wait(step, speed);
+        } else {
+          wait(() => { caret.remove(); if(onDone) onDone(); }, 150);
+        }
+      })();
+    }
+
+    function playFinalState(ex){
+      loadExample(ex);
+      nameEl.textContent = ex.name;
+      msgEl.textContent = ex.msg;
+      statusEl.style.opacity = '0';
+      replyEl.classList.add('is-shown');
+      marks.forEach(m => m.classList.add('is-hi'));
+      stampEl.classList.add('is-shown');
+    }
+
+    function play(){
+      if(running) return;
+      running = true;
+      clearTimers();
+      const ex = EXAMPLES[exampleIndex];
+      resetVisual(ex);
+
+      if(reduceMotion){
+        playFinalState(ex);
+        running = false;
+        return;
+      }
+
+      typeInto(nameEl, ex.name, 55, () => {
+        wait(() => {
+          typeInto(msgEl, ex.msg, 26, () => {
+            wait(() => {
+              submitBtn.classList.add('is-pressed');
+              wait(() => submitBtn.classList.remove('is-pressed'), 160);
+              statusText.textContent = 'Reading the message…';
+              wait(() => {
+                statusEl.style.opacity = '0';
+                replyEl.classList.add('is-shown');
+                marks.forEach((m, i) => {
+                  wait(() => m.classList.add('is-hi'), 450 + i * 500);
+                });
+                wait(() => stampEl.classList.add('is-shown'), 450 + marks.length * 500 + 250);
+                wait(() => { running = false; }, 450 + marks.length * 500 + 900);
+              }, 750);
+            }, 350);
+          });
+        }, 300);
+      });
+    }
+
+    if('IntersectionObserver' in window){
+      const demoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            play();
+            demoObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      demoObserver.observe(stage);
+    } else {
+      playFinalState(EXAMPLES[exampleIndex]);
+    }
+
+    if(replayBtn){
+      replayBtn.addEventListener('click', () => {
+        exampleIndex = (exampleIndex + 1) % EXAMPLES.length;
+        clearTimers();
+        running = false;
+        play();
+      });
+    }
+  })();
+
+  // Exit-intent email-capture popup — desktop only, shown once per visit.
+  // Fires when the mouse leaves out the top of the viewport (classic
+  // "heading for the tab bar" gesture). One state, one ask: an email for
+  // the article list. Closing it just closes it — no bait-and-switch state.
   (function(){
     const overlay = document.getElementById('exitPopupOverlay');
     const closeBtn = document.getElementById('exitPopupClose');
-    const claimBtn = document.getElementById('exitPopupClaim');
-    const offerState = document.getElementById('exitPopupOffer');
-    const byeState = document.getElementById('exitPopupBye');
-    const badge = document.querySelector('.exit-popup-badge');
-    if(!overlay || !closeBtn || !claimBtn || !offerState || !byeState) return;
+    const form = document.getElementById('exitSignupForm');
+    const submitBtn = document.getElementById('exitSignupSubmit');
+    const signupState = document.getElementById('exitPopupSignup');
+    const thanksState = document.getElementById('exitPopupThanks');
+    if(!overlay || !closeBtn || !form || !signupState || !thanksState) return;
 
     // Skip entirely on touch/coarse-pointer devices — there's no reliable
     // "leaving the page" gesture on mobile, and a popup there would just
@@ -1698,7 +2567,7 @@
     const isDesktop = window.matchMedia('(min-width: 900px) and (pointer: fine)').matches;
     if(!isDesktop) return;
 
-    const SHOWN_KEY = 'ebookExitPopupShown_v1';
+    const SHOWN_KEY = 'ebookExitPopupShown_v2';
     let alreadyShown = false;
     try{ alreadyShown = sessionStorage.getItem(SHOWN_KEY) === '1'; }catch(e){}
     if(alreadyShown) return;
@@ -1723,30 +2592,30 @@
     }
     document.addEventListener('mouseleave', onMouseLeave);
 
-    closeBtn.addEventListener('click', () => {
-      if(offerState.classList.contains('active')){
-        // First close from the offer = the "funny sting" state, not a
-        // full dismiss, so it still gets a beat of attention.
-        offerState.classList.remove('active');
-        byeState.classList.add('active');
-        if(badge) badge.classList.add('hide');
-      } else {
-        closePopup();
-      }
-    });
+    closeBtn.addEventListener('click', closePopup);
 
     overlay.addEventListener('click', (e) => {
       if(e.target === overlay) closePopup();
     });
 
-    claimBtn.addEventListener('click', () => {
-      discountActive = true;
-      document.querySelectorAll('.js-price').forEach(el => {
-        el.textContent = el.textContent.replace('19', '14');
-      });
-      closePopup();
-      const buySection = document.getElementById('buy');
-      if(buySection) buySection.scrollIntoView({ behavior:'smooth', block:'start' });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailField = document.getElementById('exitEmail');
+      if(!emailField || !emailField.checkValidity()){
+        if(emailField) emailField.reportValidity();
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      try{
+        await fetch(form.action, {
+          method:'POST',
+          headers:{ 'Accept':'application/json' },
+          body:new FormData(form)
+        });
+      }catch(err){ /* Formspree still gets a best-effort submit; fail open to the thanks state either way. */ }
+      signupState.classList.remove('active');
+      thanksState.classList.add('active');
     });
   })();
 })();
