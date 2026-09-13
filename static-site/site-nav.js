@@ -46,13 +46,28 @@
     '</div>';
 
   var FOOTER_HTML =
-    '<div class="wrap">' +
-      '<a class="logo" href="/">damirbuilds</a>' +
-      '<p>AI automations, built for revenue.</p>' +
-      '<div class="footer-links">' +
+    '<div class="wrap footer-grid">' +
+      '<div class="footer-brand">' +
+        '<a class="logo" href="/">damir<span>builds</span></a>' +
+        '<p>AI automations, built for revenue, not more busywork.</p>' +
         '<a class="footer-email" href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a>' +
-        '<a class="footer-link" href="/privacy-policy.html">Privacy Policy</a>' +
       '</div>' +
+      '<div class="footer-col">' +
+        '<span class="footer-col-title">Explore</span>' +
+        '<a href="/">Home</a>' +
+        '<a href="/blog">Blog</a>' +
+        '<a href="/industries.html">Industries</a>' +
+        '<a href="/contact.html">Contact</a>' +
+      '</div>' +
+      '<div class="footer-col">' +
+        '<span class="footer-col-title">Connect</span>' +
+        '<a href="https://x.com/damirbuilds" target="_blank" rel="noopener">X (Twitter)</a>' +
+        '<a href="mailto:contact@damirbuilds.com">Email</a>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wrap footer-bottom">' +
+      '<p>&copy; ' + new Date().getFullYear() + ' damirbuilds. All rights reserved.</p>' +
+      '<a class="footer-link" href="/privacy-policy.html">Privacy Policy</a>' +
     '</div>';
 
   /* Rendered inside real <nav>/<footer> tags (not just the <site-nav>/
