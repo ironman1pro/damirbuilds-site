@@ -386,11 +386,11 @@
      divider-line — reads as a stat callout at a glance instead of
      another sentence to parse in a hero that already has three. */
   .proof-badge{
-    display:inline-flex;
+    display:flex;
     align-items:center;
     gap:11px;
     margin-top:20px;
-    max-width:100%;
+    width:100%;
     border:1px solid var(--eb-border);
     background:var(--eb-panel);
     border-radius:10px;
@@ -405,9 +405,11 @@
     line-height:1;
   }
   .proof-badge-text{
+    flex:1;
     font-size:12.5px;
     line-height:1.4;
     color:var(--eb-text-dim);
+    text-wrap:pretty;
   }
   /* ---------- trust badges ---------- */
   .trust-row{
@@ -430,7 +432,7 @@
   }
 
   /* ---------- hero visual: radar-pulse signal ---------- */
-  .hero-visual{ position:relative; display:flex; align-items:center; justify-content:center; min-height:380px; padding:20px 0; }
+  .hero-visual{ position:relative; display:flex; align-items:center; justify-content:center; min-height:420px; padding:20px 0; }
   /* A big, soft, blurred glow grounds the whole composition — without it
      the rings float in a lot of empty space either side of the device on
      wide columns, which read as "unbalanced" even once the rings
@@ -440,8 +442,8 @@
     position:absolute;
     top:50%; left:50%;
     transform:translate(-50%,-50%);
-    width:520px; height:520px;
-    max-width:130%;
+    width:580px; height:580px;
+    max-width:135%;
     background:radial-gradient(circle, rgba(var(--eb-accent-rgb),var(--eb-radar-glow-o)), transparent 68%);
     pointer-events:none;
     z-index:-1;
@@ -450,8 +452,8 @@
     position:absolute;
     top:50%; left:50%;
     transform:translate(-50%,-50%);
-    width:440px; height:440px;
-    max-width:100%;
+    width:490px; height:490px;
+    max-width:112%;
     pointer-events:none;
     z-index:0;
   }
@@ -617,7 +619,7 @@
     position:relative;
     z-index:1;
     width:100%;
-    max-width:360px;
+    max-width:400px;
     border:1px solid var(--eb-border);
     border-radius:10px;
     background:linear-gradient(180deg, var(--eb-surface), var(--eb-panel) 40%);
@@ -1703,7 +1705,7 @@
 <div class="topbar">
   <div class="brand">Damir<span>Builds</span></div>
   <div class="topbar-right">
-    <a href="#buy" class="topbar-cta">Get the workflow &rarr;</a>
+    <a href="#buy" class="topbar-cta">Get The Workflow &rarr;</a>
     <button class="theme-toggle" id="pageThemeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
       <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.5"/><path d="M10 1.5v2M10 16.5v2M3.5 10h-2M18.5 10h-2M5.05 5.05L3.6 3.6M16.4 16.4l-1.45-1.45M5.05 14.95L3.6 16.4M16.4 3.6l-1.45 1.45"/></svg>
       <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17 12.5A7 7 0 0 1 7.5 3 7.5 7.5 0 1 0 17 12.5z"/></svg>
@@ -1729,7 +1731,7 @@
 
         <div class="proof-badge">
           <span class="proof-badge-num">21×</span>
-          <span class="proof-badge-text">More likely to qualify a lead when you reply in the first 5 minutes instead of the first 30.<span class="proof-source">Lead Response Management study, Harvard Business Review</span></span>
+          <span class="proof-badge-text">More likely to qualify a lead replying in the first 5 minutes vs. the first 30.<span class="proof-source">Lead Response Management study, Harvard Business Review</span></span>
         </div>
 
         <div class="trust-row">
@@ -1963,8 +1965,12 @@
     </div>
     </div>
 
+    <div class="process-note">
+      <strong>Built for a general service business.</strong> The AI prompt and the edge-case fixes are tuned for that, so you'll want to adjust the wording and rules to fit your specific industry once it's in your account. Prefer not to do that part yourself? <a href="https://x.com/damirbuilds" target="_blank" rel="noopener" style="color:var(--eb-accent); font-weight:600;">I offer a done-for-you setup too, DM me for pricing</a>.
+    </div>
+
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">I want this in my account &rarr;</a>
+      <a href="#buy" class="cta-mid">Get The Workflow &rarr;</a>
     </div>
     </div>
   </section>
@@ -2014,7 +2020,7 @@
     </div>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Let's get it running &rarr;</a>
+      <a href="#buy" class="cta-mid">Get The Workflow &rarr;</a>
     </div>
   </section>
 
@@ -2028,7 +2034,7 @@
     </div>
 
     <div class="cta-mid-wrap">
-      <a href="#buy" class="cta-mid">Let's get it running &rarr;</a>
+      <a href="#buy" class="cta-mid">Get The Workflow &rarr;</a>
     </div>
   </section>
 
