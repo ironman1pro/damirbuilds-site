@@ -16,8 +16,11 @@ permalink: "index.html"
   <div class="wrap">
     {% if posts.length > 0 %}
     <div class="blog-search">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M17 17l-4-4" stroke-linecap="round"/></svg>
-      <input type="search" id="blogSearchInput" placeholder="Search posts…" aria-label="Search blog posts">
+      <label class="blog-search-label" for="blogSearchInput">Search posts</label>
+      <div class="blog-search-field">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M17 17l-4-4" stroke-linecap="round"/></svg>
+        <input type="search" id="blogSearchInput" placeholder="Search by title or topic…">
+      </div>
     </div>
     <div class="post-grid" id="postGrid">
       {% for post in posts %}
