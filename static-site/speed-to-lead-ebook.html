@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>(function(){try{var t=localStorage.getItem('theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <title>Speed-to-Lead Ebook | DamirBuilds</title>
-<meta name="description" content="The exact n8n workflow I use to respond to every lead in under 10 seconds. The node sequence, the AI prompt, the auto-reply template, and the edge cases. $19, one time.">
+<meta name="description" content="The exact n8n workflow I use to respond to every lead in under 10 seconds. The node sequence, the AI prompt, the auto-reply template, and the edge cases.">
 <link rel="canonical" href="https://damirbuilds.com/speed-to-lead-ebook">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Speed-to-Lead Ebook | DamirBuilds">
-<meta property="og:description" content="Steal my actual n8n workflow. Copy, paste, deploy. $19, one time.">
+<meta property="og:description" content="Steal my actual n8n workflow. Copy, paste, deploy.">
 <meta property="og:url" content="https://damirbuilds.com/speed-to-lead-ebook">
 <meta property="og:site_name" content="damirbuilds">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://damirbuilds.com/logo.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Speed-to-Lead Ebook | DamirBuilds">
-<meta name="twitter:description" content="Steal my actual n8n workflow. Copy, paste, deploy. $19, one time.">
+<meta name="twitter:description" content="Steal my actual n8n workflow. Copy, paste, deploy.">
 <meta name="twitter:image" content="https://damirbuilds.com/logo.png">
 <script type="application/ld+json">
 {
@@ -29,7 +29,7 @@
   "description": "The exact n8n workflow used to respond to every lead in under 10 seconds: node sequence, AI prompt, auto-reply template, and edge cases.",
   "brand": { "@type": "Organization", "name": "damirbuilds", "url": "https://damirbuilds.com/" },
   "url": "https://damirbuilds.com/speed-to-lead-ebook",
-  "offers": { "@type": "Offer", "price": "19", "priceCurrency": "USD" }
+  "offers": { "@type": "Offer", "price": "16", "priceCurrency": "USD" }
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1001,7 +1001,7 @@
   }
   /* A green-to-gold strip across the top ties the card to both accent
      colors at once — green for "go do the thing," gold for "this is the
-     $19 you're paying for" — so the card itself reads as the offer. */
+     price you're paying for" — so the card itself reads as the offer. */
   .checkout-card::before{
     content:"";
     position:absolute; top:0; left:0; right:0; height:4px;
@@ -2146,7 +2146,7 @@
 
   <section class="final full-band" id="buy">
     <p class="eyebrow reveal">// here's the actual offer</p>
-    <h2 class="reveal">Everything above, yours for <span class="price-hl js-price">$19</span>. One payment. Ten minutes to live.</h2>
+    <h2 class="reveal">Everything above, yours for <span class="price-hl js-price">$16</span>. One payment. Ten minutes to live.</h2>
 
     <div class="highlights-row reveal" style="margin-top:16px; margin-bottom:6px;">
       <span class="highlight-pill"><span class="dot"></span>Questions answered by DM</span>
@@ -2202,7 +2202,7 @@
 
         <div class="form-step" data-step="2">
           <h3>Payment</h3>
-          <p class="step-intro"><span class="price-hl js-price">$19</span>, one time. Crypto checkout only.</p>
+          <p class="step-intro">One time payment. Crypto checkout only.</p>
           <p class="lead-note" id="leadNote"></p>
 
           <div class="checkout-trust">
@@ -2296,12 +2296,6 @@
   const STATIC_IID = '5265919384';
   let NOWPAYMENTS_URL = 'https://nowpayments.io/payment/?iid=' + STATIC_IID;
   let leadSent = false;
-  // Set to true only by the exit-intent popup's "claim" button. The actual
-  // $14 price is enforced server-side in create-invoice.js — this flag just
-  // tells that endpoint the buyer earned the discount; it's never trusted
-  // as the price itself.
-  let discountActive = false;
-  window.__ebookDiscountActive = function(){ return discountActive; };
 
   // By default the widget/links point at the static, shared invoice — this
   // is what stays in place if the per-buyer invoice call below fails, so
@@ -2314,7 +2308,7 @@
       const res = await fetch('/api/create-invoice', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ email: email, discount: discountActive ? 'exit14' : undefined })
+        body: JSON.stringify({ email: email })
       });
       if(!res.ok) return;
       const data = await res.json();
@@ -2406,7 +2400,7 @@
     // this step — same pattern as get-started.html, fired regardless of
     // whether the Formspree call below succeeds, since the ad conversion
     // should count based on the user's action, not our own backend.
-    const conversionValue = discountActive ? 14 : 19;
+    const conversionValue = 16;
     if(typeof twq === 'function'){
       const emailField = document.getElementById('email');
       twq('event', 'tw-reor2-rf3tc', {

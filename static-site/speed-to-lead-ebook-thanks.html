@@ -242,7 +242,7 @@
   var params = new URLSearchParams(window.location.search);
   var email = (params.get('email') || '').trim();
   var value = parseFloat(params.get('value'));
-  if(!isFinite(value) || value <= 0){ value = 19; }
+  if(!isFinite(value) || value <= 0){ value = 16; }
 
   if(email){
     var detail = document.getElementById('confirmDetail');

@@ -27,15 +27,10 @@
 //                            (only needed for fulfill-order.js to verify
 //                            the callback below is genuinely from NOWPayments).
 
-const PRICE_USD = 19;
-
-// Exit-intent discount: the popup on the ebook page can offer $14 instead
-// of $19. The client only ever sends a discount CODE ("exit14"), never a
-// price — the actual $14 is looked up here, server-side, against a known
-// list of codes. That way nobody can open devtools and POST an arbitrary
-// price to get the ebook for less than we intend to allow.
-const DISCOUNT_PRICE_USD = 14;
-const VALID_DISCOUNT_CODES = new Set(["exit14"]);
+// Intro-offer price for the ebook — kept here, server-side, as the single
+// source of truth so nobody can open devtools and POST an arbitrary price.
+// Currently testing $16; next test is $16.66.
+const PRICE_USD = 16;
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -56,9 +51,7 @@ export async function onRequestPost(context) {
     return json({ error: "Server misconfigured: missing NOWPAYMENTS_API_KEY" }, 500);
   }
 
-  const discountCode = (body.discount || "").trim();
-  const discountApplied = VALID_DISCOUNT_CODES.has(discountCode);
-  const priceAmount = discountApplied ? DISCOUNT_PRICE_USD : PRICE_USD;
+  const priceAmount = PRICE_USD;
 
   // No database, no IPN needed — order_id is just for your own NOWPayments
   // dashboard reference now, not parsed back out anywhere.
@@ -81,9 +74,7 @@ export async function onRequestPost(context) {
         price_amount: priceAmount,
         price_currency: "usd",
         order_id: orderId,
-        order_description: discountApplied
-          ? "Speed-to-Lead Ebook (exit-intent $5 off)"
-          : "Speed-to-Lead Ebook",
+        order_description: "Speed-to-Lead Ebook",
         ipn_callback_url: `${origin}/api/fulfill-order`,
         success_url: successUrl.toString(),
         cancel_url: `${origin}/speed-to-lead-ebook`,
