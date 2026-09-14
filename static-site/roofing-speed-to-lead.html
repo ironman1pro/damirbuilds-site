@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Speed-to-Lead for Roofing Companies | DamirBuilds</title>
+<meta name="description" content="A free 15-minute audit of how fast your roofing leads actually get a response, and what it'd take to answer every one in seconds instead of hours.">
+<link rel="canonical" href="https://damirbuilds.com/roofing-speed-to-lead">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Speed-to-Lead for Roofing Companies | DamirBuilds">
+<meta property="og:description" content="A free 15-minute audit of how fast your roofing leads actually get a response.">
+<meta property="og:url" content="https://damirbuilds.com/roofing-speed-to-lead">
+<meta property="og:site_name" content="damirbuilds">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://damirbuilds.com/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Speed-to-Lead for Roofing Companies | DamirBuilds">
+<meta name="twitter:description" content="A free 15-minute audit of how fast your roofing leads actually get a response.">
+<meta name="twitter:image" content="https://damirbuilds.com/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* Dark-only-by-default landing page, no site nav — this is fed
+     entirely by cold email traffic, so the only path forward on the
+     page is the CTA. A tiny wordmark up top links home for anyone who
+     wants to check the rest of the site, but there's no nav bar to
+     exit through. */
+  body{ min-height:100vh; display:flex; flex-direction:column; }
+  main{ flex:1; }
+
+  .mini-brand{
+    padding:22px 0;
+  }
+  .mini-brand .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .mini-brand .logo{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:16px;
+    color:var(--text);
+  }
+  .mini-brand .logo span{ color:var(--hot); }
+
+  /* ---------- HERO ---------- */
+  .roof-hero{ padding:36px 0 48px; }
+  .roof-hero .wrap{ max-width:760px; }
+  .roof-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--hot);
+    background:rgba(var(--hot-rgb),0.1);
+    border:1px solid rgba(var(--hot-rgb),0.3);
+    border-radius:999px;
+    padding:6px 13px;
+    margin-bottom:20px;
+  }
+  h1.roof-headline{
+    font-size:clamp(30px, 4.6vw, 48px);
+    max-width:18ch;
+  }
+  .roof-sub{
+    margin-top:18px;
+    font-size:18px;
+    color:var(--muted);
+    max-width:52ch;
+    line-height:1.6;
+  }
+  .roof-hero-cta{ margin-top:32px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; }
+  .roof-hero-note{ font-size:13.5px; color:var(--muted-2); }
+
+  /* ---------- PROBLEM ---------- */
+  .roof-problem{ padding:40px 0; border-top:1px solid var(--line); }
+  .roof-problem .wrap{ max-width:760px; }
+  .roof-problem h2{ font-size:clamp(22px, 3vw, 30px); max-width:20ch; }
+  .roof-problem-list{
+    margin-top:28px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .roof-problem-item{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:18px 20px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:12px;
+  }
+  .roof-problem-item svg{ flex-shrink:0; width:20px; height:20px; color:var(--warm); margin-top:2px; }
+  .roof-problem-item p{ font-size:15px; color:var(--body-text); line-height:1.6; }
+  .roof-problem-item strong{ color:var(--text); }
+
+  /* ---------- SOLUTION ---------- */
+  .roof-solution{ padding:48px 0; border-top:1px solid var(--line); }
+  .roof-solution .wrap{ max-width:760px; }
+  .roof-solution h2{ font-size:clamp(22px, 3vw, 30px); max-width:20ch; }
+  .roof-solution p.roof-solution-lede{
+    margin-top:16px;
+    font-size:16px;
+    color:var(--body-text);
+    line-height:1.7;
+    max-width:56ch;
+  }
+  .roof-steps{
+    margin-top:32px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+  }
+  @media (max-width:760px){
+    .roof-steps{ grid-template-columns:1fr; }
+  }
+  .roof-step{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:12px;
+    padding:22px 20px;
+  }
+  .roof-step-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:rgba(var(--hot-rgb),0.12);
+    color:var(--hot);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    margin-bottom:14px;
+  }
+  .roof-step h3{ font-size:16px; color:var(--text); margin-bottom:8px; }
+  .roof-step p{ font-size:14px; color:var(--muted); line-height:1.6; }
+
+  /* ---------- PROOF STRIP ---------- */
+  .roof-proof{ padding:36px 0; border-top:1px solid var(--line); }
+  .roof-proof .wrap{ max-width:760px; }
+  .roof-proof-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:14px;
+    padding:26px 28px;
+  }
+  .roof-proof-card p{ font-size:15.5px; color:var(--body-text); line-height:1.7; }
+  .roof-proof-card p + p{ margin-top:12px; }
+  .roof-proof-card .roof-proof-source{ font-size:12.5px; color:var(--muted-2); margin-top:14px; }
+
+  /* ---------- BOOKING ---------- */
+  .roof-book{ padding:56px 0 64px; border-top:1px solid var(--line); }
+  .roof-book .wrap{ max-width:760px; }
+  .roof-book h2{ font-size:clamp(22px, 3vw, 30px); max-width:22ch; }
+  .roof-book p.roof-book-sub{
+    margin-top:14px;
+    font-size:16px;
+    color:var(--muted);
+    max-width:52ch;
+    line-height:1.6;
+  }
+  .roof-book-embed{
+    margin-top:28px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .calendly-inline-widget{ min-width:280px; height:700px; }
+  .roof-book-fallback{
+    margin-top:14px;
+    font-size:13.5px;
+    color:var(--muted-2);
+  }
+  .roof-book-fallback a{ color:var(--hot); text-decoration:underline; text-underline-offset:2px; }
+
+  /* ---------- FAQ ---------- */
+  .roof-faq{ padding:8px 0 56px; }
+  .roof-faq .wrap{ max-width:760px; }
+  .roof-faq h2{ font-size:clamp(20px, 2.8vw, 26px); margin-bottom:24px; }
+  .roof-faq-item{ border-top:1px solid var(--line); padding:18px 0; }
+  .roof-faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .roof-faq-item summary{
+    cursor:pointer;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15.5px;
+    color:var(--text);
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+  }
+  .roof-faq-item summary::-webkit-details-marker{ display:none; }
+  .roof-faq-item summary::after{
+    content:'+';
+    font-size:20px;
+    color:var(--muted-2);
+    flex-shrink:0;
+  }
+  .roof-faq-item[open] summary::after{ content:'\2212'; }
+  .roof-faq-item p{
+    margin-top:12px;
+    font-size:14.5px;
+    color:var(--muted);
+    line-height:1.65;
+    max-width:60ch;
+  }
+
+  /* ---------- MINI FOOTER ---------- */
+  .roof-footer{ padding:26px 0 40px; border-top:1px solid var(--line); }
+  .roof-footer .wrap{ display:flex; flex-wrap:wrap; gap:10px 20px; align-items:center; justify-content:space-between; }
+  .roof-footer p{ font-size:12.5px; color:var(--muted-2); }
+  .roof-footer a{ color:var(--muted-2); text-decoration:underline; text-underline-offset:2px; }
+  .roof-footer a:hover{ color:var(--muted); }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="mini-brand">
+  <div class="wrap">
+    <a class="logo" href="/">damir<span>builds</span></a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="roof-hero">
+    <div class="wrap">
+      <span class="roof-eyebrow">For roofing companies</span>
+      <h1 class="roof-headline">The next storm won't wait for you to call people back.</h1>
+      <p class="roof-sub">When a roof gets damaged, the homeowner isn't calling one roofer, they're calling three or four. Whoever answers first usually gets the inspection. I build the system that answers first, every time, automatically.</p>
+      <div class="roof-hero-cta">
+        <a class="btn-primary" href="#book">Book your free 15-minute speed-to-lead audit</a>
+      </div>
+      <p class="roof-hero-note">No pitch deck. I'll look at how your leads get handled today and tell you straight whether automating it is even worth it for you.</p>
+    </div>
+  </section>
+
+  <section class="roof-problem">
+    <div class="wrap">
+      <h2>Here's what's actually costing you jobs</h2>
+      <div class="roof-problem-list">
+        <div class="roof-problem-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <p><strong>The first roofer to respond usually wins the job.</strong> Storm-damage leads go out to multiple companies at once. If your crew is on a roof and the office can't pick up, that lead is already talking to someone else.</p>
+        </div>
+        <div class="roof-problem-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"/><circle cx="12" cy="16" r=".5" fill="currentColor"/><path d="M10.3 3.9L2.7 17.1a1.5 1.5 0 0 0 1.3 2.3h16a1.5 1.5 0 0 0 1.3-2.3L13.7 3.9a1.5 1.5 0 0 0-2.6 0Z"/></svg>
+          <p><strong>Storm season turns your phone into a bottleneck.</strong> A single system that handles ten calls a day can't suddenly handle sixty, so most of them go to voicemail or an inbox nobody checks until tomorrow.</p>
+        </div>
+        <div class="roof-problem-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <p><strong>Leads that don't hear back in a few hours go cold.</strong> By the time someone gets around to calling back the next day, the homeowner already booked an inspection with whoever called first.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="roof-solution">
+    <div class="wrap">
+      <h2>What I actually build</h2>
+      <p class="roof-solution-lede">A speed-to-lead system that answers every call, text, and web form the moment it comes in, then keeps following up on its own until the lead is booked or clearly not interested. It runs alongside whatever you already use, no CRM rip-and-replace.</p>
+      <div class="roof-steps">
+        <div class="roof-step">
+          <span class="roof-step-num">1</span>
+          <h3>A lead comes in</h3>
+          <p>Missed call, a web form fill, a text, whatever channel it's on gets caught the second it happens.</p>
+        </div>
+        <div class="roof-step">
+          <span class="roof-step-num">2</span>
+          <h3>It responds in seconds</h3>
+          <p>An instant text or call-back acknowledges the lead and starts qualifying them, storm damage, insurance claim, roof age, before your crew even sees it.</p>
+        </div>
+        <div class="roof-step">
+          <span class="roof-step-num">3</span>
+          <h3>It follows up until booked</h3>
+          <p>No response on the first message? It follows up automatically over the next few days instead of the lead just going quiet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="roof-proof">
+    <div class="wrap">
+      <div class="roof-proof-card">
+        <p>Response time is the single biggest lever in how many leads turn into booked inspections, well before pricing or reviews come into it. The widely-cited research on this (Lead Response Management, Harvard Business Review) found that contact rates drop off sharply once a lead sits for more than five minutes, and keep dropping the longer it waits.</p>
+        <p>This is the same speed-to-lead approach I've already built and packaged for service businesses, I'm bringing it specifically to roofing companies now because storm-driven leads are the most time-sensitive version of this problem there is.</p>
+        <p class="roof-proof-source">Source: Lead Response Management study, Harvard Business Review / InsideSales.com.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="roof-book" id="book">
+    <div class="wrap">
+      <h2>Book your free 15-minute speed-to-lead audit</h2>
+      <p class="roof-book-sub">I'll ask how leads reach you today, how fast they actually get a response, and tell you plainly whether automating it would move the needle for your crew. No obligation either way.</p>
+      <div class="roof-book-embed">
+        <div class="calendly-inline-widget" data-url="https://calendly.com/contact-damir-1/ai-automation-call?hide_gdpr_banner=1&primary_color=22c55e" style="min-width:280px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      </div>
+      <p class="roof-book-fallback">Calendar not loading? Book directly here: <a href="https://calendly.com/contact-damir-1/ai-automation-call" target="_blank" rel="noopener">calendly.com/contact-damir-1/ai-automation-call</a></p>
+    </div>
+  </section>
+
+  <section class="roof-faq">
+    <div class="wrap">
+      <h2>Questions you probably have</h2>
+
+      <details class="roof-faq-item">
+        <summary>Do I need to replace my CRM or phone system?</summary>
+        <p>No. This runs alongside whatever you already use for scheduling and CRM, it plugs into your existing phone number and forms rather than replacing them.</p>
+      </details>
+
+      <details class="roof-faq-item">
+        <summary>How fast can this actually be live?</summary>
+        <p>Depends on how your leads currently come in, but most setups like this go live within a couple weeks once we've scoped it on the call.</p>
+      </details>
+
+      <details class="roof-faq-item">
+        <summary>What does this cost?</summary>
+        <p>It depends on scope, how many lead sources, how much follow-up logic you need. I'll give you a real number on the call once I know what you're working with, not before.</p>
+      </details>
+
+      <details class="roof-faq-item">
+        <summary>Is the call actually free, or is this a sales pitch?</summary>
+        <p>It's free, and if I don't think automating your lead response is worth it for your volume, I'll tell you that directly instead of trying to sell you anyway.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer class="roof-footer">
+  <div class="wrap">
+    <p>damirbuilds &middot; <a href="mailto:contact@damirbuilds.com">contact@damirbuilds.com</a></p>
+    <p><a href="/privacy-policy">Privacy Policy</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
