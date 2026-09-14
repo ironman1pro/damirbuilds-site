@@ -126,6 +126,96 @@
     color:var(--muted-2);
   }
 
+  .contact-form-panel-hero{
+    margin-top:32px;
+    max-width:560px;
+  }
+
+  /* ---------- CONTACT FORM PANEL ---------- */
+  .contact-form-panel h2{
+    font-size:17px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .contact-form-panel .contact-sub-small{
+    margin-top:6px;
+    margin-bottom:18px;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .cf-field{
+    margin-bottom:14px;
+  }
+  .cf-field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--muted-2);
+    margin-bottom:6px;
+  }
+  .cf-field input,
+  .cf-field textarea{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:11px 12px;
+    font-family:inherit;
+    font-size:14.5px;
+    color:var(--text);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .cf-field input::placeholder,
+  .cf-field textarea::placeholder{
+    color:var(--muted-2);
+  }
+  .cf-field input:focus,
+  .cf-field textarea:focus{
+    outline:none;
+    border-color:var(--hot);
+    background:var(--panel);
+  }
+  .cf-field textarea{
+    resize:vertical;
+    min-height:96px;
+  }
+  .cf-row-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:480px){
+    .cf-row-2{ grid-template-columns:1fr; }
+  }
+  #contactForm button[type="submit"]{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    margin-top:4px;
+  }
+  .cf-status{
+    margin-top:12px;
+    font-size:13px;
+    text-align:center;
+  }
+  .cf-status.cf-error{ color:#E8562F; }
+  .cf-status.cf-ok{ color:var(--hot); }
+  .contact-form-thanks{
+    text-align:center;
+    padding:20px 0;
+  }
+  .contact-form-thanks .cf-check{
+    font-size:28px;
+    color:var(--hot);
+    margin-bottom:8px;
+  }
+  .contact-form-thanks h2{
+    margin-bottom:6px;
+  }
+  .contact-form-thanks p{
+    font-size:13.5px;
+    color:var(--muted);
+  }
+
   /* ---------- ABOUT / PROOF CARD ---------- */
   .about{
     padding:0 0 56px;
@@ -180,6 +270,48 @@
       <span class="eyebrow">Let's talk about your leads</span>
       <h1 class="contact-headline">Tell me what's happening, I'll tell you straight if this fixes it.</h1>
       <p class="contact-sub">Send an email or a DM with what's going on right now: slow replies, no routing, or a CRM full of people who went quiet. No forms to fill out, no sales calls booked automatically.</p>
+
+      <div class="contact-panel contact-form-panel contact-form-panel-hero">
+        <div id="contactFormWrap">
+          <h2>Or send it straight to me</h2>
+          <p class="contact-sub-small">Tell me what you're trying to build. I read every one of these myself.</p>
+
+          <form id="contactForm" action="https://formspree.io/f/xgaejpvb" method="POST">
+            <input type="hidden" name="_subject" value="New message from damirbuilds.com/contact">
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+            <div class="cf-row-2">
+              <div class="cf-field">
+                <label for="cfName">Name</label>
+                <input type="text" id="cfName" name="Name" placeholder="Jane Doe" autocomplete="name" required>
+              </div>
+              <div class="cf-field">
+                <label for="cfEmail">Email</label>
+                <input type="email" id="cfEmail" name="Email" placeholder="jane@example.com" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="cf-field">
+              <label for="cfIndustry">Industry</label>
+              <input type="text" id="cfIndustry" name="Industry" placeholder="e.g. real estate, home services, agency" autocomplete="off" required>
+            </div>
+
+            <div class="cf-field">
+              <label for="cfMessage">What are you trying to build?</label>
+              <textarea id="cfMessage" name="Message" placeholder="What's slow, breaking, or missing in how you handle leads right now?" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" id="cfSubmit">Send message</button>
+            <p class="cf-status" id="cfStatus" hidden></p>
+          </form>
+        </div>
+
+        <div class="contact-form-thanks" id="contactFormThanks" hidden>
+          <div class="cf-check">✓</div>
+          <h2>Got it, thanks.</h2>
+          <p>I'll get back to you within a day.</p>
+        </div>
+      </div>
     </div>
 
     <div class="contact-panel">
@@ -223,6 +355,49 @@
 <site-footer></site-footer>
 
 <script src="site-nav.js" defer></script>
+<script>
+(function(){
+  var form = document.getElementById('contactForm');
+  if(!form) return;
+  var formWrap = document.getElementById('contactFormWrap');
+  var thanks = document.getElementById('contactFormThanks');
+  var statusEl = document.getElementById('cfStatus');
+  var submitBtn = document.getElementById('cfSubmit');
+
+  function showStatus(msg, isError){
+    statusEl.textContent = msg;
+    statusEl.hidden = false;
+    statusEl.className = 'cf-status ' + (isError ? 'cf-error' : 'cf-ok');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var name = form.querySelector('#cfName').value.trim();
+    var email = form.querySelector('#cfEmail').value.trim();
+    var industry = form.querySelector('#cfIndustry').value.trim();
+    var message = form.querySelector('#cfMessage').value.trim();
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if(!name || !emailOk || !industry || !message){
+      showStatus('Please fill in every field with a valid email.', true);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).catch(function(){ /* fail open below regardless */ }).finally(function(){
+      formWrap.hidden = true;
+      thanks.hidden = false;
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
