@@ -40,7 +40,6 @@
         '<a class="pill" href="/industries.html">Industries</a>' +
         '<a class="pill" href="/blog">Blog</a>' +
         '<a class="pill" href="/contact.html">Contact</a>' +
-        '<a class="nav-cta" href="https://x.com/damirbuilds" target="_blank" rel="noopener">DM on X</a>' +
         '<button class="theme-toggle theme-toggle--desktop" type="button" aria-label="Switch to light mode">' + THEME_TOGGLE_SVGS + '</button>' +
       '</div>' +
     '</div>';
@@ -165,7 +164,7 @@
     }
 
     // Close the mobile menu when: a real navigation link inside it was
-    // clicked (Blog, DM on X, Speed-to-Lead — don't leave the panel
+    // clicked (Blog, Contact, Speed-to-Lead — don't leave the panel
     // open behind the new page/tab), or the click landed outside the
     // panel entirely. A click on non-link whitespace inside the open
     // panel (or on the dropdown trigger, handled above already) should
