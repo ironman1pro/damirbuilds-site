@@ -574,7 +574,9 @@
     <span class="post-cta-eyebrow">Stay in the loop</span>
     <h3>Stay updated with the latest posts</h3>
     <p>Most recent posts land directly in your inbox, no spam.</p>
-    <form class="cta-newsletter-form" data-newsletter-form action="/api/subscribe" method="POST">
+    <form class="cta-newsletter-form" data-newsletter-form action="https://formspree.io/f/mljeyogp" method="POST">
+      <input type="hidden" name="_subject" value="New blog newsletter signup">
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
       <input type="email" name="email" placeholder="you@company.com" required aria-label="Email address">
       <button class="btn-primary" type="submit">Subscribe</button>
     </form>
@@ -586,7 +588,9 @@
     <span class="post-cta-eyebrow">Stay in the loop</span>
     <h3>Stay updated with the latest posts</h3>
     <p>Most recent posts land directly in your inbox, no spam.</p>
-    <form class="cta-newsletter-form" data-newsletter-form action="/api/subscribe" method="POST">
+    <form class="cta-newsletter-form" data-newsletter-form action="https://formspree.io/f/mljeyogp" method="POST">
+      <input type="hidden" name="_subject" value="New blog newsletter signup">
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
       <input type="email" name="email" placeholder="you@company.com" required aria-label="Email address">
       <button class="btn-primary" type="submit">Subscribe</button>
     </form>
@@ -643,18 +647,17 @@
       button.textContent = 'Subscribing…';
       setStatus('', '');
 
-      fetch('/api/subscribe', {
+      fetch(form.action, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
       })
-        .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(data){ return { ok: res.ok, data: data }; }); })
-        .then(function(result){
-          if(result.ok && result.data && result.data.ok){
-            setStatus(result.data.message || "✓ You're in — check your inbox.", 'ok');
+        .then(function(res){
+          if(res.ok){
+            setStatus("✓ You're in — check your inbox.", 'ok');
             form.reset();
           } else {
-            setStatus((result.data && result.data.message) || "Something went wrong. Mind trying again, or DM me on X?", 'error');
+            setStatus("Something went wrong. Mind trying again, or DM me on X?", 'error');
           }
         })
         .catch(function(){
