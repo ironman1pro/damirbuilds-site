@@ -1,9 +1,9 @@
 /* ============================================================
    damirbuilds — shared navbar + footer component
    Edit the markup below once and it updates on every page that
-   loads this script. Also wires up the dropdown menu and the
-   site-wide custom cursor, both via event delegation so they
-   work no matter when <site-nav>/<site-footer> render.
+   loads this script. Also wires up the dropdown menu, via event
+   delegation so it works no matter when <site-nav>/<site-footer>
+   render.
    ============================================================ */
 (function(){
 
@@ -185,58 +185,5 @@
       closeMobileMenu();
     }
   });
-
-  /* ---------- Custom cursor (site-wide) ---------- */
-  /* any-pointer, not pointer: plain `pointer` reflects only the browser's
-     guess at the primary input device, which on touchscreen Windows
-     laptops often comes back "coarse" even while a mouse/trackpad is
-     what's actually being used — that alone silently skipped this whole
-     block. any-pointer just checks whether a fine pointer exists at all. */
-  if(window.matchMedia('(any-pointer: fine)').matches){
-    var dot = document.createElement('div'); dot.id = 'cursor-dot';
-    var ring = document.createElement('div'); ring.id = 'cursor-ring';
-    document.addEventListener('DOMContentLoaded', function(){
-      document.body.appendChild(dot);
-      document.body.appendChild(ring);
-    });
-
-    var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0, hasMoved = false;
-
-    window.addEventListener('mousemove', function(e){
-      mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) translate(-50%,-50%)';
-      // Stay hidden (opacity:0 in CSS) until this first real mousemove —
-      // otherwise both elements render pinned to the top-left corner
-      // the instant the page loads, before the pointer ever moved there.
-      if(!hasMoved){
-        hasMoved = true;
-        ringX = mouseX; ringY = mouseY;
-        dot.classList.add('is-visible');
-        ring.classList.add('is-visible');
-      }
-    });
-
-    function loop(){
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      ring.style.transform = 'translate(' + ringX + 'px,' + ringY + 'px) translate(-50%,-50%)';
-      requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
-
-    var hoverSelector = 'a, button, .logo, [role="button"]';
-    document.addEventListener('mouseover', function(e){
-      if(e.target.closest && e.target.closest(hoverSelector)){
-        ring.classList.add('is-hover');
-        dot.classList.add('is-hover');
-      }
-    });
-    document.addEventListener('mouseout', function(e){
-      if(e.target.closest && e.target.closest(hoverSelector)){
-        ring.classList.remove('is-hover');
-        dot.classList.remove('is-hover');
-      }
-    });
-  }
 
 })();

@@ -15,9 +15,13 @@ permalink: "index.html"
 <section class="blog-list">
   <div class="wrap">
     {% if posts.length > 0 %}
-    <div class="post-grid">
+    <div class="blog-search">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M17 17l-4-4" stroke-linecap="round"/></svg>
+      <input type="search" id="blogSearchInput" placeholder="Search posts…" aria-label="Search blog posts">
+    </div>
+    <div class="post-grid" id="postGrid">
       {% for post in posts %}
-      <a class="post-card" href="/blog/{{ post.slug }}/">
+      <a class="post-card" href="/blog/{{ post.slug }}/" data-date="{{ post.publishedAt }}" data-search="{{ ((post.title | default('')) ~ ' ' ~ (post.excerpt | default(''))) | lower }}">
         {% if post.imageUrl %}
         <img class="post-card-img" src="{{ post.imageUrl }}" alt="{{ post.mainImageAlt or post.title }}" loading="lazy" width="1200" height="675">
         {% else %}
@@ -32,8 +36,43 @@ permalink: "index.html"
       </a>
       {% endfor %}
     </div>
+    <p class="blog-search-empty" id="blogSearchEmpty">No posts match your search.</p>
     {% else %}
     <p class="blog-state">New posts are on the way — check back soon.</p>
     {% endif %}
   </div>
 </section>
+
+<script>
+(function(){
+  var grid = document.getElementById('postGrid');
+  var input = document.getElementById('blogSearchInput');
+  var empty = document.getElementById('blogSearchEmpty');
+  if(!grid || !input) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.post-card'));
+
+  // Defensive: guarantee newest-to-oldest display order in the DOM itself,
+  // regardless of how the underlying data was ordered when the page built.
+  cards
+    .slice()
+    .sort(function(a, b){
+      var da = new Date(a.getAttribute('data-date') || 0).getTime();
+      var db = new Date(b.getAttribute('data-date') || 0).getTime();
+      return db - da;
+    })
+    .forEach(function(card){ grid.appendChild(card); });
+
+  input.addEventListener('input', function(){
+    var query = input.value.trim().toLowerCase();
+    var visibleCount = 0;
+    cards.forEach(function(card){
+      var haystack = card.getAttribute('data-search') || '';
+      var matches = !query || haystack.indexOf(query) !== -1;
+      card.hidden = !matches;
+      if(matches) visibleCount++;
+    });
+    if(empty) empty.classList.toggle('show', visibleCount === 0);
+  });
+})();
+</script>
