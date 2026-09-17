@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Book a Call | DamirBuilds</title>
+<meta name="description" content="Book a free strategy call with Damir. Tell me a bit about you and your industry, then grab a time that works, no back-and-forth emails.">
+<link rel="canonical" href="https://damirbuilds.com/book-a-call">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Book a Call | DamirBuilds">
+<meta property="og:description" content="Book a free strategy call with Damir. Tell me a bit about you and your industry, then grab a time that works.">
+<meta property="og:url" content="https://damirbuilds.com/book-a-call">
+<meta property="og:site_name" content="damirbuilds">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://damirbuilds.com/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Book a Call | DamirBuilds">
+<meta name="twitter:description" content="Book a free strategy call with Damir. Tell me a bit about you and your industry, then grab a time that works.">
+<meta name="twitter:image" content="https://damirbuilds.com/logo.png">
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "ContactPage", "name": "Book a Call | DamirBuilds", "url": "https://damirbuilds.com/book-a-call" }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* page-specific layout: footer pinned to bottom on short pages */
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  main{
+    flex:1;
+    padding:64px 0 72px;
+  }
+  .book-grid{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    max-width:620px;
+    margin:0 auto;
+  }
+  h1.book-headline{
+    font-size:clamp(28px, 4vw, 42px);
+  }
+  .book-sub{
+    margin-top:14px;
+    font-size:16.5px;
+    color:var(--muted);
+    max-width:48ch;
+  }
+
+  /* ---------- STEP INDICATOR ---------- */
+  .step-indicator{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:28px 0 6px;
+  }
+  .step-dot{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--muted-2);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    transition:border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .step-dot.is-active{
+    border-color:var(--hot);
+    color:var(--hot);
+    background:rgba(var(--hot-rgb),0.1);
+  }
+  .step-dot.is-done{
+    border-color:var(--hot);
+    background:var(--hot);
+    color:#0A0D10;
+  }
+  .step-line{
+    width:44px;
+    height:1px;
+    background:var(--line);
+  }
+
+  /* ---------- SHARED PANEL / FORM (same look as /contact) ---------- */
+  .contact-panel{
+    position:relative;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:10px;
+    padding:28px;
+    overflow:hidden;
+    width:100%;
+    text-align:left;
+    margin-top:26px;
+  }
+  .contact-panel::before{
+    content:'';
+    position:absolute;
+    top:-45%; right:-25%;
+    width:65%; height:65%;
+    background:radial-gradient(circle, rgba(var(--hot-rgb),0.14), transparent 70%);
+    pointer-events:none;
+  }
+  .contact-panel h2{
+    position:relative;
+    font-size:17px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .contact-sub-small{
+    position:relative;
+    margin-top:6px;
+    margin-bottom:18px;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .cf-field{ position:relative; margin-bottom:14px; }
+  .cf-field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--muted-2);
+    margin-bottom:6px;
+  }
+  .cf-field input{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:11px 12px;
+    font-family:inherit;
+    font-size:14.5px;
+    color:var(--text);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .cf-field input::placeholder{ color:var(--muted-2); }
+  .cf-field input:focus{
+    outline:none;
+    border-color:var(--hot);
+    background:var(--panel);
+  }
+  .cf-row-2{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:480px){
+    .cf-row-2{ grid-template-columns:1fr; }
+  }
+  #bookDetailsForm button[type="submit"]{
+    position:relative;
+    width:100%;
+    border:none;
+    cursor:pointer;
+    margin-top:4px;
+  }
+  .cf-status{
+    position:relative;
+    margin-top:12px;
+    font-size:13px;
+    text-align:center;
+  }
+  .cf-status.cf-error{ color:#E8562F; }
+
+  /* ---------- STEP 2 / CALENDLY ---------- */
+  .book-back{
+    position:relative;
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-size:13px;
+    cursor:pointer;
+    padding:0;
+    margin-bottom:14px;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    transition:color .15s ease;
+  }
+  .book-back:hover{ color:var(--hot); }
+  .book-confirm-line{
+    position:relative;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .book-confirm-line strong{ color:var(--text); font-weight:600; }
+  .calendly-embed-container{
+    position:relative;
+    min-width:280px;
+    height:700px;
+  }
+  .calendly-embed-container .calendly-loading{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100%;
+    color:var(--muted-2);
+    font-size:13.5px;
+  }
+  .book-fallback{
+    position:relative;
+    margin-top:14px;
+    font-size:13.5px;
+    color:var(--muted-2);
+    text-align:center;
+  }
+  .book-fallback a{ color:var(--hot); text-decoration:underline; text-underline-offset:2px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<site-nav></site-nav>
+
+<main id="main">
+  <div class="wrap book-grid">
+    <span class="eyebrow">Book a call</span>
+    <h1 class="book-headline">Let's see if this is a fit.</h1>
+    <p class="book-sub">Two quick steps: tell me a bit about you, then grab a time that actually works for you.</p>
+
+    <div class="step-indicator" aria-hidden="true">
+      <span class="step-dot is-active" id="stepDot1">1</span>
+      <span class="step-line"></span>
+      <span class="step-dot" id="stepDot2">2</span>
+    </div>
+
+    <div class="contact-panel" id="bookStep1">
+      <h2>Your details</h2>
+      <p class="contact-sub-small">Just so I know who I'm talking to before we pick a time.</p>
+
+      <form id="bookDetailsForm">
+        <div class="cf-row-2">
+          <div class="cf-field">
+            <label for="bcName">Name</label>
+            <input type="text" id="bcName" name="name" placeholder="Jane Doe" autocomplete="name" required>
+          </div>
+          <div class="cf-field">
+            <label for="bcEmail">Email</label>
+            <input type="email" id="bcEmail" name="email" placeholder="jane@example.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="cf-field">
+          <label for="bcIndustry">Industry</label>
+          <input type="text" id="bcIndustry" name="industry" placeholder="e.g. real estate, home services, agency" autocomplete="off" required>
+        </div>
+
+        <button type="submit" class="btn-primary" id="bcContinue">Continue to booking →</button>
+        <p class="cf-status" id="bcStatus" hidden></p>
+      </form>
+    </div>
+
+    <div class="contact-panel" id="bookStep2" hidden>
+      <button type="button" class="book-back" id="bookBack">← Back</button>
+      <h2>Pick a time</h2>
+      <p class="book-confirm-line">Booking as <strong id="bookConfirmName"></strong>, <span id="bookConfirmEmail"></span></p>
+      <p class="contact-sub-small">Your name and email are already filled in below, just pick a slot.</p>
+      <div class="calendly-embed-container" id="calendlyContainer">
+        <div class="calendly-loading">Loading available times…</div>
+      </div>
+      <p class="book-fallback" id="bookFallback" hidden>Calendar not loading? Book directly here: <a id="bookFallbackLink" href="https://calendly.com/contact-damir-1/ai-automation-call" target="_blank" rel="noopener">calendly.com/contact-damir-1/ai-automation-call</a></p>
+    </div>
+  </div>
+</main>
+
+<site-footer></site-footer>
+
+<script src="site-nav.js" defer></script>
+<script>
+(function(){
+  var CALENDLY_EVENT_URL = 'https://calendly.com/contact-damir-1/ai-automation-call';
+  var LEAD_ENDPOINT = 'https://formspree.io/f/xgaejpvb';
+
+  var step1 = document.getElementById('bookStep1');
+  var step2 = document.getElementById('bookStep2');
+  var dot1 = document.getElementById('stepDot1');
+  var dot2 = document.getElementById('stepDot2');
+  var form = document.getElementById('bookDetailsForm');
+  var statusEl = document.getElementById('bcStatus');
+  var submitBtn = document.getElementById('bcContinue');
+  var backBtn = document.getElementById('bookBack');
+  var fallbackWrap = document.getElementById('bookFallback');
+  var fallbackLink = document.getElementById('bookFallbackLink');
+  var calendlyContainer = document.getElementById('calendlyContainer');
+
+  var calendlyReady = false;
+  var calendlyFailed = false;
+  var pendingPrefill = null;
+
+  // ---------- Preload the Calendly widget library ----------
+  // Loaded as soon as the page opens (during step 1), so the ~heavy
+  // widget.js script is already fetched and parsed by the time someone
+  // finishes the details form. Moving to step 2 then only has to
+  // initialize the specific inline calendar (a quick iframe load), not
+  // fetch the whole library, so it should feel instant.
+  var s = document.createElement('script');
+  s.src = 'https://assets.calendly.com/assets/external/widget.js';
+  s.async = true;
+  s.onload = function(){
+    calendlyReady = true;
+    if(pendingPrefill) renderCalendly(pendingPrefill);
+  };
+  s.onerror = function(){
+    calendlyFailed = true;
+    if(pendingPrefill) fallbackWrap.hidden = false;
+  };
+  document.head.appendChild(s);
+
+  // Safety net: if the library hasn't loaded within 6s of reaching step
+  // 2 (slow connection, ad-blocker, etc.), surface the fallback link
+  // instead of leaving people staring at "Loading available times…".
+  function armFallbackTimeout(){
+    setTimeout(function(){
+      if(!calendlyReady) fallbackWrap.hidden = false;
+    }, 6000);
+  }
+
+  function renderCalendly(prefill){
+    calendlyContainer.innerHTML = '';
+    if(window.Calendly && window.Calendly.initInlineWidget){
+      window.Calendly.initInlineWidget({
+        url: CALENDLY_EVENT_URL + '?hide_gdpr_banner=1&primary_color=22c55e',
+        parentElement: calendlyContainer,
+        prefill: prefill
+      });
+    } else {
+      fallbackWrap.hidden = false;
+    }
+  }
+
+  function sendLeadDetails(name, email, industry){
+    // Fire-and-forget: captures the step-1 details as a lead (same inbox
+    // as the /contact form) without blocking the move to step 2, since
+    // booking a time is the priority, not waiting on this request.
+    try{
+      var fd = new FormData();
+      fd.append('_subject', 'New booking started on damirbuilds.com/book-a-call');
+      fd.append('Name', name);
+      fd.append('email', email);
+      fd.append('Industry', industry);
+      fd.append('Message', 'Started booking a call via the 2-step book-a-call page.');
+      fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd }).catch(function(){});
+    }catch(err){}
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var name = document.getElementById('bcName').value.trim();
+    var email = document.getElementById('bcEmail').value.trim();
+    var industry = document.getElementById('bcIndustry').value.trim();
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if(!name || !emailOk || !industry){
+      statusEl.textContent = 'Please fill in every field with a valid email.';
+      statusEl.hidden = false;
+      statusEl.className = 'cf-status cf-error';
+      return;
+    }
+    statusEl.hidden = true;
+
+    sendLeadDetails(name, email, industry);
+
+    document.getElementById('bookConfirmName').textContent = name;
+    document.getElementById('bookConfirmEmail').textContent = email;
+
+    var fallbackUrl = CALENDLY_EVENT_URL + '?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
+    fallbackLink.href = fallbackUrl;
+
+    step1.hidden = true;
+    step2.hidden = false;
+    dot1.classList.remove('is-active');
+    dot1.classList.add('is-done');
+    dot2.classList.add('is-active');
+
+    var prefill = { name: name, email: email };
+    if(calendlyFailed){
+      fallbackWrap.hidden = false;
+    } else if(calendlyReady){
+      renderCalendly(prefill);
+    } else {
+      pendingPrefill = prefill;
+      armFallbackTimeout();
+    }
+  });
+
+  backBtn.addEventListener('click', function(){
+    step2.hidden = true;
+    step1.hidden = false;
+    dot2.classList.remove('is-active');
+    dot1.classList.remove('is-done');
+    dot1.classList.add('is-active');
+  });
+})();
+</script>
+
+</body>
+</html>

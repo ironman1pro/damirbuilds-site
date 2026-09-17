@@ -22,17 +22,17 @@
 <meta name="twitter:description" content="Done-for-you AI cold-calling agents that call your prospects and work to convert them. Connected to your CRM, built on KYC-verified platforms, managed monthly.">
 <meta name="twitter:image" content="https://damirbuilds.com/logo.png">
 <script type="application/ld+json">
-{ "@context": "https://schema.org", "@type": "Service", "name": "AI Cold Calling Agents", "provider": { "@type": "Person", "name": "Damir", "url": "https://damirbuilds.com" }, "serviceType": "AI outbound sales calling automation", "url": "https://damirbuilds.com/ai-cold-calling", "areaServed": "Global" }
+{ "@context": "https://schema.org", "@type": "Service", "name": "AI Cold Calling Agents", "provider": { "@type": "Person", "name": "Damir", "url": "https://damirbuilds.com" }, "serviceType": "AI outbound sales calling automation", "url": "https://damirbuilds.com/ai-cold-calling", "areaServed": "Global", "offers": { "@type": "Offer", "name": "Starter workflow: cold calling agent with CRM routing, hot-lead alerts, and SMS follow-up", "price": "600", "priceCurrency": "USD", "url": "https://damirbuilds.com/ai-cold-calling", "description": "$600 one-time set-up fee, first month of maintenance included free, then $600/mo per agent." } }
 </script>
 <script type="application/ld+json">
 { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-  { "@type": "Question", "name": "Won't this just sound like a robot and annoy people?", "acceptedAnswer": { "@type": "Answer", "text": "The script, tone, and objection handling are built around your actual offer, then tested and refined against real calls, not shipped as a generic template. You hear it before it ever talks to a real prospect." } },
-  { "@type": "Question", "name": "Is AI cold calling even legal?", "acceptedAnswer": { "@type": "Answer", "text": "Calls run through a KYC-verified platform specifically to filter out the spam/robocall operations that give this space a bad name. You're still responsible for who you're calling and following the calling rules that apply to your business, same as with a human sales team." } },
-  { "@type": "Question", "name": "What happens when a prospect asks something the agent can't answer?", "acceptedAnswer": { "@type": "Answer", "text": "It hands off or flags the call for a real person instead of improvising an answer it shouldn't. Every case like that becomes something the agent gets tuned on afterward." } },
-  { "@type": "Question", "name": "Am I locked into a contract?", "acceptedAnswer": { "@type": "Answer", "text": "No. There's a one-time set-up fee to build and launch each agent, then a monthly maintenance fee after that, and you can add or drop agents as your needs change." } },
-  { "@type": "Question", "name": "Can I hear it before it's calling real prospects?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You review the script and listen to test calls, and approve it before it ever dials someone real." } },
-  { "@type": "Question", "name": "Do you guarantee sales or results?", "acceptedAnswer": { "@type": "Answer", "text": "No, I don't guarantee sales. What I guarantee is building a high-quality agent that sounds human and represents your offer well. Results depend on your offer and sales script too, so we keep improving both using the recorded calls." } },
-  { "@type": "Question", "name": "Can the agent follow up with leads too, not just make the first call?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It can call back no-answers, retry at a better time, and follow up with people who showed interest but didn't convert on the first call, based on whatever cadence you set." } }
+  { "@type": "Question", "name": "Won't this just sound like a robot and annoy people?", "acceptedAnswer": { "@type": "Answer", "text": "The script, tone, pacing, and how it handles pushback are written around your specific offer with you, then stress-tested on real test calls before it ever dials a prospect. If it sounds stiff or scripted, it gets fixed before launch, not after." } },
+  { "@type": "Question", "name": "Is AI cold calling even legal?", "acceptedAnswer": { "@type": "Answer", "text": "Calling with an AI agent isn't itself illegal, but the same rules that apply to any outbound sales calling (like do-not-call lists and consent) still apply. Calls run through a KYC-verified platform built for legitimate businesses calling their own leads, and you're still responsible for who's on your list, same as with a human sales team. This isn't legal advice." } },
+  { "@type": "Question", "name": "What happens when a prospect asks something the agent can't answer?", "acceptedAnswer": { "@type": "Answer", "text": "It's trained to admit it doesn't know rather than improvise. It hands the call to a real person, offers a follow-up, or notes it and moves on, and that gap usually becomes the first thing tuned in the next round." } },
+  { "@type": "Question", "name": "Am I locked into a contract?", "acceptedAnswer": { "@type": "Answer", "text": "No. For the starter workflow it's a $600 one-time set-up fee, first month of maintenance included free, then $600/mo per agent after that, with no long-term contract, so you can add or drop agents as your needs change." } },
+  { "@type": "Question", "name": "Can I hear it before it's calling real prospects?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You review the written script, then listen to live test calls against sample scenarios, and nothing dials a real prospect until you've signed off." } },
+  { "@type": "Question", "name": "Do you guarantee sales or results?", "acceptedAnswer": { "@type": "Answer", "text": "No, results depend on things outside my control too, like your offer and list quality. What I guarantee is a high-quality agent that sounds human and represents your offer accurately, tuned continuously from the actual recorded calls." } },
+  { "@type": "Question", "name": "Can the agent follow up with leads too, not just make the first call?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It can retry no-answers, follow up with people who showed interest but didn't commit, and work a lead over multiple touches instead of writing it off after one attempt, on whatever cadence you set." } }
 ] }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -835,6 +835,214 @@
     gap:7px;
   }
   .cc-pricing-list svg{ width:15px; height:15px; color:var(--hot); flex-shrink:0; }
+
+  /* ---------- PRICE CARD (starter workflow, visible pricing) ---------- */
+  .price-card{
+    position:relative;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:16px;
+    padding:36px 36px 32px;
+    overflow:hidden;
+  }
+  .price-card::before{
+    content:'';
+    position:absolute;
+    top:-55%; left:-15%;
+    width:60%; height:120%;
+    background:radial-gradient(circle, rgba(var(--hot-rgb),0.12), transparent 70%);
+    pointer-events:none;
+  }
+  .price-card-top{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:32px;
+    align-items:center;
+    padding-bottom:26px;
+    margin-bottom:26px;
+    border-bottom:1px solid var(--line);
+  }
+  @media (max-width:760px){
+    .price-card-top{ grid-template-columns:1fr; gap:24px; }
+  }
+  .price-card-badge{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--hot);
+    background:rgba(var(--hot-rgb),0.1);
+    border:1px solid rgba(var(--hot-rgb),0.3);
+    border-radius:999px;
+    padding:5px 12px;
+    margin-bottom:12px;
+  }
+  .price-card-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:22px;
+    color:var(--text);
+    margin-bottom:8px;
+  }
+  .price-card-desc{
+    font-size:14.5px;
+    color:var(--muted);
+    line-height:1.55;
+    max-width:44ch;
+  }
+  .price-card-figures{
+    text-align:left;
+  }
+  @media (max-width:760px){
+    .price-card-figures{ text-align:left; }
+  }
+  .price-row{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .price-row-label{
+    font-size:12.5px;
+    color:var(--muted-2);
+    width:64px;
+    flex-shrink:0;
+  }
+  .price-row-amount{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:30px;
+    color:var(--text);
+  }
+  .price-row-amount.is-hot{ color:var(--hot); }
+  .price-row-suffix{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .price-row + .price-row{ margin-top:8px; }
+  .price-included{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:14px;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--hot);
+    background:rgba(var(--hot-rgb),0.1);
+    border:1px solid rgba(var(--hot-rgb),0.3);
+    border-radius:999px;
+    padding:6px 12px;
+  }
+  .price-included svg{ width:13px; height:13px; flex-shrink:0; }
+
+  .price-features{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px 24px;
+    list-style:none;
+    margin:0 0 28px;
+    padding:0;
+  }
+  @media (max-width:600px){
+    .price-features{ grid-template-columns:1fr; }
+  }
+  .price-features li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:14px;
+    color:var(--body-text);
+    line-height:1.5;
+  }
+  .price-features svg{ width:16px; height:16px; color:var(--hot); flex-shrink:0; margin-top:2px; }
+
+  .price-card-foot{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .price-card-note{
+    font-size:12.5px;
+    color:var(--muted-2);
+    max-width:40ch;
+  }
+
+  /* ---------- HUMAN SDR vs AGENT COMPARISON ---------- */
+  .vs-panel{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:16px;
+    padding:32px 32px 28px;
+    margin-bottom:36px;
+  }
+  .vs-panel-head{ text-align:center; margin-bottom:24px; }
+  .vs-panel-head h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(18px, 2.4vw, 22px);
+    margin-top:8px;
+    max-width:46ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .vs-table{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .vs-row{
+    display:grid;
+    grid-template-columns:110px 1fr 1fr;
+    gap:16px;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+  }
+  .vs-row-head{ border-top:none; padding-bottom:10px; }
+  .vs-row:last-child{ padding-bottom:0; }
+  @media (max-width:700px){
+    .vs-row{ grid-template-columns:1fr; gap:6px; padding:16px 0; }
+    .vs-row-label{ font-weight:600; color:var(--text); }
+    .vs-row-head{ display:none; }
+  }
+  .vs-row-label{
+    font-size:12.5px;
+    color:var(--muted-2);
+    align-self:center;
+  }
+  .vs-col-label{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    text-align:center;
+    padding:6px 0;
+    border-radius:8px;
+  }
+  .vs-col-label.vs-col-them{ color:var(--muted); }
+  .vs-col-label.vs-col-you{ color:var(--hot); background:rgba(var(--hot-rgb),0.1); }
+  .vs-cell{
+    font-size:13.5px;
+    line-height:1.5;
+    padding:10px 12px;
+    border-radius:8px;
+  }
+  .vs-cell.vs-col-them{ color:var(--muted); background:var(--panel-2); }
+  .vs-cell.vs-col-you{ color:var(--body-text); background:rgba(var(--hot-rgb),0.06); border:1px solid rgba(var(--hot-rgb),0.2); }
+  @media (max-width:700px){
+    .vs-cell{ margin-bottom:2px; }
+  }
+  .vs-note{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted-2);
+    margin-top:20px;
+    max-width:56ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
 </style>
 </head>
 <body>
@@ -853,7 +1061,7 @@
         <a class="btn-primary" href="/contact">Book a call →</a>
       </div>
       <p class="cc-cta-reassure">15-minute call, no pressure, no pitch deck.</p>
-      <p class="cc-hero-note">Pricing scales with how many agents you're running, no fixed public tiers yet.</p>
+      <p class="cc-hero-note">Starts at $600 set-up + $600/mo per agent, first month of maintenance included.</p>
     </div>
     <div class="hero-illustration" aria-hidden="true">
       <span class="signal-sweep"></span>
@@ -906,12 +1114,14 @@
   </section>
 
   <section class="cc-section reveal-init">
-    <div class="wrap cc-trust-panel">
-      <span class="cc-trust-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
-        KYC-verified calling platform
-      </span>
-      <span class="cc-trust-text">Calls run through trusted, KYC-required platforms only — built for legitimate businesses with a real offer, not mass spam dialing.</span>
+    <div class="wrap">
+      <div class="cc-trust-panel">
+        <span class="cc-trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          KYC-verified calling platform
+        </span>
+        <span class="cc-trust-text">Calls run through trusted, KYC-required platforms only — built for legitimate businesses with a real offer, not mass spam dialing.</span>
+      </div>
     </div>
   </section>
 
@@ -1055,18 +1265,88 @@
     <div class="wrap">
       <div class="cc-section-head">
         <span class="eyebrow">Pricing</span>
-        <h2>Two costs, both fully transparent.</h2>
-        <p>The per-minute rates below are platform costs, paid directly to the calling platform, not to me. On top of that, I charge a set-up fee to build and launch each agent, plus a monthly maintenance fee to keep it connected, tuned, and running. No public tiers yet since it depends on your setup, book a call and I'll quote you directly.</p>
+        <h2>Simple, visible pricing to start.</h2>
+        <p>The per-minute rates below are platform costs, paid directly to the calling platform, not to me. On top of that is my fee for building and maintaining the agent, and for the core workflow, that's a flat, published number, not a "book a call to find out."</p>
       </div>
 
-      <div class="cc-panel" style="margin-bottom:36px;">
-        <h2 style="font-size:19px;">My fee: set-up + maintenance</h2>
-        <div class="cc-pricing-list">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Set-up fee to build &amp; launch each agent</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly maintenance fee, includes ongoing tuning</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Add agents anytime for new offers</span>
+      <div class="price-card" style="margin-bottom:36px;">
+        <div class="price-card-top">
+          <div>
+            <span class="price-card-badge">Starter workflow</span>
+            <h3 class="price-card-name">Cold Calling Agent</h3>
+            <p class="price-card-desc">One agent that cold calls your list, routes every outcome to your CRM, notifies your team the moment a hot lead comes in, and follows up by SMS.</p>
+          </div>
+          <div class="price-card-figures">
+            <div class="price-row">
+              <span class="price-row-label">Set-up</span>
+              <span class="price-row-amount">$600</span>
+              <span class="price-row-suffix">one-time</span>
+            </div>
+            <div class="price-row">
+              <span class="price-row-label">Then</span>
+              <span class="price-row-amount is-hot">$600</span>
+              <span class="price-row-suffix">/mo per agent</span>
+            </div>
+            <span class="price-included">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              First month of maintenance included, free
+            </span>
+          </div>
         </div>
-        <a class="btn-primary" href="/contact">Book a call →</a>
+
+        <ul class="price-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>AI agent that cold calls your list</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Every outcome routed straight to your CRM</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Your team notified instantly on hot leads</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Automatic SMS follow-up after the call</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Ongoing tuning from real call recordings</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Add more agents anytime for new offers</li>
+        </ul>
+
+        <div class="price-card-foot">
+          <a class="btn-primary" href="/contact">Book a call →</a>
+          <p class="price-card-note">Need something more custom, multiple agents, deeper integrations, a heavier workflow? Book a call and I'll quote that directly.</p>
+        </div>
+      </div>
+
+      <div class="vs-panel">
+        <div class="vs-panel-head">
+          <span class="eyebrow">Why it's worth it</span>
+          <h3>Costs a fraction of an SDR, and calls at a scale one person can't.</h3>
+        </div>
+        <div class="vs-table">
+          <div class="vs-row vs-row-head">
+            <span></span>
+            <span class="vs-col-label vs-col-them">Human SDR</span>
+            <span class="vs-col-label vs-col-you">This agent</span>
+          </div>
+          <div class="vs-row">
+            <span class="vs-row-label">Monthly cost</span>
+            <span class="vs-cell vs-col-them">$3,000–$6,000+ fully loaded (salary, taxes, tools, management)</span>
+            <span class="vs-cell vs-col-you">$600/mo per agent, plus a small per-minute platform cost</span>
+          </div>
+          <div class="vs-row">
+            <span class="vs-row-label">Call volume</span>
+            <span class="vs-cell vs-col-them">Limited to one conversation at a time, during work hours</span>
+            <span class="vs-cell vs-col-you">Can run many conversations at once, so your list gets worked far faster than one person ever could</span>
+          </div>
+          <div class="vs-row">
+            <span class="vs-row-label">Availability</span>
+            <span class="vs-cell vs-col-them">Standard working hours, sick days, time off</span>
+            <span class="vs-cell vs-col-you">Available whenever you want it calling, no downtime</span>
+          </div>
+          <div class="vs-row">
+            <span class="vs-row-label">Consistency</span>
+            <span class="vs-cell vs-col-them">Good days and bad days, script drifts over time</span>
+            <span class="vs-cell vs-col-you">Delivers the approved script the same way, every call</span>
+          </div>
+          <div class="vs-row">
+            <span class="vs-row-label">Follow-up</span>
+            <span class="vs-cell vs-col-them">Easy for leads to fall through the cracks</span>
+            <span class="vs-cell vs-col-you">Automatic retries and SMS follow-up, every time</span>
+          </div>
+        </div>
+        <p class="vs-note">Not a replacement for your closers, it's built to work your list at a volume one person can't, so your team spends their time on the prospects who are actually ready to talk.</p>
       </div>
 
       <div class="cc-section-head" style="margin-bottom:24px;">
@@ -1208,39 +1488,39 @@
       <div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-1">Won't this just sound like a robot and annoy people?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-1"><p>The script, tone, and objection handling are built around your actual offer, then tested and refined against real calls, not shipped as a generic template. You hear it before it ever talks to a real prospect.</p></div>
+          <div class="faq-a" id="cc-faq-1"><p>That's the actual bar I'm building to, not a nice-to-have. The script, tone, pacing, and how it handles pushback are written around your specific offer with you, then stress-tested on real test calls before it ever dials a prospect. If it sounds stiff or scripted, we fix it before launch, not after.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-2">Is AI cold calling even legal?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-2"><p>Calls run through a KYC-verified platform specifically to filter out the spam/robocall operations that give this space a bad name. You're still responsible for who you're calling and following the calling rules that apply to your business, same as with a human sales team.</p></div>
+          <div class="faq-a" id="cc-faq-2"><p>Calling with an AI agent isn't itself illegal, but the rules around who you can call and how (things like do-not-call lists and consent) are the same ones that apply to any outbound sales calling, human or AI. Calls run through a KYC-verified platform so it's built for legitimate businesses calling their own leads, not scraped or bought lists. You're still responsible for who's on your list, same as you would be with a human sales team, and I'm happy to talk through your specific situation before we build anything. This isn't legal advice, just how the platform and process are set up.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-3">What happens when a prospect asks something the agent can't answer?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-3"><p>It hands off or flags the call for a real person instead of improvising an answer it shouldn't. Every case like that becomes something I tune the agent on afterward.</p></div>
+          <div class="faq-a" id="cc-faq-3"><p>It's trained to admit it doesn't know rather than make something up. Depending on how we set it up, it'll either hand the call to a real person, offer to have someone follow up, or note it and move on gracefully. Either way, that gap gets flagged, and it's usually the first thing I fix in the next round of tuning.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-4">Am I locked into a contract?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-4"><p>No. There's a one-time set-up fee to build and launch each agent, then a monthly maintenance fee after that, and you can add or drop agents as your needs change.</p></div>
+          <div class="faq-a" id="cc-faq-4"><p>No. For the starter workflow it's a $600 one-time set-up fee, your first month of maintenance included free, then $600/mo per agent after that, no long-term contract behind it. You can pause, drop, or add agents as your needs change without waiting out a term.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-5">I don't have a CRM set up, or I'm using something niche. Can this still work?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-5"><p>I connect to whatever you're already using. If you're not set up with anything yet, we sort that out as part of getting the agent live.</p></div>
+          <div class="faq-a" id="cc-faq-5"><p>I connect to whatever you're already using, common CRMs, spreadsheets, niche or industry-specific tools, it doesn't need to be a big-name platform. If you don't have anything set up yet, we sort out where booked calls and outcomes should land as part of getting the agent live, so you're not starting from nothing either way.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-6">Can I hear it before it's calling real prospects?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-6"><p>Yes. You review the script and listen to test calls, and approve it before it ever dials someone real.</p></div>
+          <div class="faq-a" id="cc-faq-6"><p>Yes, and I'd insist on it even if you didn't ask. You review the written script first, then listen to live test calls against sample scenarios, and nothing goes near a real prospect until you've signed off. If something feels off once it's live, you can pause the agent at any time while we fix it.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-7">How is this different from a spam robocall operation?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-7"><p>Every agent is built around one specific offer for one specific business, not blasted across a bought list. It runs on a platform that requires KYC verification, and you can listen to every call it makes.</p></div>
+          <div class="faq-a" id="cc-faq-7"><p>Spam operations blast a bought list with the same generic script from an unverified number and don't care who picks up. This is the opposite on every count: one agent built for one business's actual offer, calling your own list through a platform that requires KYC verification, with every call recorded and reviewable by you. It's meant to feel like a real rep called, not a mass dial.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-8">Do you guarantee sales or results?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-8"><p>No, I don't guarantee sales, no one honestly can. What I guarantee is building you a high-quality agent that sounds human and represents your offer well. Actual results depend on your offer and sales script too, so we keep improving all of it together using the recorded calls, and get closer to the numbers you want over time.</p></div>
+          <div class="faq-a" id="cc-faq-8"><p>No, and I'd be skeptical of anyone who does, results depend on things outside my control too, like your offer, pricing, and how warm the list is. What I do guarantee is a high-quality agent that sounds human, represents your offer accurately, and gets tuned relentlessly from the actual recorded calls. That's the lever I control, and it's the one we keep pulling until the numbers move in the right direction.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" aria-controls="cc-faq-9">Can the agent follow up with leads too, not just make the first call?<span class="icon" aria-hidden="true">+</span></button>
-          <div class="faq-a" id="cc-faq-9"><p>Yes. It can call back no-answers, retry at a better time, and follow up with people who showed interest but didn't convert on the first call, based on whatever cadence we set for your list.</p></div>
+          <div class="faq-a" id="cc-faq-9"><p>Yes, it's not a one-and-done dialer. It can retry no-answers at a better time, follow up with people who showed interest but didn't commit on the first call, and work a lead over multiple touches instead of writing it off after one attempt, all on whatever cadence we agree on for your list.</p></div>
         </div>
       </div>
     </div>
