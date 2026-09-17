@@ -344,20 +344,46 @@
     }
   }
 
-  function sendLeadDetails(name, email, industry){
-    // Fire-and-forget: captures the step-1 details as a lead (same inbox
-    // as the /contact form) without blocking the move to step 2, since
-    // booking a time is the priority, not waiting on this request.
+  // Current visitor's details, set once step 1 is submitted, so the
+  // Calendly "event scheduled" listener below can still reach them when
+  // that message arrives later (it has no access to the form itself).
+  var currentLead = null;
+
+  function sendLeadDetails(name, email, industry, stage){
+    // Fire-and-forget: posts to the same Formspree inbox the /contact
+    // form uses, so both notifications, "started" (step 1 submitted)
+    // and "booked" (a time was actually picked in Calendly), land as
+    // separate emails without blocking the UI on the request.
     try{
       var fd = new FormData();
-      fd.append('_subject', 'New booking started on damirbuilds.com/book-a-call');
+      if(stage === 'booked'){
+        fd.append('_subject', 'Call booked on damirbuilds.com/book-a-call');
+        fd.append('Message', 'A time was just picked in Calendly, this confirms the event was scheduled (Calendly also sends its own separate confirmation email).');
+      } else {
+        fd.append('_subject', 'New booking started on damirbuilds.com/book-a-call');
+        fd.append('Message', 'Started booking a call via the 2-step book-a-call page, no time picked yet.');
+      }
       fd.append('Name', name);
       fd.append('email', email);
       fd.append('Industry', industry);
-      fd.append('Message', 'Started booking a call via the 2-step book-a-call page.');
       fetch(LEAD_ENDPOINT, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd }).catch(function(){});
     }catch(err){}
   }
+
+  // ---------- Notify when the event is actually scheduled ----------
+  // Calendly's inline widget posts a window "message" event the moment
+  // someone finishes picking a time, before it even shows its own
+  // confirmation screen. Listening for it lets this page send a second,
+  // distinct notification (tagged with the name/email/industry already
+  // collected in step 1) rather than relying only on Calendly's own
+  // confirmation email, which won't mention the industry field.
+  window.addEventListener('message', function(e){
+    if(e.origin !== 'https://calendly.com') return;
+    if(!e.data || typeof e.data.event !== 'string' || e.data.event.indexOf('calendly.') !== 0) return;
+    if(e.data.event === 'calendly.event_scheduled' && currentLead){
+      sendLeadDetails(currentLead.name, currentLead.email, currentLead.industry, 'booked');
+    }
+  });
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -375,7 +401,8 @@
     }
     statusEl.hidden = true;
 
-    sendLeadDetails(name, email, industry);
+    currentLead = { name: name, email: email, industry: industry };
+    sendLeadDetails(name, email, industry, 'started');
 
     document.getElementById('bookConfirmName').textContent = name;
     document.getElementById('bookConfirmEmail').textContent = email;
